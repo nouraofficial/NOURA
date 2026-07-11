@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Noura — Privacy Policy, Terms of Service, and The Noura Foundation">
+<meta property="og:title" content="Noura Legal & Foundation">
+<meta property="og:description" content="Privacy Policy, Terms of Service, and the values that guide everything we build.">
+<meta name="theme-color" content="#0D0B09">
+<title>Noura — Legal & Foundation</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0D0B09;--sf:#171411;--sfu:#201D19;--bd:#2A2620;
+  --ac:#E8943A;--acs:#E8943A18;
+  --t1:#F0EDE6;--t2:#8A7F72;--t3:#4A4339;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;line-height:1.6}
+a{color:var(--ac);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--bd);padding:0 24px}
+.nav-inner{max-width:820px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:var(--t1)}
+.nav-logo span{color:var(--ac)}
+.nav-links{display:flex;gap:24px}
+.nav-links a{font-size:14px;font-weight:500;color:var(--t2);transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--ac);text-decoration:none}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,var(--sf) 0%,var(--bg) 100%);border-bottom:1px solid var(--bd);padding:72px 24px}
+.hero-inner{max-width:820px;margin:0 auto;text-align:center}
+.hero-badge{display:inline-block;background:var(--acs);border:1px solid #E8943A30;color:var(--ac);font-size:12px;font-weight:600;padding:5px 14px;border-radius:999px;letter-spacing:.5px;margin-bottom:20px;text-transform:uppercase}
+.hero h1{font-family:'Sora',sans-serif;font-size:clamp(32px,5vw,52px);font-weight:800;color:var(--t1);line-height:1.1;letter-spacing:-1px;margin-bottom:16px}
+.hero h1 span{color:var(--ac)}
+.hero p{font-size:17px;color:var(--t2);max-width:540px;margin:0 auto 32px;line-height:1.75}
+.hero-pills{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.pill{padding:8px 18px;border-radius:999px;border:1px solid var(--bd);background:var(--sfu);color:var(--t2);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+.pill:hover,.pill.active{background:var(--acs);border-color:var(--ac);color:var(--ac)}
+
+/* ── LAYOUT ── */
+main{max-width:820px;margin:0 auto;padding:0 24px 80px}
+
+/* ── SECTIONS ── */
+.doc-section{padding:60px 0;border-bottom:1px solid var(--bd)}
+.doc-section:last-child{border-bottom:none}
+.doc-anchor{display:block;position:relative;top:-80px;visibility:hidden}
+.section-eyebrow{font-size:11px;font-weight:600;color:var(--ac);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
+.section-title{font-family:'Sora',sans-serif;font-size:clamp(24px,4vw,36px);font-weight:800;color:var(--t1);line-height:1.2;margin-bottom:16px}
+.section-lead{font-size:16px;color:var(--t2);line-height:1.8;margin-bottom:32px;max-width:640px}
+
+/* ── CARDS ── */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:32px}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:22px}
+.card-icon{font-size:28px;margin-bottom:12px}
+.card-title{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:var(--t1);margin-bottom:8px}
+.card-body{font-size:14px;color:var(--t2);line-height:1.7}
+
+/* ── PROMISE BANNER ── */
+.promise{background:var(--ac);border-radius:20px;padding:32px;margin-bottom:40px;text-align:center}
+.promise h3{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:var(--bg);margin-bottom:10px}
+.promise p{font-size:15px;color:var(--bg);opacity:.85;line-height:1.7;max-width:480px;margin:0 auto}
+
+/* ── LIST ITEMS ── */
+.list-block{background:var(--sf);border:1px solid var(--bd);border-radius:16px;overflow:hidden;margin-bottom:24px}
+.list-block-title{font-size:12px;font-weight:600;color:var(--ac);text-transform:uppercase;letter-spacing:1px;padding:14px 20px;border-bottom:1px solid var(--bd);background:var(--sfu)}
+.list-item{display:flex;align-items:flex-start;gap:12px;padding:14px 20px;border-bottom:1px solid var(--bd);font-size:14px;color:var(--t2);line-height:1.6}
+.list-item:last-child{border-bottom:none}
+.list-dot{width:20px;height:20px;min-width:20px;border-radius:50%;background:var(--acs);border:1px solid var(--ac);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--ac);font-weight:700;margin-top:1px}
+
+/* ── VALUES ── */
+.values-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:32px}
+.value-item{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:18px;display:flex;gap:14px;align-items:flex-start}
+.value-num{width:32px;height:32px;min-width:32px;border-radius:50%;background:var(--acs);border:1px solid var(--ac);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--ac)}
+.value-name{font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:var(--t1);margin-bottom:5px}
+.value-desc{font-size:13px;color:var(--t2);line-height:1.65}
+
+/* ── CONSTITUTION ── */
+.constitution{background:var(--sf);border:1px solid var(--bd);border-radius:20px;padding:28px;margin-bottom:32px}
+.const-item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--bd);font-size:14px;color:var(--t2);line-height:1.65}
+.const-item:last-child{border-bottom:none}
+.const-bullet{color:var(--ac);font-size:16px;flex-shrink:0;margin-top:1px}
+
+/* ── CHARTER QUOTE ── */
+.charter{background:var(--sfu);border:1px solid var(--bd);border-radius:20px;padding:40px;text-align:center;margin-bottom:32px}
+.charter blockquote{font-family:'Sora',sans-serif;font-size:clamp(18px,3vw,26px);font-weight:700;color:var(--t1);line-height:1.5;margin-bottom:20px;font-style:normal}
+.charter .sub{font-size:14px;color:var(--t2);line-height:1.8}
+
+/* ── VISION ── */
+.vision{background:linear-gradient(135deg,var(--ac) 0%,var(--accent-dim,#B86E22) 100%);border-radius:20px;padding:40px;text-align:center;margin-top:40px}
+.vision h3{font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:var(--bg);margin-bottom:14px}
+.vision p{font-size:15px;color:var(--bg);opacity:.88;line-height:1.8;max-width:480px;margin:0 auto 20px}
+.vision .tagline{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:var(--bg)}
+
+/* ── FOOTER ── */
+footer{background:var(--sf);border-top:1px solid var(--bd);padding:40px 24px}
+.footer-inner{max-width:820px;margin:0 auto;display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center}
+.footer-logo{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:var(--t1)}
+.footer-logo span{color:var(--ac)}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{font-size:13px;color:var(--t2);transition:color .2s}
+.footer-links a:hover{color:var(--ac);text-decoration:none}
+.footer-copy{width:100%;font-size:12px;color:var(--t3);text-align:center;margin-top:8px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .nav-links{display:none}
+  .hero{padding:48px 20px}
+  .doc-section{padding:40px 0}
+  main{padding:0 16px 60px}
+  .card-grid,.values-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">noura<span>.</span></div>
+    <div class="nav-links">
+      <a href="#privacy" onclick="setActive(this)">Privacy</a>
+      <a href="#terms" onclick="setActive(this)">Terms</a>
+      <a href="#foundation" onclick="setActive(this)">Foundation</a>
+      <a href="#values" onclick="setActive(this)">Values</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">🟢 Legal & Foundation</div>
+    <h1>Built on<br><span>Trust</span></h1>
+    <p>Everything Noura stands for — our privacy commitments, terms of service, core values, and the principles that guide every decision we make.</p>
+    <div class="hero-pills">
+      <a href="#privacy" class="pill" onclick="setActive(this)">🔐 Privacy Policy</a>
+      <a href="#terms" class="pill" onclick="setActive(this)">📄 Terms of Service</a>
+      <a href="#foundation" class="pill" onclick="setActive(this)">🌍 Foundation</a>
+      <a href="#values" class="pill" onclick="setActive(this)">⭐ Core Values</a>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<!-- ════════════════════════════════════════
+  PRIVACY POLICY
+════════════════════════════════════════ -->
+<div class="doc-section">
+  <span class="doc-anchor" id="privacy"></span>
+  <div class="section-eyebrow">📜 Privacy Policy</div>
+  <div class="section-title">Your Trust is More Valuable Than Your Data</div>
+  <div class="section-lead">We believe privacy is a fundamental right, not a premium feature. Every person who uses Noura deserves to understand exactly what information is collected, why it is needed, and how it is protected.</div>
+
+  <div class="promise">
+    <h3>Our Promise</h3>
+    <p>We are committed to communicating our practices in clear language rather than confusing legal jargon. Your data belongs to you.</p>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">👤</div>
+      <div class="card-title">Account Information</div>
+      <div class="card-body">Full name, username, email address, phone number (optional), and profile picture when you create an account.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🍽️</div>
+      <div class="card-title">Food Preferences</div>
+      <div class="card-body">Favourite cuisines, dietary preferences, allergies, nutrition goals, meal preferences, and saved recipes to personalise your experience.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📍</div>
+      <div class="card-title">Location</div>
+      <div class="card-body">Only when you grant permission. Used to find nearby restaurants, improve recommendations, and estimate distances. Disable at any time.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📱</div>
+      <div class="card-title">Device Information</div>
+      <div class="card-body">Device model, operating system, app version, and crash reports to improve app performance and stability.</div>
+    </div>
+  </div>
+
+  <div class="list-block">
+    <div class="list-block-title">Why We Collect Information</div>
+    <div class="list-item"><div class="list-dot">→</div>Personalise meal and restaurant recommendations</div>
+    <div class="list-item"><div class="list-dot">→</div>Improve AI suggestions over time</div>
+    <div class="list-item"><div class="list-dot">→</div>Save your preferences so you don't repeat them</div>
+    <div class="list-item"><div class="list-dot">→</div>Connect you with local food businesses</div>
+    <div class="list-item"><div class="list-dot">→</div>Prevent fraud and abuse on the platform</div>
+    <div class="list-item"><div class="list-dot">→</div>Respond to customer support requests</div>
+  </div>
+
+  <div class="list-block">
+    <div class="list-block-title">Your Rights</div>
+    <div class="list-item"><div class="list-dot">✓</div>Access your personal information at any time</div>
+    <div class="list-item"><div class="list-dot">✓</div>Correct inaccurate information in your profile</div>
+    <div class="list-item"><div class="list-dot">✓</div>Delete your account and request data removal</div>
+    <div class="list-item"><div class="list-dot">✓</div>Control your notification preferences</div>
+    <div class="list-item"><div class="list-dot">✓</div>Withdraw location permission at any time</div>
+  </div>
+
+  <div class="card" style="border-color:#E8943A30;background:var(--acs)">
+    <div class="card-icon">🤖</div>
+    <div class="card-title" style="color:var(--ac)">AI Transparency</div>
+    <div class="card-body">AI powers many experiences inside Noura. These suggestions are informational only — not medical, dietary, or professional advice. For medical conditions or specialised nutrition needs, please consult qualified professionals.</div>
+  </div>
+
+  <div style="margin-top:24px;padding:16px;background:var(--sfu);border-radius:12px;border:1px solid var(--bd);text-align:center">
+    <div style="font-size:14px;color:var(--t2)">Privacy questions? Contact us at <a href="mailto:privacy@noura.app">privacy@noura.app</a></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+  TERMS OF SERVICE
+════════════════════════════════════════ -->
+<div class="doc-section">
+  <span class="doc-anchor" id="terms"></span>
+  <div class="section-eyebrow">📄 Terms of Service</div>
+  <div class="section-title">Simple Rules for a Better Community</div>
+  <div class="section-lead">By using Noura, you agree to these terms. We've written them as clearly as possible so you always know where you stand.</div>
+
+  <div class="list-block">
+    <div class="list-block-title">Using Noura</div>
+    <div class="list-item"><div class="list-dot">→</div>You must be at least 13 years old to create an account</div>
+    <div class="list-item"><div class="list-dot">→</div>You are responsible for keeping your account credentials secure</div>
+    <div class="list-item"><div class="list-dot">→</div>Noura is for personal, non-commercial use unless you have a vendor account</div>
+  </div>
+
+  <div class="list-block">
+    <div class="list-block-title">Community Code of Conduct — You Must Not:</div>
+    <div class="list-item"><div class="list-dot">✕</div>Harass, intimidate, or discriminate against other users</div>
+    <div class="list-item"><div class="list-dot">✕</div>Post fake reviews, false claims, or misleading information</div>
+    <div class="list-item"><div class="list-dot">✕</div>Share hate speech, violent, or abusive content</div>
+    <div class="list-item"><div class="list-dot">✕</div>Send spam, scams, or phishing content</div>
+    <div class="list-item"><div class="list-dot">✕</div>Publish another person's private information without consent</div>
+    <div class="list-item"><div class="list-dot">✕</div>Impersonate other users, businesses, or Noura staff</div>
+  </div>
+
+  <div class="list-block">
+    <div class="list-block-title">Vendor Standards</div>
+    <div class="list-item"><div class="list-dot">→</div>Maintain food safety standards in preparation and handling</div>
+    <div class="list-item"><div class="list-dot">→</div>Display accurate menus with clear pricing — no hidden fees</div>
+    <div class="list-item"><div class="list-dot">→</div>Identify allergens wherever possible</div>
+    <div class="list-item"><div class="list-dot">→</div>Communicate professionally and promptly with customers</div>
+    <div class="list-item"><div class="list-dot">→</div>Use only accurate images and honest business information</div>
+  </div>
+
+  <div class="list-block">
+    <div class="list-block-title">Enforcement</div>
+    <div class="list-item"><div class="list-dot">→</div>Content removal and warnings for minor violations</div>
+    <div class="list-item"><div class="list-dot">→</div>Temporary or permanent account suspension for serious violations</div>
+    <div class="list-item"><div class="list-dot">→</div>Serious violations may be reported to relevant authorities</div>
+  </div>
+
+  <div style="margin-top:24px;padding:16px;background:var(--sfu);border-radius:12px;border:1px solid var(--bd);text-align:center">
+    <div style="font-size:14px;color:var(--t2)">Legal questions? Contact us at <a href="mailto:legal@noura.app">legal@noura.app</a></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+  THE NOURA FOUNDATION
+════════════════════════════════════════ -->
+<div class="doc-section">
+  <span class="doc-anchor" id="foundation"></span>
+  <div class="section-eyebrow">🌍 The Noura Foundation</div>
+  <div class="section-title">Building More Than an App</div>
+  <div class="section-lead">Noura is a commitment to making food discovery, meal planning, and local food businesses more accessible, trustworthy, and intelligent through technology.</div>
+
+  <div class="charter">
+    <blockquote>"Does this genuinely help people?"</blockquote>
+    <div class="sub">Every decision we make begins with this question. Technology should never replace humanity. It should empower it.</div>
+  </div>
+
+  <div class="card" style="margin-bottom:32px">
+    <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--t1);margin-bottom:12px">The Noura Charter</div>
+    <div style="font-size:14px;color:var(--t2);line-height:1.9">
+      Food connects people. Across cultures. Across generations. Across communities.<br><br>
+      Noura exists to celebrate that connection. We believe technology should never distance people from food — it should bring them closer to it. Closer to local businesses. Closer to healthier choices. Closer to family traditions. Closer to new experiences.<br><br>
+      Whether you are a customer discovering your next meal, a restaurant serving your neighbourhood, a creator sharing recipes, or a small business chasing a dream — <strong style="color:var(--t1)">you belong here.</strong>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+  CORE VALUES
+════════════════════════════════════════ -->
+<div class="doc-section">
+  <span class="doc-anchor" id="values"></span>
+  <div class="section-eyebrow">⭐ Core Values</div>
+  <div class="section-title">What We Stand For</div>
+  <div class="section-lead">These values are not aspirational posters on a wall. They are the criteria against which we measure every product decision.</div>
+
+  <div class="values-grid">
+    <div class="value-item"><div class="value-num">1</div><div><div class="value-name">Trust First</div><div class="value-desc">Trust is earned through honesty, transparency, and consistency. We never take it for granted.</div></div></div>
+    <div class="value-item"><div class="value-num">2</div><div><div class="value-name">People Before Profit</div><div class="value-desc">Long-term success comes from improving lives. Revenue follows value. Never the other way around.</div></div></div>
+    <div class="value-item"><div class="value-num">3</div><div><div class="value-name">Food For Everyone</div><div class="value-desc">Every culture. Every cuisine. Every tradition. Every table. Everyone belongs.</div></div></div>
+    <div class="value-item"><div class="value-num">4</div><div><div class="value-name">Innovation With Purpose</div><div class="value-desc">Technology should simplify life, not complicate it. Every feature must solve a real problem.</div></div></div>
+    <div class="value-item"><div class="value-num">5</div><div><div class="value-name">Privacy By Design</div><div class="value-desc">Privacy is not an afterthought. It is part of the product from day one.</div></div></div>
+    <div class="value-item"><div class="value-num">6</div><div><div class="value-name">Quality Over Quantity</div><div class="value-desc">One outstanding experience is worth more than a hundred forgettable ones.</div></div></div>
+    <div class="value-item"><div class="value-num">7</div><div><div class="value-name">Grow Together</div><div class="value-desc">When customers succeed, restaurants grow, creators thrive, and communities flourish.</div></div></div>
+  </div>
+
+  <!-- Noura Constitution -->
+  <div style="font-family:'Sora',sans-serif;font-size:20px;font-weight:700;color:var(--t1);margin-bottom:16px">📖 The Noura Constitution</div>
+  <div style="font-size:14px;color:var(--t2);margin-bottom:20px;line-height:1.7">This Constitution is the internal compass for every person who builds Noura. Whenever uncertainty arises, these principles guide our decisions.</div>
+  <div class="constitution">
+    <div class="const-item"><div class="const-bullet">✦</div>We will never intentionally manipulate users into spending more money.</div>
+    <div class="const-item"><div class="const-bullet">✦</div>We will clearly identify AI-generated content whenever appropriate.</div>
+    <div class="const-item"><div class="const-bullet">✦</div>We will never sell users' personal information.</div>
+    <div class="const-item"><div class="const-bullet">✦</div>We will prioritise accessibility so that as many people as possible can use our platform.</div>
+    <div class="const-item"><div class="const-bullet">✦</div>We will design with empathy before efficiency.</div>
+    <div class="const-item"><div class="const-bullet">✦</div>We will resolve disputes fairly and respectfully.</div>
+    <div class="const-item"><div class="const-bullet">✦</div>We will support local businesses alongside larger brands.</div>
+    <div class="const-item"><div class="const-bullet">✦</div>We will build responsibly, even when it is harder.</div>
+    <div class="const-item"><div class="const-bullet">✦</div>We will admit mistakes, learn from them, and improve continuously.</div>
+    <div class="const-item"><div class="const-bullet">✦</div>We will measure success not only by revenue, but by the value we create for people.</div>
+    <div class="const-item"><div class="const-bullet">✦</div>We will protect the trust placed in us every single day.</div>
+  </div>
+
+  <!-- Vision -->
+  <div class="vision">
+    <h3>Our Vision</h3>
+    <p>We imagine a future where discovering food is effortless. Where local businesses can compete with confidence. Where families find meals that fit their lives. Where technology quietly removes friction instead of adding complexity.</p>
+    <p>Noura is not built simply to help people eat.<br>It is built to help people <strong>connect through food.</strong></p>
+    <div style="margin-top:16px;font-size:14px;opacity:.85">Every meal matters. Every business matters. Every person matters.</div>
+    <div class="tagline" style="margin-top:16px">Welcome to Noura. 🍽️</div>
+  </div>
+</div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">noura<span>.</span></div>
+    <div class="footer-links">
+      <a href="#privacy">Privacy Policy</a>
+      <a href="#terms">Terms of Service</a>
+      <a href="#foundation">Foundation</a>
+      <a href="#values">Core Values</a>
+      <a href="mailto:hello@noura.app">Contact</a>
+    </div>
+    <div class="footer-copy">© 2025 Noura. Built with 💛 — Every meal matters.</div>
+  </div>
+</footer>
+
+<script>
+function setActive(el) {
+  document.querySelectorAll('.pill, .nav-links a').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// Highlight active nav link on scroll
+const sections = document.querySelectorAll('.doc-anchor');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      document.querySelectorAll('.nav-links a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-20% 0px -75% 0px' });
+
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

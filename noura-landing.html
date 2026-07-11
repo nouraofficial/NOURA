@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Noura — AI-powered food discovery. Discover restaurants, generate recipes, and plan meals smarter. Join the waitlist.">
+<meta property="og:title" content="Noura — The Future of Food Starts Here">
+<meta property="og:description" content="Discover restaurants. Generate recipes with AI. Plan meals smarter.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0A0805">
+<title>Noura — The Future of Food Starts Here</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:    #0A0805;
+  --sf:    #131009;
+  --sfu:   #1C1710;
+  --bd:    #2A2318;
+  --ac:    #E8943A;
+  --ac2:   #F5B56A;
+  --acs:   #E8943A14;
+  --t1:    #F2EDE4;
+  --t2:    #8A7D6A;
+  --t3:    #4A4236;
+  --ok:    #4CAF50;
+  --r:     16px;
+  --rf:    999px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.6}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* ── NAV ─────────────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,8,5,.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.04)}
+.nav-logo{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.5px}
+.nav-logo span{color:var(--ac)}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{font-size:14px;font-weight:500;color:var(--t2);transition:color .2s}
+.nav-links a:hover{color:var(--t1)}
+.nav-cta{background:var(--ac);color:#0A0805!important;padding:8px 20px;border-radius:var(--rf);font-weight:700!important;font-size:14px;transition:opacity .2s!important}
+.nav-cta:hover{opacity:.9}
+@media(max-width:640px){.nav-links a:not(.nav-cta){display:none}}
+
+/* ── HERO ────────────────────────────────────── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 80px;position:relative;overflow:hidden}
+.hero-glow{position:absolute;width:600px;height:600px;background:radial-gradient(circle,#E8943A18 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-60%);pointer-events:none}
+.hero-grain{position:absolute;inset:0;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");background-size:200px;pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--acs);border:1px solid #E8943A22;color:var(--ac);font-size:12px;font-weight:600;padding:6px 14px;border-radius:var(--rf);letter-spacing:.8px;text-transform:uppercase;margin-bottom:28px;animation:fadeUp .6s ease both}
+.hero h1{font-family:'Sora',sans-serif;font-size:clamp(40px,7vw,80px);font-weight:900;line-height:1.05;letter-spacing:-2px;color:var(--t1);margin-bottom:24px;animation:fadeUp .6s .1s ease both}
+.hero h1 em{font-style:normal;color:var(--ac)}
+.hero-sub{font-size:clamp(16px,2.5vw,20px);color:var(--t2);max-width:520px;line-height:1.7;margin-bottom:40px;animation:fadeUp .6s .2s ease both}
+.hero-sub strong{color:var(--t1);font-weight:500}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fadeUp .6s .3s ease both}
+.btn-primary{background:var(--ac);color:#0A0805;font-family:'Sora',sans-serif;font-size:16px;font-weight:700;padding:14px 32px;border-radius:var(--rf);border:none;cursor:pointer;transition:transform .15s,opacity .15s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{opacity:.92;transform:translateY(-1px)}
+.btn-primary:active{transform:scale(.97)}
+.btn-ghost{background:transparent;color:var(--t1);font-size:15px;font-weight:500;padding:14px 24px;border-radius:var(--rf);border:1px solid var(--bd);cursor:pointer;transition:border-color .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-ghost:hover{border-color:var(--t2)}
+.hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--t3);font-size:11px;letter-spacing:1px;text-transform:uppercase;animation:fadeUp .6s .8s ease both}
+.scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,var(--t3),transparent)}
+
+/* ── FEATURE MARQUEE ─────────────────────────── */
+.marquee-wrap{overflow:hidden;padding:20px 0;border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);background:var(--sf)}
+.marquee-track{display:flex;gap:0;animation:marquee 30s linear infinite;width:max-content}
+.marquee-item{padding:0 32px;font-size:14px;font-weight:500;color:var(--t2);white-space:nowrap;display:flex;align-items:center;gap:10px}
+.marquee-dot{width:4px;height:4px;border-radius:50%;background:var(--ac)}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── SECTIONS ────────────────────────────────── */
+section{padding:96px 24px;max-width:1080px;margin:0 auto}
+.section-eyebrow{font-size:11px;font-weight:600;color:var(--ac);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.section-title{font-family:'Sora',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:800;color:var(--t1);line-height:1.15;letter-spacing:-1px;margin-bottom:16px}
+.section-body{font-size:17px;color:var(--t2);line-height:1.8;max-width:560px}
+
+/* ── WHY NOURA ───────────────────────────────── */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--bd);border-radius:20px;overflow:hidden;margin-top:56px}
+.why-card{background:var(--sf);padding:32px;transition:background .2s}
+.why-card:hover{background:var(--sfu)}
+.why-icon{font-size:32px;margin-bottom:16px}
+.why-title{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--t1);margin-bottom:8px}
+.why-text{font-size:14px;color:var(--t2);line-height:1.7}
+
+/* ── PHONE MOCKUPS ───────────────────────────── */
+.preview-wrap{display:flex;gap:20px;justify-content:center;align-items:flex-end;padding:60px 0;overflow-x:auto;scrollbar-width:none}
+.preview-wrap::-webkit-scrollbar{display:none}
+.phone{width:200px;flex-shrink:0;background:var(--sf);border:1px solid var(--bd);border-radius:28px;overflow:hidden;transition:transform .3s}
+.phone:hover{transform:translateY(-8px)}
+.phone.center{width:220px;transform:translateY(-12px);border-color:var(--ac);box-shadow:0 0 40px #E8943A20}
+.phone.center:hover{transform:translateY(-20px)}
+.phone-bar{height:20px;background:var(--sfu);display:flex;align-items:center;justify-content:center}
+.phone-notch{width:60px;height:6px;border-radius:3px;background:var(--bd)}
+.phone-screen{height:360px;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:48px;position:relative;overflow:hidden}
+.phone-label{font-family:'Sora',sans-serif;font-size:11px;font-weight:600;color:var(--t2);text-align:center;padding:10px;border-top:1px solid var(--bd)}
+.screen-home{background:linear-gradient(160deg,#131009 0%,#0A0805 100%)}
+.screen-ai{background:linear-gradient(160deg,#13100A 0%,#0A0805 100%)}
+.screen-rest{background:linear-gradient(160deg,#10100A 0%,#0A0805 100%)}
+
+/* Phone screen content */
+.ps-header{width:100%;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bd)}
+.ps-logo{font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:var(--t1)}
+.ps-logo span{color:var(--ac)}
+.ps-greeting{padding:14px;font-size:9px;color:var(--t2)}
+.ps-greeting strong{display:block;font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--t1);line-height:1.2}
+.ps-search{margin:0 14px 12px;background:var(--sfu);border:1px solid var(--bd);border-radius:var(--rf);padding:7px 10px;font-size:9px;color:var(--t3);display:flex;align-items:center;gap:6px}
+.ps-card{margin:0 14px 8px;background:var(--sfu);border:1px solid var(--bd);border-radius:10px;padding:10px;display:flex;gap:8px;align-items:center}
+.ps-card-img{width:36px;height:36px;border-radius:6px;background:var(--ac);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ps-card-txt{flex:1;min-width:0}
+.ps-card-name{font-family:'Sora',sans-serif;font-size:9px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ps-card-sub{font-size:8px;color:var(--t2)}
+.ps-chat-msg{margin:0 14px 6px;padding:8px 10px;border-radius:10px;font-size:9px;line-height:1.5}
+.ps-chat-msg.ai{background:var(--sfu);border:1px solid var(--bd);color:var(--t1);border-bottom-left-radius:2px}
+.ps-chat-msg.user{background:var(--ac);color:#0A0805;font-weight:600;border-bottom-right-radius:2px;align-self:flex-end;margin-left:30px}
+.ps-chat-wrap{display:flex;flex-direction:column;width:100%}
+.ps-rest-card{margin:0 14px 8px;background:var(--sfu);border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+.ps-rest-hero{height:60px;background:var(--acs);display:flex;align-items:center;justify-content:center;font-size:28px}
+.ps-rest-info{padding:8px 10px}
+.ps-rest-name{font-family:'Sora',sans-serif;font-size:10px;font-weight:700;color:var(--t1);margin-bottom:2px}
+.ps-rest-meta{font-size:8px;color:var(--t2)}
+.ps-tag{display:inline-block;background:var(--acs);color:var(--ac);font-size:7px;font-weight:600;padding:2px 6px;border-radius:var(--rf);margin-top:4px}
+
+/* ── TIMELINE ────────────────────────────────── */
+.timeline{position:relative;padding:56px 0;margin-top:0}
+.timeline::before{content:'';position:absolute;left:20px;top:0;bottom:0;width:1px;background:var(--bd)}
+.tl-item{display:flex;gap:28px;margin-bottom:40px;position:relative}
+.tl-dot{width:40px;height:40px;min-width:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;position:relative;z-index:1;flex-shrink:0}
+.tl-dot.done{background:var(--acs);border:1px solid var(--ac)}
+.tl-dot.active{background:var(--ac);box-shadow:0 0 0 4px #E8943A20}
+.tl-dot.upcoming{background:var(--sfu);border:1px solid var(--bd)}
+.tl-content{padding-top:8px}
+.tl-label{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.tl-title{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--t1);margin-bottom:4px}
+.tl-desc{font-size:14px;color:var(--t2);line-height:1.6}
+.tl-done-tag{display:inline-block;background:#4CAF5018;color:#4CAF50;font-size:10px;font-weight:600;padding:3px 10px;border-radius:var(--rf);margin-top:8px}
+.tl-active-tag{display:inline-block;background:var(--acs);color:var(--ac);font-size:10px;font-weight:600;padding:3px 10px;border-radius:var(--rf);margin-top:8px}
+
+/* ── DEV LOG ─────────────────────────────────── */
+.log-grid{display:grid;gap:1px;background:var(--bd);border-radius:20px;overflow:hidden;margin-top:40px}
+.log-item{background:var(--sf);padding:20px 24px;display:flex;gap:16px;align-items:flex-start;transition:background .2s}
+.log-item:hover{background:var(--sfu)}
+.log-week{font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--ac);text-transform:uppercase;letter-spacing:1px;min-width:64px;padding-top:2px}
+.log-title{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:3px}
+.log-desc{font-size:13px;color:var(--t2);line-height:1.6}
+.log-check{width:20px;height:20px;min-width:20px;border-radius:50%;background:#4CAF5018;border:1px solid #4CAF5030;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:2px}
+
+/* ── FOUNDER ─────────────────────────────────── */
+.founder-card{background:var(--sf);border:1px solid var(--bd);border-radius:24px;padding:40px;display:flex;gap:32px;align-items:center;max-width:680px;margin:0 auto}
+.founder-avatar{width:80px;height:80px;min-width:80px;border-radius:50%;background:var(--ac);display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:#0A0805}
+.founder-name{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:var(--t1);margin-bottom:4px}
+.founder-handle{font-size:13px;color:var(--ac);font-weight:500;margin-bottom:12px}
+.founder-bio{font-size:15px;color:var(--t2);line-height:1.75}
+@media(max-width:560px){.founder-card{flex-direction:column;text-align:center}}
+
+/* ── WAITLIST ────────────────────────────────── */
+.waitlist-wrap{background:var(--sf);border:1px solid var(--bd);border-radius:24px;padding:48px 40px;max-width:580px;margin:0 auto}
+.waitlist-wrap .section-title{font-size:32px;margin-bottom:8px}
+.waitlist-sub{font-size:15px;color:var(--t2);margin-bottom:32px;line-height:1.6}
+.wl-badge{display:inline-flex;align-items:center;gap:6px;background:var(--acs);border:1px solid #E8943A22;color:var(--ac);font-size:11px;font-weight:600;padding:5px 12px;border-radius:var(--rf);margin-bottom:20px}
+.wl-field{width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:12px;padding:13px 16px;color:var(--t1);font-size:15px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;margin-bottom:12px}
+.wl-field:focus{border-color:var(--ac)}
+.wl-field::placeholder{color:var(--t3)}
+select.wl-field option{background:var(--sf)}
+.wl-submit{width:100%;background:var(--ac);color:#0A0805;font-family:'Sora',sans-serif;font-size:16px;font-weight:700;padding:15px;border-radius:12px;border:none;cursor:pointer;transition:opacity .2s,transform .15s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px}
+.wl-submit:hover{opacity:.92}
+.wl-submit:active{transform:scale(.98)}
+.wl-success{display:none;text-align:center;padding:20px 0}
+.wl-success-icon{font-size:48px;margin-bottom:16px}
+.wl-success-title{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:var(--t1);margin-bottom:8px}
+.wl-success-sub{font-size:15px;color:var(--t2);line-height:1.6}
+.wl-count{text-align:center;margin-top:16px;font-size:13px;color:var(--t3)}
+.wl-count strong{color:var(--ac)}
+
+/* ── FOUNDING BADGE ──────────────────────────── */
+.founding-strip{background:linear-gradient(135deg,var(--ac) 0%,#B86E22 100%);padding:32px 24px;text-align:center;margin:0 -24px}
+.founding-strip h3{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:#0A0805;margin-bottom:8px}
+.founding-strip p{font-size:14px;color:rgba(0,0,0,.65);max-width:480px;margin:0 auto;line-height:1.6}
+.perks{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+.perk{background:rgba(0,0,0,.15);color:#0A0805;font-size:12px;font-weight:600;padding:5px 14px;border-radius:var(--rf)}
+
+/* ── SOCIALS ─────────────────────────────────── */
+.social-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:40px}
+.social-btn{display:flex;align-items:center;gap:8px;background:var(--sfu);border:1px solid var(--bd);color:var(--t2);font-size:14px;font-weight:500;padding:11px 20px;border-radius:var(--rf);transition:all .2s;cursor:pointer}
+.social-btn:hover{border-color:var(--ac);color:var(--ac)}
+
+/* ── FOOTER ──────────────────────────────────── */
+footer{border-top:1px solid var(--bd);padding:40px 24px;text-align:center}
+.footer-logo{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:var(--t1);margin-bottom:16px}
+.footer-logo span{color:var(--ac)}
+.footer-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.footer-links a{font-size:13px;color:var(--t2);transition:color .2s}
+.footer-links a:hover{color:var(--t1)}
+.footer-copy{font-size:12px;color:var(--t3)}
+
+/* ── ANIMATIONS ──────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* ── RESPONSIVE ──────────────────────────────── */
+@media(max-width:768px){
+  section{padding:64px 20px}
+  .waitlist-wrap{padding:32px 24px}
+  .phone.center{width:200px;transform:translateY(-6px)}
+  .phone{width:160px}
+  .phone-screen{height:280px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">noura<span>.</span></div>
+  <div class="nav-links">
+    <a href="#why">Why Noura</a>
+    <a href="#timeline">Roadmap</a>
+    <a href="#founder">Founder</a>
+    <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-eyebrow">🍽️ &nbsp; Coming Soon</div>
+  <h1>The Future of<br>Food Starts <em>Here.</em></h1>
+  <p class="hero-sub">Discover restaurants. Generate recipes with <strong>AI</strong>. Plan meals smarter. One intelligent platform for every part of your food journey.</p>
+  <div class="hero-btns">
+    <a href="#waitlist"><button class="btn-primary">🚀 Join the Waitlist</button></a>
+    <a href="#preview"><button class="btn-ghost">📱 See the App</button></a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item"><div class="marquee-dot"></div>AI Meal Planner</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Recipe Generator</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Restaurant Discovery</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Nigerian Cuisine</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Ghanaian Dishes</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Kenyan Food</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Digital Menus</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Smart Search</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Vendor Dashboard</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>AI Meal Planner</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Recipe Generator</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Restaurant Discovery</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Nigerian Cuisine</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Ghanaian Dishes</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Kenyan Food</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Digital Menus</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Smart Search</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Vendor Dashboard</div>
+  </div>
+</div>
+
+<!-- WHY NOURA -->
+<section id="why">
+  <div class="reveal">
+    <div class="section-eyebrow">Why Noura</div>
+    <div class="section-title">One platform.<br>Every food experience.</div>
+    <p class="section-body">Noura is building the next generation of food experiences by combining AI, restaurant discovery, recipe generation, and local food businesses into one seamless platform.</p>
+  </div>
+  <div class="why-grid reveal" style="transition-delay:.1s">
+    <div class="why-card">
+      <div class="why-icon">🤖</div>
+      <div class="why-title">AI That Knows Food</div>
+      <div class="why-text">Tell Noura your budget, diet, and goals. Get a full meal plan built around you — breakfast, lunch, dinner, snacks, and a shopping list.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🍳</div>
+      <div class="why-title">Cook What You Have</div>
+      <div class="why-text">Type the ingredients in your kitchen. Noura generates a real recipe with step-by-step instructions, cooking time, and nutrition info.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">📍</div>
+      <div class="why-title">Discover Locally</div>
+      <div class="why-text">Find Nigerian, Ghanaian, Kenyan, and global restaurants near you. Browse menus, read reviews, and connect directly with vendors.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🌍</div>
+      <div class="why-title">Built for Africa</div>
+      <div class="why-text">Jollof rice, egusi soup, fufu, nyama choma — Noura celebrates African cuisine and the local food businesses that serve it.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🏪</div>
+      <div class="why-title">Empower Vendors</div>
+      <div class="why-text">Every food business gets a digital menu, vendor profile, and direct customer connection — no delivery cut required.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">❤️</div>
+      <div class="why-title">People Before Profit</div>
+      <div class="why-text">Noura is built on one principle: technology should genuinely help people. Every feature must earn its place by solving a real problem.</div>
+    </div>
+  </div>
+</section>
+
+<!-- APP PREVIEW -->
+<section id="preview" style="overflow:hidden">
+  <div class="reveal" style="text-align:center">
+    <div class="section-eyebrow">Sneak Peek</div>
+    <div class="section-title">Watch it being built.</div>
+    <p class="section-body" style="margin:0 auto">These are real screenshots from the prototype — built in public, updated every week.</p>
+  </div>
+  <div class="preview-wrap reveal" style="transition-delay:.15s">
+
+    <!-- Home Screen -->
+    <div class="phone">
+      <div class="phone-bar"><div class="phone-notch"></div></div>
+      <div class="phone-screen screen-home" style="font-size:unset;justify-content:flex-start;padding-top:0">
+        <div class="ps-header">
+          <div class="ps-logo">noura<span>.</span></div>
+          <div style="font-size:16px">🔔</div>
+        </div>
+        <div class="ps-greeting">Good morning 👋<strong>Discover<br>great food today</strong></div>
+        <div class="ps-search">🔍 &nbsp; Search meals, restaurants…</div>
+        <div class="ps-card"><div class="ps-card-img">🍗</div><div class="ps-card-txt"><div class="ps-card-name">Grilled Chicken & Rice</div><div class="ps-card-sub">🌍 African · Lunch</div></div></div>
+        <div class="ps-card"><div class="ps-card-img">🥗</div><div class="ps-card-txt"><div class="ps-card-name">Quinoa Grain Bowl</div><div class="ps-card-sub">🌍 Continental · Dinner</div></div></div>
+        <div class="ps-card"><div class="ps-card-img">🍜</div><div class="ps-card-txt"><div class="ps-card-name">Spicy Noodle Soup</div><div class="ps-card-sub">🌍 Asian · Snack</div></div></div>
+      </div>
+      <div class="phone-label">🏠 Home</div>
+    </div>
+
+    <!-- AI Chat -->
+    <div class="phone center">
+      <div class="phone-bar"><div class="phone-notch"></div></div>
+      <div class="phone-screen screen-ai" style="font-size:unset;justify-content:flex-start;padding-top:0">
+        <div class="ps-header">
+          <div style="font-size:14px">←</div>
+          <div class="ps-logo" style="flex:1;text-align:center">Noura <span>AI</span></div>
+          <div style="font-size:16px">🤖</div>
+        </div>
+        <div style="padding:12px 0 4px;display:flex;flex-direction:column;gap:8px;width:100%">
+          <div class="ps-chat-msg ai">👋 Hi! I'm Noura AI. What would you like to eat today?</div>
+          <div class="ps-chat-msg user" style="margin:0 14px 0 40px">I only have rice and eggs</div>
+          <div class="ps-chat-msg ai">Perfect! Here's what you can make:<br><br>🍳 <strong>Egg Fried Rice</strong><br>🫕 <strong>Tomato Rice</strong><br>🥚 <strong>Rice Omelette</strong><br><br>Want the full recipe?</div>
+        </div>
+      </div>
+      <div class="phone-label">🤖 Noura AI</div>
+    </div>
+
+    <!-- Restaurant -->
+    <div class="phone">
+      <div class="phone-bar"><div class="phone-notch"></div></div>
+      <div class="phone-screen screen-rest" style="font-size:unset;justify-content:flex-start;padding-top:0">
+        <div class="ps-header">
+          <div style="font-size:14px">←</div>
+          <div class="ps-logo" style="flex:1;text-align:center">Restaurants</div>
+          <div style="font-size:14px">🔍</div>
+        </div>
+        <div style="padding:8px 0">
+          <div class="ps-rest-card">
+            <div class="ps-rest-hero">👩‍🍳</div>
+            <div class="ps-rest-info">
+              <div class="ps-rest-name">Local Kitchen</div>
+              <div class="ps-rest-meta">Nigerian · ⭐ 4.8 · Open now</div>
+              <div class="ps-tag">✓ Verified</div>
+            </div>
+          </div>
+          <div class="ps-rest-card">
+            <div class="ps-rest-hero">🔥</div>
+            <div class="ps-rest-info">
+              <div class="ps-rest-name">Suya & Grills</div>
+              <div class="ps-rest-meta">Suya · ⭐ 4.9 · Open now</div>
+              <div class="ps-tag">✓ Verified</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-label">📍 Restaurants</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOUNDING SUPPORTER -->
+<div style="padding:0 24px;max-width:1080px;margin:0 auto">
+  <div class="founding-strip reveal" style="border-radius:24px;margin:0">
+    <h3>🏅 Become a Founding Supporter</h3>
+    <p>Join before launch and get recognised as one of the people who believed in Noura from day one.</p>
+    <div class="perks">
+      <div class="perk">Early access</div>
+      <div class="perk">Beta testing</div>
+      <div class="perk">Vote on features</div>
+      <div class="perk">Exclusive updates</div>
+      <div class="perk">Founding badge</div>
+    </div>
+  </div>
+</div>
+
+<!-- WAITLIST -->
+<section id="waitlist">
+  <div class="reveal">
+    <div class="waitlist-wrap">
+      <div class="wl-badge">🏅 Founding Supporter</div>
+      <div class="section-title">Reserve your spot.</div>
+      <p class="waitlist-sub">Be among the first to use Noura. No spam — just real updates as we build, and early access when we launch.</p>
+
+      <div id="wl-form">
+        <input class="wl-field" id="wl-name" type="text" placeholder="Your full name" required>
+        <input class="wl-field" id="wl-email" type="email" placeholder="Your email address" required>
+        <select class="wl-field" id="wl-country">
+          <option value="" disabled selected>Your country</option>
+          <option>Nigeria</option><option>Ghana</option><option>Kenya</option>
+          <option>South Africa</option><option>United Kingdom</option>
+          <option>United States</option><option>Canada</option><option>Other</option>
+        </select>
+        <select class="wl-field" id="wl-feature">
+          <option value="" disabled selected>What excites you most?</option>
+          <option>AI Meal Planner</option>
+          <option>Recipe Generator</option>
+          <option>Restaurant Discovery</option>
+          <option>Local African Food</option>
+          <option>Vendor Features</option>
+          <option>Everything!</option>
+        </select>
+        <button class="wl-submit" onclick="joinWaitlist()">🚀 &nbsp; Reserve My Spot</button>
+        <div class="wl-count">Already <strong id="wl-counter">—</strong> people on the waitlist</div>
+      </div>
+
+      <div class="wl-success" id="wl-success">
+        <div class="wl-success-icon">🎉</div>
+        <div class="wl-success-title">You're officially a Founding Supporter.</div>
+        <p class="wl-success-sub">We'll keep you updated as Noura grows. You'll be among the very first to get access when we launch.<br><br>Thank you for believing in this from the beginning. 💛</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="reveal">
+    <div class="section-eyebrow">Roadmap</div>
+    <div class="section-title">Building in public.</div>
+    <p class="section-body">Every week, real progress. No hype — just honest updates on what's been built and what's coming next.</p>
+  </div>
+  <div class="timeline reveal" style="transition-delay:.1s">
+    <div class="tl-item">
+      <div class="tl-dot done">✓</div>
+      <div class="tl-content">
+        <div class="tl-label">Month 1 · Week 1–2</div>
+        <div class="tl-title">UI & User Accounts</div>
+        <div class="tl-desc">Splash screen, onboarding, login, registration, user profiles, edit profile, food preferences, saved recipes, notifications, settings.</div>
+        <div class="tl-done-tag">✅ Complete</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot active">🔥</div>
+      <div class="tl-content">
+        <div class="tl-label">Month 1 · Week 3–4</div>
+        <div class="tl-title">AI & Restaurant Discovery</div>
+        <div class="tl-desc">Noura AI chat (Gemini), AI Recipe Generator, Restaurant discovery, digital menus, reviews, smart search, favourites, meal planner.</div>
+        <div class="tl-active-tag">🔥 Building now</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot upcoming">2</div>
+      <div class="tl-content">
+        <div class="tl-label">Month 2</div>
+        <div class="tl-title">Backend & Real Data</div>
+        <div class="tl-desc">Supabase backend, real vendor registration, persistent accounts, restaurant photos, cross-device sync, Google Maps integration.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot upcoming">3</div>
+      <div class="tl-content">
+        <div class="tl-label">Month 3</div>
+        <div class="tl-title">Monetisation & Launch</div>
+        <div class="tl-desc">Vendor Pro subscriptions, analytics dashboard, AI marketing tools, Paystack integration, beta testing, public launch.</div>
+      </div>
+    </div>
+    <div class="tl-item" style="margin-bottom:0">
+      <div class="tl-dot upcoming">🚀</div>
+      <div class="tl-content">
+        <div class="tl-label">Launch</div>
+        <div class="tl-title">Noura Goes Live</div>
+        <div class="tl-desc">Public launch across Nigeria, Ghana, and Kenya — with founding supporters getting first access.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEV LOG -->
+<section>
+  <div class="reveal">
+    <div class="section-eyebrow">Dev Log</div>
+    <div class="section-title">Weekly updates.</div>
+    <p class="section-body">Every week, one honest update. What was built, what broke, what was learned.</p>
+  </div>
+  <div class="log-grid reveal" style="transition-delay:.1s">
+    <div class="log-item">
+      <div class="log-check">✓</div>
+      <div style="flex:1">
+        <div style="display:flex;gap:12px;align-items:baseline;margin-bottom:4px">
+          <div class="log-week">Week 1</div>
+          <div class="log-title">UI foundation complete</div>
+        </div>
+        <div class="log-desc">Built splash, onboarding, login/register/forgot password, bottom nav, and all core screen routing. App loads and navigates smoothly.</div>
+      </div>
+    </div>
+    <div class="log-item">
+      <div class="log-check">✓</div>
+      <div style="flex:1">
+        <div style="display:flex;gap:12px;align-items:baseline;margin-bottom:4px">
+          <div class="log-week">Week 2</div>
+          <div class="log-title">User accounts & data</div>
+        </div>
+        <div class="log-desc">Profile with all fields (name, bio, country, cuisines, diet, allergies), settings, saved recipes, notifications, food preferences — all persisted in localStorage.</div>
+      </div>
+    </div>
+    <div class="log-item" style="border-left:2px solid var(--ac)">
+      <div class="log-check" style="background:var(--acs);border-color:#E8943A30;color:var(--ac)">→</div>
+      <div style="flex:1">
+        <div style="display:flex;gap:12px;align-items:baseline;margin-bottom:4px">
+          <div class="log-week">Week 3</div>
+          <div class="log-title">AI & restaurants — in progress</div>
+        </div>
+        <div class="log-desc">Noura AI chat powered by Gemini 1.5 Flash. Restaurant discovery, digital menus, reviews, smart search. Live recipes from TheMealDB API.</div>
+      </div>
+    </div>
+    <div class="log-item" style="opacity:.5">
+      <div class="log-check" style="color:var(--t3)">○</div>
+      <div style="flex:1">
+        <div style="display:flex;gap:12px;align-items:baseline;margin-bottom:4px">
+          <div class="log-week">Week 4</div>
+          <div class="log-title">Polish & beta prep</div>
+        </div>
+        <div class="log-desc">UI polish, performance, error states, PWA manifest, first user testing. Getting ready for real people to use it.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section id="founder">
+  <div class="reveal" style="text-align:center;margin-bottom:40px">
+    <div class="section-eyebrow">The Builder</div>
+    <div class="section-title">Built by one person.<br>For everyone.</div>
+  </div>
+  <div class="founder-card reveal" style="transition-delay:.1s">
+    <div class="founder-avatar">F</div>
+    <div>
+      <div class="founder-name">Flexi</div>
+      <div class="founder-handle">@Flexi-spec · Fluxiq Labs</div>
+      <p class="founder-bio">I'm building Noura because I believe discovering food should be smarter, simpler, and more accessible — especially for African users who don't see their cuisine represented in mainstream apps.<br><br>I'm building this entirely in public. Every line of code, every mistake, every breakthrough. Thanks for joining me on this journey. 💛</p>
+    </div>
+  </div>
+  <div class="social-row reveal" style="transition-delay:.2s">
+    <a href="#" class="social-btn">📱 TikTok</a>
+    <a href="#" class="social-btn">📸 Instagram</a>
+    <a href="#" class="social-btn">💬 WhatsApp Channel</a>
+    <a href="https://github.com/Flexi-spec" target="_blank" class="social-btn">💻 GitHub</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">noura<span>.</span></div>
+  <div class="footer-links">
+    <a href="noura-legal.html#privacy">Privacy Policy</a>
+    <a href="noura-legal.html#terms">Terms of Service</a>
+    <a href="noura-legal.html#foundation">The Noura Foundation</a>
+    <a href="noura-legal.html#values">Core Values</a>
+    <a href="mailto:hello@noura.app">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 Noura · Built with 💛 · Every meal matters.</div>
+</footer>
+
+<script>
+// ── Scroll reveal ──────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Waitlist counter (localStorage) ───────────
+function getCount() { return parseInt(localStorage.getItem('noura_wl_count') || '0'); }
+function updateCounter() {
+  const el = document.getElementById('wl-counter');
+  const n  = getCount();
+  if(el) el.textContent = n > 0 ? n.toLocaleString() : '—';
+}
+updateCounter();
+
+// ── Join waitlist ──────────────────────────────
+function joinWaitlist() {
+  const name    = document.getElementById('wl-name').value.trim();
+  const email   = document.getElementById('wl-email').value.trim();
+  const country = document.getElementById('wl-country').value;
+  const feature = document.getElementById('wl-feature').value;
+
+  if (!name)              { shake('wl-name');    return; }
+  if (!email.includes('@')){ shake('wl-email');  return; }
+  if (!country)           { shake('wl-country'); return; }
+
+  // Save to localStorage (Month 2: POST to Supabase)
+  const entries = JSON.parse(localStorage.getItem('noura_waitlist') || '[]');
+  entries.push({ name, email, country, feature, joined: new Date().toISOString() });
+  localStorage.setItem('noura_waitlist', JSON.stringify(entries));
+
+  // Bump counter
+  const newCount = getCount() + 1;
+  localStorage.setItem('noura_wl_count', newCount);
+
+  // Show success
+  document.getElementById('wl-form').style.display    = 'none';
+  document.getElementById('wl-success').style.display = 'block';
+  updateCounter();
+}
+
+function shake(id) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.style.borderColor = '#E05252';
+  el.style.animation   = 'shake .4s ease';
+  setTimeout(() => { el.style.animation = ''; el.style.borderColor = ''; }, 400);
+  el.focus();
+}
+
+// ── Marquee pause on hover ─────────────────────
+const track = document.querySelector('.marquee-track');
+document.querySelector('.marquee-wrap')?.addEventListener('mouseenter', () => track.style.animationPlayState = 'paused');
+document.querySelector('.marquee-wrap')?.addEventListener('mouseleave', () => track.style.animationPlayState = 'running');
+</script>
+
+<style>
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+</style>
+</body>
+</html>
