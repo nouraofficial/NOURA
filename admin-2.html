@@ -1,0 +1,3048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0A0805">
+<title>Noura Admin Dashboard</title>
+<meta name="description" content="Internal admin dashboard for the Noura platform — manage users, vendors, restaurants, reviews and reports.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="author" content="Fluxiq Labs">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.page-enter{animation:pageIn .28s cubic-bezier(.16,1,.3,1)}
+.nav-item{transition:all .18s cubic-bezier(.16,1,.3,1) !important}
+.nav-item.active{transform:translateX(2px)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#060405;--sf:#100C0A;--sfu:#181210;--bd:#221A14;--ac:#E8943A;--acs:#E8943A14;--t1:#F2EDE4;--t2:#8A7D6A;--t3:#4A4236;--ok:#4CAF50;--er:#E05252;--warn:#F5A623;--info:#2196F3;--rf:999px;--r:12px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;min-height:100vh}
+button{cursor:pointer;font-family:inherit}
+
+/* ── AUTH ── */
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(ellipse at top,#1C1210 0%,var(--bg) 70%)}
+.auth-card{width:100%;max-width:380px;background:var(--sf);border:1px solid var(--bd);border-radius:20px;padding:32px}
+.auth-logo{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:var(--t1);text-align:center;margin-bottom:4px}
+.auth-logo span{color:var(--ac)}
+.auth-badge{text-align:center;margin-bottom:24px}
+.auth-badge span{background:#E0525218;color:var(--er);font-size:11px;font-weight:600;padding:3px 12px;border-radius:var(--rf);border:1px solid #E0525230}
+.auth-title{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:var(--t1);margin-bottom:20px;text-align:center}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.field input{width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;color:var(--t1);font-size:15px;font-family:inherit;outline:none;transition:border-color .2s}
+.field input:focus{border-color:var(--ac)}
+.field input::placeholder{color:var(--t3)}
+.btn-primary{width:100%;background:var(--ac);color:#0A0805;font-family:'Sora',sans-serif;font-size:15px;font-weight:700;padding:14px;border-radius:10px;border:none;margin-top:4px;transition:opacity .2s}
+.btn-primary:active{opacity:.85}
+.tfa-wrap{display:flex;gap:10px;justify-content:center;margin:20px 0}
+.tfa-input{width:48px;height:56px;background:var(--sfu);border:1px solid var(--bd);border-radius:12px;color:var(--t1);font-size:22px;font-weight:700;text-align:center;outline:none;font-family:inherit;transition:border-color .2s}
+.tfa-input:focus{border-color:var(--ac)}
+
+/* ── APP LAYOUT ── */
+.ascreen{display:none;min-height:100vh}
+.ascreen.active{display:flex;flex-direction:column}
+.sidebar{width:220px;min-height:100vh;background:var(--sf);border-right:1px solid var(--bd);display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:61}
+.sidebar-header{padding:18px 20px 14px;border-bottom:1px solid var(--bd)}
+.sidebar-logo{font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:var(--t1)}
+.sidebar-logo span{color:var(--ac)}
+.admin-badge{display:inline-block;background:#E0525218;color:var(--er);font-size:9px;font-weight:700;padding:2px 8px;border-radius:var(--rf);border:1px solid #E0525230;letter-spacing:.5px;text-transform:uppercase;margin-top:4px}
+.nav{flex:1;overflow-y:auto;padding:10px 0}
+.nav::-webkit-scrollbar{display:none}
+.nav-section{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;padding:14px 20px 5px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;font-size:13px;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;border-left:2px solid transparent}
+.nav-item:hover{background:var(--sfu);color:var(--t1)}
+.nav-item.active{background:var(--acs);color:var(--ac);border-left-color:var(--ac);font-weight:600}
+.nav-item .ni{font-size:16px;width:18px;text-align:center}
+.nav-item .badge{background:var(--er);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:var(--rf);margin-left:auto}
+.sidebar-footer{padding:14px 20px;border-top:1px solid var(--bd);display:flex;align-items:center;gap:10px}
+.admin-av{width:32px;height:32px;border-radius:50%;background:var(--er);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.main{margin-left:220px;flex:1;min-height:100vh;display:flex;flex-direction:column}
+.topbar{height:56px;background:var(--sf);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:40}
+.topbar-title{font-family:'Sora',sans-serif;font-size:17px;font-weight:700;color:var(--t1)}
+.topbar-right{display:flex;gap:8px;align-items:center}
+.icon-btn{width:36px;height:36px;border-radius:8px;background:var(--sfu);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer}
+.body{flex:1;padding:24px}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:24px}
+.stat{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:18px}
+.stat .icon{font-size:24px;margin-bottom:8px}
+.stat .val{font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:var(--t1);line-height:1}
+.stat .lbl{font-size:11px;color:var(--t2);margin-top:4px}
+.stat .delta{font-size:11px;font-weight:600;margin-top:6px}
+.delta.up{color:var(--ok)}
+.delta.down{color:var(--er)}
+
+/* ── TABLES ── */
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.card-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--bd)}
+.card-title{font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:var(--t1)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{background:var(--sfu);padding:10px 16px;font-size:10px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;text-align:left;border-bottom:1px solid var(--bd);white-space:nowrap}
+td{padding:12px 16px;font-size:13px;color:var(--t1);border-bottom:1px solid var(--bd)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--sfu)}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:var(--rf)}
+.badge.green{background:#4CAF5018;color:var(--ok);border:1px solid #4CAF5030}
+.badge.red{background:#E0525218;color:var(--er);border:1px solid #E0525230}
+.badge.orange{background:var(--acs);color:var(--ac);border:1px solid #E8943A30}
+.badge.blue{background:#2196F318;color:var(--info);border:1px solid #2196F330}
+.badge.gray{background:var(--sfu);color:var(--t2);border:1px solid var(--bd)}
+.act{display:flex;gap:6px;flex-wrap:wrap}
+.abtn{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;border:none;cursor:pointer}
+.abtn.approve{background:#4CAF5018;color:var(--ok)}
+.abtn.reject{background:#E0525218;color:var(--er)}
+.abtn.view{background:var(--acs);color:var(--ac)}
+.abtn.suspend{background:#F5A62318;color:var(--warn)}
+.abtn.delete{background:#E0525218;color:var(--er)}
+.abtn.feature{background:#9C27B018;color:#CE93D8}
+
+/* ── SEARCH ── */
+.search-bar{display:flex;gap:10px;align-items:center;padding:14px 20px;border-bottom:1px solid var(--bd)}
+.search-input{flex:1;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:8px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none}
+.search-input:focus{border-color:var(--ac)}
+.search-input::placeholder{color:var(--t3)}
+.filter-chips{display:flex;gap:6px;flex-wrap:wrap;padding:10px 20px;border-bottom:1px solid var(--bd)}
+.fchip{padding:5px 12px;border-radius:var(--rf);font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--bd);background:var(--sfu);color:var(--t2);transition:all .15s}
+.fchip.active{background:var(--acs);border-color:var(--ac);color:var(--ac)}
+
+/* ── CHARTS ── */
+.chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:24px}
+.chart-card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:18px}
+.chart-card h4{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--t1);margin-bottom:14px}
+.chart-wrap{position:relative;height:160px}
+
+/* ── SYSTEM STATUS ── */
+.status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:24px}
+.status-item{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px}
+.status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.status-dot.ok{background:var(--ok);box-shadow:0 0 0 3px #4CAF5020}
+.status-dot.warn{background:var(--warn)}
+.status-dot.err{background:var(--er)}
+.status-info .s-name{font-size:13px;font-weight:600;color:var(--t1)}
+.status-info .s-val{font-size:11px;color:var(--t2)}
+
+/* ── NOTIF COMPOSER ── */
+.notif-form{padding:20px;display:flex;flex-direction:column;gap:12px}
+.chip-row{display:flex;gap:8px;flex-wrap:wrap}
+.aud-chip{padding:7px 14px;border-radius:var(--rf);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--bd);background:var(--sfu);color:var(--t2)}
+.aud-chip.sel{background:var(--acs);border-color:var(--ac);color:var(--ac)}
+
+/* ── MODAL ── */
+.a-modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.a-modal.on{display:flex}
+.a-modal-box{background:var(--sf);border:1px solid var(--bd);border-radius:20px;padding:28px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto}
+.a-modal-title{font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:var(--t1);margin-bottom:16px}
+.a-modal-actions{display:flex;gap:10px;margin-top:20px}
+.a-modal-actions button{flex:1;padding:11px;border-radius:10px;font-size:14px;font-weight:600;border:none}
+.a-modal-actions .confirm{background:var(--er);color:#fff}
+.a-modal-actions .cancel{background:var(--sfu);color:var(--t2)}
+
+/* ── TOAST ── */
+#a-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--t1);color:var(--bg);font-size:14px;font-weight:600;padding:12px 24px;border-radius:var(--rf);opacity:0;transition:all .3s;z-index:999;pointer-events:none;white-space:nowrap}
+#a-toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.mobile-bar{display:none;height:56px;background:var(--sf);border-bottom:1px solid var(--bd);align-items:center;padding:0 18px;gap:14px;position:sticky;top:0;z-index:60}
+.tog{width:36px;height:20px;border-radius:10px;background:var(--bd);position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.tog::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s}
+.tog.on{background:var(--ac)}
+.tog.on::after{transform:translateX(16px)}
+.burger{background:none;border:none;color:var(--t1);font-size:20px;padding:4px;cursor:pointer}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:59}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);transition:transform .3s cubic-bezier(.16,1,.3,1)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .mobile-bar{display:flex}
+  .topbar{display:none}
+  .sidebar-overlay.on{display:block}
+  .body{padding:16px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .chart-grid{grid-template-columns:1fr}
+  .table-wrap{overflow-x:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN ══════════════════════════════════════════ -->
+<div id="as-login" style="display:flex;min-height:100vh">
+  <div class="auth-wrap" style="width:100%">
+    <div class="auth-card">
+      <div class="auth-logo">noura<span>.</span></div>
+      <div class="auth-badge"><span>👑 Admin Access</span></div>
+      <div class="auth-title">Admin Login</div>
+      <div class="field"><label>Email</label><input type="email" id="al-email" placeholder="admin@noura.app" value="admin@noura.app"></div>
+      <div class="field"><label>Password</label><input type="password" id="al-pass" placeholder="••••••••" value="admin123" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
+      <button class="btn-primary" onclick="doAdminLogin()">Log In to Admin Panel</button>
+      <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--t3)">Secured area — authorised personnel only</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2FA ════════════════════════════════════════════ -->
+<div id="as-2fa" style="display:none;min-height:100vh">
+  <div class="auth-wrap" style="width:100%">
+    <div class="auth-card">
+      <div class="auth-logo">noura<span>.</span></div>
+      <div class="auth-title" style="margin-top:16px">Two-Factor Auth</div>
+      <div style="font-size:14px;color:var(--t2);text-align:center;margin-bottom:20px;line-height:1.6">Enter the 6-digit code sent to your email</div>
+      <div class="tfa-wrap">
+        <input class="tfa-input" maxlength="1" oninput="tfaNext(this,0)">
+        <input class="tfa-input" maxlength="1" oninput="tfaNext(this,1)">
+        <input class="tfa-input" maxlength="1" oninput="tfaNext(this,2)">
+        <input class="tfa-input" maxlength="1" oninput="tfaNext(this,3)">
+        <input class="tfa-input" maxlength="1" oninput="tfaNext(this,4)">
+        <input class="tfa-input" maxlength="1" oninput="tfaNext(this,5)">
+      </div>
+      <button class="btn-primary" onclick="verify2FA()">Verify Code</button>
+      <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--t2)">Didn't receive it? <span style="color:var(--ac);cursor:pointer" onclick="aToast('Code resent!')">Resend</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MAIN APP ═══════════════════════════════════════ -->
+<div id="as-app" class="ascreen">
+  <div class="mobile-bar">
+    <button class="burger" onclick="toggleAdminSidebar()">☰</button>
+    <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--t1)" id="a-mob-title">Dashboard</div>
+  </div>
+  <div class="sidebar-overlay" id="a-sb-overlay" onclick="toggleAdminSidebar()"></div>
+
+  <div class="aapp" style="display:flex;flex:1;min-height:0">
+  <div class="sidebar" id="a-sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">noura<span>.</span></div>
+      <div class="admin-badge">Admin Panel</div>
+    </div>
+    <nav class="nav">
+      <div class="nav-section">Overview</div>
+      <div class="nav-item active" onclick="aShowPage('pg-dashboard',this,'Dashboard')"><span class="ni">📊</span>Dashboard</div>
+      <div class="nav-item" id="nav-analytics" onclick="aShowPage('pg-analytics',this,'Analytics')"><span class="ni">📈</span>Analytics</div>
+
+      <div class="nav-section">Management</div>
+      <div class="nav-item" onclick="aShowPage('pg-users',this,'Users')"><span class="ni">👥</span>Users</div>
+      <div class="nav-item" onclick="aShowPage('pg-vendors',this,'Vendors')"><span class="ni">🏪</span>Vendors <span class="badge" id="pending-badge" style="display:none">0</span></div>
+      <div class="nav-item" onclick="aShowPage('pg-restaurants',this,'Restaurants')"><span class="ni">🍽️</span>Restaurants</div>
+      <div class="nav-item" onclick="aShowPage('pg-meals',this,'Meal Moderation')"><span class="ni">🍲</span>Meal Moderation</div>
+      <div class="nav-item" onclick="aShowPage('pg-categories',this,'Categories')"><span class="ni">📂</span>Categories</div>
+
+      <div class="nav-section">Moderation</div>
+      <div class="nav-item" onclick="aShowPage('pg-reports',this,'Reports')"><span class="ni">🚨</span>Reports <span class="badge" id="reports-badge" style="display:none">0</span></div>
+      <div class="nav-item" onclick="aShowPage('pg-reviews',this,'Reviews')"><span class="ni">⭐</span>Reviews</div>
+
+      <div class="nav-section">Platform</div>
+      <div class="nav-item" onclick="aShowPage('pg-ai',this,'AI Monitoring')"><span class="ni">🤖</span>AI Monitoring</div>
+      <div class="nav-item" onclick="aShowPage('pg-ads',this,'Advertising')"><span class="ni">📣</span>Advertising</div>
+      <div class="nav-item" onclick="aShowPage('pg-challenges',this,'Challenges')"><span class="ni">🏆</span>Challenges</div>
+      <div class="nav-item" onclick="aShowPage('pg-notifications',this,'Notifications')"><span class="ni">📢</span>Notifications</div>
+      <div class="nav-item" onclick="aShowPage('pg-settings',this,'Settings')"><span class="ni">⚙️</span>Settings</div>
+      <div class="nav-item" onclick="aShowPage('pg-roles',this,'Admin Roles')"><span class="ni">👑</span>Admin Roles</div>
+      <div class="nav-item" onclick="aShowPage('pg-audit',this,'Audit Log')"><span class="ni">📜</span>Audit Log</div>
+
+      <div class="nav-section">Links</div>
+      <div class="nav-item" onclick="window.open('index.html','_blank')"><span class="ni">📱</span>Open App</div>
+      <div class="nav-item" onclick="window.open('vendor.html','_blank')"><span class="ni">🏪</span>Vendor Portal</div>
+      <div class="nav-section">Account</div>
+      <div class="nav-item" onclick="doAdminLogout()"><span class="ni">🚪</span>Log Out</div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="admin-av">A</div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--t1)">Admin</div>
+        <div style="font-size:10px;color:var(--t2)">admin@noura.app</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="a-page-title">Dashboard</div>
+      <div class="topbar-right">
+        <div class="icon-btn">🔔</div>
+        <div class="icon-btn" onclick="window.open('index.html','_blank')" title="View App">👁️</div>
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--er);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">A</div>
+      </div>
+    </div>
+
+    <div class="body">
+
+      <!-- DASHBOARD -->
+      <div id="pg-dashboard">
+        <div class="stats">
+          <div class="stat"><div class="icon">👥</div><div class="val" id="as-users">0</div><div class="lbl">Total Users</div></div>
+          <div class="stat"><div class="icon">🏪</div><div class="val" id="as-vendors-total">0</div><div class="lbl">Total Vendors</div></div>
+          <div class="stat"><div class="icon">✅</div><div class="val" id="as-vendors">0</div><div class="lbl">Verified Vendors</div></div>
+          <div class="stat"><div class="icon">⏳</div><div class="val" id="as-pending-vendors">0</div><div class="lbl">Pending Requests</div></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="icon">🍽️</div><div class="val" id="as-rests">0</div><div class="lbl">Restaurants</div></div>
+          <div class="stat"><div class="icon">🍲</div><div class="val" id="as-meals">0</div><div class="lbl">Meals Listed</div></div>
+          <div class="stat"><div class="icon">⭐</div><div class="val" id="as-reviews">0</div><div class="lbl">Reviews</div></div>
+          <div class="stat"><div class="icon">🚩</div><div class="val" id="as-reports-pending">0</div><div class="lbl">Reports Pending</div></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="icon">🤖</div><div class="val" id="as-ai-today">0</div><div class="lbl">AI Requests Today<br><span style="font-size:9px;opacity:.7">this device</span></div></div>
+          <div class="stat"><div class="icon">🟢</div><div class="val" id="as-active-today">—</div><div class="lbl">Active Users Today<br><span style="font-size:9px;opacity:.7">needs backend</span></div></div>
+          <div class="stat"><div class="icon">🆕</div><div class="val" id="as-new-today">0</div><div class="lbl">New Signups Today<br><span style="font-size:9px;opacity:.7">this device</span></div></div>
+          <div class="stat"><div class="icon">💰</div><div class="val" id="as-revenue">—</div><div class="lbl">Platform Revenue<br><span style="font-size:9px;opacity:.7">coming with payments</span></div></div>
+        </div>
+
+        <div class="card" id="dash-attention" style="border-color:var(--er)33">
+          <div class="card-header"><div class="card-title">🚨 Needs Attention</div></div>
+          <div id="dash-attention-body" style="padding:4px 4px 12px;display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">Recent Signups</div><button class="abtn view" onclick="aShowPage('pg-users',null,'Users')">See all</button></div>
+          <div class="table-wrap"><table><thead><tr><th>User</th><th>Email</th><th>Country</th><th>Joined</th><th>Status</th></tr></thead><tbody id="dash-users-tbody"></tbody></table></div>
+        </div>
+
+        <div style="text-align:center;padding:8px 0">
+          <button class="abtn view" onclick="aShowPage('pg-analytics',document.getElementById('nav-analytics'),'Analytics')">📊 View full analytics & charts →</button>
+        </div>
+      </div>
+
+      <!-- USERS -->
+      <div id="pg-users" style="display:none">
+        <div class="card">
+          <div class="search-bar">
+            <input class="search-input" placeholder="Search users by name or email…" oninput="searchUsers(this.value)">
+            <button class="abtn view" onclick="aToast('Export feature coming with backend!')">📥 Export</button>
+          </div>
+          <div class="filter-chips">
+            <div class="fchip active" onclick="filterUsers('all',this)">All</div>
+            <div class="fchip" onclick="filterUsers('active',this)">Active</div>
+            <div class="fchip" onclick="filterUsers('suspended',this)">Suspended</div>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>User</th><th>Email</th><th>Country</th><th>Saved</th><th>Streak</th><th>Status</th><th>Actions</th></tr></thead><tbody id="users-tbody"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- VENDORS -->
+      <div id="pg-vendors" style="display:none">
+        <div class="card">
+          <div class="search-bar">
+            <input class="search-input" placeholder="Search vendors…" oninput="searchVendors(this.value)">
+          </div>
+          <div class="filter-chips">
+            <div class="fchip active" onclick="filterVendors('all',this)">All</div>
+            <div class="fchip" onclick="filterVendors('pending',this)">⏳ Pending <span style="background:var(--er);color:#fff;font-size:9px;padding:0 5px;border-radius:var(--rf);margin-left:4px">3</span></div>
+            <div class="fchip" onclick="filterVendors('approved',this)">✅ Approved</div>
+            <div class="fchip" onclick="filterVendors('suspended',this)">🚫 Suspended</div>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>Business</th><th>Owner</th><th>Category</th><th>Menu Items</th><th>Rating</th><th>Status</th><th>Actions</th></tr></thead><tbody id="vendors-tbody"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- RESTAURANTS -->
+      <div id="pg-restaurants" style="display:none">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">All Restaurants</div>
+            <button class="abtn view" onclick="aToast('Restaurants added by vendors via their portal')">ℹ️ Info</button>
+          </div>
+          <div class="search-bar"><input class="search-input" placeholder="Search restaurants…" oninput="searchRestaurants(this.value)"></div>
+          <div class="filter-chips">
+            <div class="fchip active" onclick="filterRests('all',this)">All</div>
+            <div class="fchip" onclick="filterRests('open',this)">🟢 Open</div>
+            <div class="fchip" onclick="filterRests('closed',this)">🔴 Closed</div>
+            <div class="fchip" onclick="filterRests('featured',this)">⭐ Featured</div>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>Restaurant</th><th>Cuisine</th><th>Area</th><th>Rating</th><th>Status</th><th>Actions</th></tr></thead><tbody id="rests-tbody"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- CATEGORIES -->
+      <div id="pg-categories" style="display:none">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Cuisine Types</div><button class="abtn view" onclick="aToast('Add category')">+ Add</button></div>
+            <div id="cat-cuisines" style="padding:0 4px 4px"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Meal Categories</div><button class="abtn view" onclick="aToast('Add category')">+ Add</button></div>
+            <div id="cat-meals" style="padding:0 4px 4px"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Dietary Tags</div><button class="abtn view" onclick="aToast('Add tag')">+ Add</button></div>
+            <div id="cat-tags" style="padding:0 4px 4px"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REPORTS -->
+      <div id="pg-reports" style="display:none">
+        <div class="filter-chips" style="padding:0;margin-bottom:16px">
+          <div class="fchip active" onclick="filterReports('all',this)">All</div>
+          <div class="fchip" onclick="filterReports('review',this)">Reviews</div>
+          <div class="fchip" onclick="filterReports('business',this)">Businesses</div>
+          <div class="fchip" onclick="filterReports('user',this)">Users</div>
+          <div class="fchip" onclick="filterReports('spam',this)">Spam</div>
+        </div>
+        <div id="reports-list" style="display:flex;flex-direction:column;gap:12px"></div>
+      </div>
+
+      <!-- REVIEWS -->
+      <div id="pg-reviews" style="display:none">
+        <div class="card">
+          <div class="card-header"><div class="card-title">All Reviews</div></div>
+          <div class="filter-chips">
+            <div class="fchip active" onclick="filterAllReviews('all',this)">All</div>
+            <div class="fchip" onclick="filterAllReviews('5',this)">⭐⭐⭐⭐⭐</div>
+            <div class="fchip" onclick="filterAllReviews('1',this)">⭐ Low</div>
+            <div class="fchip" onclick="filterAllReviews('reported',this)">🚨 Reported</div>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>Customer</th><th>Restaurant</th><th>Stars</th><th>Review</th><th>Date</th><th>Actions</th></tr></thead><tbody id="reviews-tbody"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div id="pg-notifications" style="display:none">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="card">
+            <div class="card-header"><div class="card-title">📢 Send Notification</div></div>
+            <div class="notif-form">
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Audience</div>
+                <select style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" id="notif-audience-type" onchange="onAudienceTypeChange()">
+                  <option value="everyone">🌍 Everyone (users + vendors)</option>
+                  <option value="users">👥 Users only</option>
+                  <option value="vendors">🏪 Vendors only</option>
+                  <option value="country">📍 Users in a specific country</option>
+                  <option value="cuisine">🍽️ Fans of a specific cuisine</option>
+                </select>
+                <input id="notif-audience-value" style="display:none;width:100%;margin-top:8px;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="e.g. Nigeria, or Jollof Rice">
+              </div>
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Type</div>
+                <select style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" id="notif-type">
+                  <option>🧠 AI Update</option><option>🍽️ New Feature</option><option>🏷️ Promotion</option><option>📢 Announcement</option>
+                </select>
+              </div>
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Title</div>
+                <input id="notif-title" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="Notification title…">
+              </div>
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Message</div>
+                <textarea id="notif-msg" rows="3" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none;resize:none" placeholder="Your message…"></textarea>
+              </div>
+              <button class="btn-primary" onclick="sendAdminNotif()">📢 Send Notification</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">📋 Sent Notifications</div></div>
+            <div id="sent-notifs" style="padding:4px"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div id="pg-analytics" style="display:none">
+        <div class="stats">
+          <div class="stat"><div class="icon">👁️</div><div class="val">4,821</div><div class="lbl">Total Page Views</div><div class="delta up">↑ 23% this month</div></div>
+          <div class="stat"><div class="icon">🔍</div><div class="val">1,204</div><div class="lbl">Recipe Searches</div><div class="delta up">↑ 18%</div></div>
+          <div class="stat"><div class="icon">🤖</div><div class="val">389</div><div class="lbl">AI Conversations</div><div class="delta up">↑ 41%</div></div>
+          <div class="stat"><div class="icon">❤️</div><div class="val">672</div><div class="lbl">Recipes Saved</div><div class="delta up">↑ 15%</div></div>
+        </div>
+        <div class="chart-grid">
+          <div class="chart-card"><h4>📅 Daily Active Users</h4><div class="chart-wrap"><canvas id="ch-dau"></canvas></div></div>
+          <div class="chart-card"><h4>🔍 Top Search Terms</h4><div class="chart-wrap"><canvas id="ch-terms"></canvas></div></div>
+          <div class="chart-card"><h4>🌍 Traffic by Country</h4><div class="chart-wrap"><canvas id="ch-geo"></canvas></div></div>
+          <div class="chart-card"><h4>🤖 AI Usage</h4><div class="chart-wrap"><canvas id="ch-ai"></canvas></div></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div id="pg-settings" style="display:none">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+          <div class="card">
+            <div class="card-header"><div class="card-title">🎨 Platform Settings</div></div>
+            <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--sfu);border-radius:10px;border:1px solid var(--bd)">
+                <div><div style="font-size:13px;font-weight:500;color:var(--t1)">Vendor Registrations</div><div style="font-size:11px;color:var(--t2)">Allow new vendors to sign up</div></div>
+                <div class="tog" id="flag-vendorReg" onclick="toggleFeatureFlag('vendorRegistrations',this)"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--sfu);border-radius:10px;border:1px solid var(--bd)">
+                <div><div style="font-size:13px;font-weight:500;color:var(--t1)">User Registrations</div><div style="font-size:11px;color:var(--t2)">Allow new users to sign up</div></div>
+                <div class="tog" id="flag-userReg" onclick="toggleFeatureFlag('userRegistrations',this)"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--sfu);border-radius:10px;border:1px solid var(--er)40">
+                <div><div style="font-size:13px;font-weight:500;color:var(--t1)">🛠️ Maintenance Mode</div><div style="font-size:11px;color:var(--t2)">Actually blocks the consumer app + vendor portal</div></div>
+                <div class="tog" id="flag-maintenance" onclick="toggleMaintenanceMode(this)"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">🔐 Security</div></div>
+            <div style="padding:16px;display:flex;flex-direction:column;gap:10px">
+              <div style="padding:12px;background:var(--sfu);border-radius:10px;border:1px solid var(--bd)"><div style="font-size:13px;font-weight:500;color:var(--t1);margin-bottom:2px">Two-Factor Auth</div><div style="font-size:11px;color:var(--ok)">✅ Enabled for all admins</div></div>
+              <div style="padding:12px;background:var(--sfu);border-radius:10px;border:1px solid var(--bd)"><div style="font-size:13px;font-weight:500;color:var(--t1);margin-bottom:2px">Session Timeout</div><div style="font-size:11px;color:var(--t2)">Auto-logout after 8 hours</div></div>
+              <div style="padding:12px;background:var(--sfu);border-radius:10px;border:1px solid var(--bd)"><div style="font-size:13px;font-weight:500;color:var(--t1);margin-bottom:2px">Login Attempts</div><div style="font-size:11px;color:var(--t2)">Lock after 5 failed attempts</div></div>
+              <button class="abtn view" style="padding:10px" onclick="aShowPage('pg-audit',document.querySelector('.nav-item[onclick*=pg-audit]'),'Audit Log')">📋 View Audit Log</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">🩺 System Status</div></div>
+            <div class="status-grid" style="padding:12px">
+              <div class="status-item"><div class="status-dot ok"></div><div class="status-info"><div class="s-name">API Services</div><div class="s-val">All systems operational</div></div></div>
+              <div class="status-item"><div class="status-dot ok"></div><div class="status-info"><div class="s-name">Database</div><div class="s-val">localStorage (Month 1)</div></div></div>
+              <div class="status-item"><div class="status-dot warn"></div><div class="status-info"><div class="s-name">Supabase</div><div class="s-val">Pending — Month 2</div></div></div>
+              <div class="status-item"><div class="status-dot ok"></div><div class="status-info"><div class="s-name">Gemini AI</div><div class="s-val">Active</div></div></div>
+              <div class="status-item"><div class="status-dot ok"></div><div class="status-info"><div class="s-name">TheMealDB</div><div class="s-val">Connected</div></div></div>
+              <div class="status-item"><div class="status-dot warn"></div><div class="status-info"><div class="s-name">Paystack</div><div class="s-val">Pending — Month 3</div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">📊 Platform Info</div></div>
+            <div style="padding:16px;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--t2)">Version</span><span style="color:var(--t1);font-weight:500">Noura v1.0 — Month 1</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--t2)">Storage</span><span style="color:var(--t1);font-weight:500">localStorage (pre-backend)</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--t2)">AI Model</span><span style="color:var(--t1);font-weight:500">Gemini 1.5 Flash</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--t2)">Recipe API</span><span style="color:var(--t1);font-weight:500">TheMealDB</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--t2)">Backend</span><span style="color:var(--warn);font-weight:500">Supabase (Month 2)</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--t2)">Payments</span><span style="color:var(--warn);font-weight:500">Paystack (Month 3)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHALLENGES -->
+      <div id="pg-challenges" style="display:none">
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><div class="card-title">🏆 Create & Schedule Challenge</div></div>
+          <div class="notif-form">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Icon (emoji)</div><input id="ch-icon" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="🏆" maxlength="4"></div>
+              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Title</div><input id="ch-title" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="Healthy Week"></div>
+            </div>
+            <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Description</div><textarea id="ch-desc" rows="2" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none;resize:none" placeholder="What should users do to complete it?"></textarea></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Tracks</div>
+                <select id="ch-metric" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none">
+                  <option value="mealsOpened">Recipes opened</option>
+                  <option value="reviewsWritten">Reviews written</option>
+                  <option value="restaurantsViewed">Restaurants explored</option>
+                  <option value="streakDays">Login streak (days)</option>
+                  <option value="manual">Manual (e.g. photo upload)</option>
+                </select>
+              </div>
+              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Target</div><input type="number" id="ch-target" value="1" min="1" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Start Date</div><input type="date" id="ch-start" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none"></div>
+              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">End Date (optional)</div><input type="date" id="ch-end" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none"></div>
+            </div>
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t2);cursor:pointer"><input type="checkbox" id="ch-email" style="width:16px;height:16px"> 📧 Email all users when this launches</label>
+            <button class="abtn approve" style="padding:11px" onclick="createChallenge()">🏆 Create & Schedule</button>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-header"><div class="card-title">Scheduled Challenges</div></div>
+          <div class="table-wrap"><table><thead><tr><th>Challenge</th><th>Tracks</th><th>Dates</th><th>Email</th><th>Status</th><th>Actions</th></tr></thead><tbody id="challenges-tbody"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- MEAL MODERATION (menu items) -->
+      <div id="pg-meals" style="display:none">
+        <div class="card" style="margin-bottom:0">
+          <div class="card-header"><div class="card-title">All Menu Items Across Noura</div><input type="text" placeholder="🔍 Search meals..." class="search-in" oninput="searchMeals(this.value)" style="max-width:220px"></div>
+          <div class="table-wrap"><table><thead><tr><th>Meal</th><th>Restaurant</th><th>Category</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead><tbody id="meals-tbody"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- ADVERTISING -->
+      <div id="pg-ads" style="display:none">
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><div class="card-title">📣 Create Advertisement</div></div>
+          <div class="notif-form">
+            <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Title</div><input id="ad-title" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="e.g. 20% off this weekend"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Image (emoji)</div><input id="ad-image" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="🍔" maxlength="4"></div>
+              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">CTA Text</div><input id="ad-cta" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="Order Now"></div>
+            </div>
+            <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Description</div><textarea id="ad-desc" rows="2" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none;resize:none" placeholder="Short ad copy…"></textarea></div>
+            <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Link (opens on click)</div><input id="ad-link" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="store.html?v=vendor-slug or https://..."></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Start Date</div><input type="date" id="ad-start" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none"></div>
+              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">End Date</div><input type="date" id="ad-end" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Budget (₦, optional)</div><input type="number" id="ad-budget" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="0"></div>
+              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Audience</div><select id="ad-audience" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none"><option value="everyone">Everyone</option><option value="users">Users only</option><option value="vendors">Vendors only</option></select></div>
+            </div>
+            <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Placement</div>
+              <select id="ad-placement" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none">
+                <option value="home_banner">Home Banner</option>
+                <option value="feed_card">Feed Card</option>
+                <option value="search_results">Search Results</option>
+                <option value="restaurant_page">Restaurant Page</option>
+              </select>
+            </div>
+            <button class="abtn approve" style="padding:11px" onclick="createAd()">📣 Create Campaign</button>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-header"><div class="card-title">Active & Past Campaigns</div></div>
+          <div class="table-wrap"><table><thead><tr><th>Ad</th><th>Placement</th><th>Audience</th><th>Dates</th><th>Impressions</th><th>Clicks</th><th>Status</th><th>Actions</th></tr></thead><tbody id="ads-tbody"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- AI MONITORING -->
+      <div id="pg-ai" style="display:none">
+        <div class="stats">
+          <div class="stat"><div class="icon">🤖</div><div class="val" id="ai-today">0</div><div class="lbl">AI Requests Today (this device)</div></div>
+          <div class="stat"><div class="icon">📈</div><div class="val" id="ai-total">0</div><div class="lbl">Total Requests (this device)</div></div>
+          <div class="stat"><div class="icon">⚡</div><div class="val" id="ai-avgtime">—</div><div class="lbl">Avg Response Time</div></div>
+          <div class="stat"><div class="icon">💚</div><div class="val" id="ai-health">Checking…</div><div class="lbl">Gemini API Health</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">About These Numbers</div></div>
+          <div style="padding:4px 16px 16px;font-size:13px;color:var(--t2);line-height:1.7">
+            AI usage is currently tracked per-device (this browser only) since there's no backend yet to aggregate requests across every user. Platform-wide AI monitoring — popular prompts, failure rates, per-user cost — needs requests to route through a backend proxy (planned alongside the Gemini key migration). Once that exists, this page will show real cross-platform numbers instead of this device's local count.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Recent AI Errors (this device)</div></div>
+          <div id="ai-errors-list" style="padding:4px"></div>
+        </div>
+      </div>
+
+      <!-- ADMIN ROLES -->
+      <div id="pg-roles" style="display:none">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Role-Based Access Control</div></div>
+          <div style="padding:4px 16px 16px;font-size:13px;color:var(--t2);line-height:1.7">
+            These are the roles Noura's admin system is designed around. Actual enforcement (limiting which admin can do what) requires backend authentication with per-account roles — this panel is single-login for now, so every admin currently has full access. Treat this as the spec to build against once accounts move to a real backend.
+          </div>
+        </div>
+        <div id="roles-grid" style="display:flex;flex-direction:column;gap:12px"></div>
+      </div>
+
+      <!-- AUDIT LOG -->
+      <div id="pg-audit" style="display:none">
+        <div class="card" style="margin-bottom:0">
+          <div class="card-header"><div class="card-title">Admin Action History</div><button class="abtn view" onclick="clearAuditLog()">Clear Log</button></div>
+          <div class="table-wrap"><table><thead><tr><th>Action</th><th>Details</th><th>Admin</th><th>When</th></tr></thead><tbody id="audit-tbody"></tbody></table></div>
+        </div>
+      </div>
+
+    </div><!-- /body -->
+  </div><!-- /main -->
+  </div><!-- /aapp -->
+</div><!-- /as-app -->
+
+<!-- MODALS -->
+<div class="a-modal" id="mod-confirm">
+  <div class="a-modal-box">
+    <div class="a-modal-title" id="confirm-title">Confirm Action</div>
+    <div style="font-size:14px;color:var(--t2);line-height:1.6" id="confirm-body"></div>
+    <div class="a-modal-actions">
+      <button class="cancel" onclick="closeAMod('mod-confirm')">Cancel</button>
+      <button class="confirm" id="confirm-ok">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div id="a-toast"></div>
+
+<script>
+/* ===== config ===== */
+/**
+ * ══════════════════════════════════════════════════════════════
+ *  NOURA — ENVIRONMENT CONFIG
+ * ══════════════════════════════════════════════════════════════
+ *  Single source of truth for every URL, key, and environment
+ *  flag used by the app. No other file should hardcode a URL
+ *  or a key — everything reads from window.NOURA_ENV.
+ *
+ *  ⚠️ IMPORTANT — READ THIS BEFORE DEPLOYING:
+ *  This is a static HTML app with no build/server step, so
+ *  ANYTHING in this file ships to and is visible in the user's
+ *  browser (view-source, DevTools, etc.) — that's true no matter
+ *  whether it's inlined or loaded from a separate .js file.
+ *  A real .env file only stays secret because a SERVER reads it;
+ *  a static site has no server, so nothing here can be truly
+ *  hidden. What we CAN do — and this file does — is:
+ *    1. Keep every key in exactly one place, matching real .env
+ *       variable names, so swapping to a real backend later is
+ *       a 1:1 copy-paste, not a rewrite.
+ *    2. Never commit REAL key values to GitHub — only ever
+ *       commit this file with the placeholder values below.
+ *       Paste your real keys only into the copy you deploy.
+ *    3. Separate keys that are safe to expose (below, marked
+ *       PUBLIC) from ones that are billing/abuse-sensitive
+ *       (marked SENSITIVE) — those should move behind a backend
+ *       proxy (Supabase Edge Function) as soon as one exists,
+ *       instead of staying in client-side code long-term.
+ *
+ *  See .env.example (same folder) for the copy-pasteable list.
+ * ══════════════════════════════════════════════════════════════
+ */
+window.NOURA_ENV = {
+  // ── Environment ────────────────────────────────────────────
+  ENVIRONMENT: 'development', // 'development' | 'staging' | 'production'
+  APP_VERSION: '1.0.0-month1',
+
+  // ── Backend API (Supabase Edge Functions — Month 2) ─────────
+  // PUBLIC. Leave BACKEND_READY = false until the real API exists.
+  BACKEND_READY: false,
+  API_BASE_URL: '', // e.g. 'https://xyzcompany.functions.supabase.co'
+
+  // ── Supabase ─────────────────────────────────────────────────
+  // PUBLIC — Supabase's anon key is designed to be exposed
+  // client-side; real access control happens via Row Level
+  // Security policies on the backend, not by hiding this key.
+  SUPABASE_URL: 'https://qkuznrnxclppvorpomcr.supabase.co',
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFrdXpucm54Y2xwcHZvcnBvbWNyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1NzU3NDcsImV4cCI6MjEwMDE1MTc0N30.FFtuXBaH1NhJQeockvXsCDfCsZcP2AT6B51O9yXJS_0',
+
+  // ── Admin-only actions (challenge creation, etc.) ────────────
+  // ⚠️ Must exactly match the ADMIN_API_KEY secret you set in
+  // Supabase → Edge Functions → Secrets. This is a stopgap for a
+  // single-admin MVP, not real per-account admin permissions —
+  // anyone with this value (visible in admin.html's source) can
+  // call admin actions, so treat admin.html itself as something
+  // you don't publicly link/index, not just this key as protection.
+  ADMIN_API_KEY: 'Jhsrolnfd3866hnspos93b3blkwhs',
+
+  // ── Google OAuth ─────────────────────────────────────────────
+  // PUBLIC — OAuth client IDs are meant to be public.
+  GOOGLE_CLIENT_ID: '',
+
+  // ── Recipe data providers ─────────────────────────────────────
+  // PUBLIC. TheMealDB needs no key. Edamam's free-tier app ID/key
+  // are rate-limited per key, not billed — safe enough client-side
+  // for now. Get free keys at https://developer.edamam.com
+  MEALDB_BASE_URL: 'https://www.themealdb.com/api/json/v1/1',
+  EDAMAM_APP_ID: 'YOUR_EDAMAM_APP_ID',
+  EDAMAM_APP_KEY: 'YOUR_EDAMAM_APP_KEY',
+
+  // ── AI provider (Noura AI chat + recipe generation) ──────────
+  // ⚠️ SENSITIVE — this key is billed per request. Anyone who
+  // views this page's source can copy it and run up your bill.
+  // Fine for early testing; before real launch, move Gemini calls
+  // behind a Supabase Edge Function so this key never reaches the
+  // browser (see /supabase/functions/gemini-chat). Get a free key
+  // at https://aistudio.google.com
+  GEMINI_API_KEY: 'YOUR_GEMINI_KEY_HERE',
+  GEMINI_MODEL: 'gemini-flash-latest', // alias — always resolves to current model, avoids future 404s
+
+  // ── CORS proxies (dev-only fallback for local file:// testing) ─
+  DEV_CORS_PROXIES: [
+    (u) => 'https://corsproxy.io/?' + encodeURIComponent(u),
+    (u) => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
+  ],
+};
+
+
+</script>
+<script>
+/* ===== services ===== */
+/**
+ * ══════════════════════════════════════════════════════════════
+ *  NOURA — SERVICE LAYER  (services.js)
+ * ══════════════════════════════════════════════════════════════
+ *  Shared by every screen: main app, vendor portal, admin
+ *  dashboard, landing page. This is the ONLY file that talks to
+ *  local storage or the network — screens never touch either
+ *  directly. That's what makes this backend-ready: when the real
+ *  API exists, only the bodies of these functions change.
+ *
+ *  Load order in each HTML file: config, then services, then the
+ *  screen-specific UI code — each inlined directly (see index.html)
+ *  so the app works standalone with no external file dependencies.
+ *
+ *  Everything is exposed on window.Services.
+ * ══════════════════════════════════════════════════════════════
+ */
+(function () {
+  'use strict';
+
+  const ENV = window.NOURA_ENV || {};
+
+  /* ────────────────────────────────────────────────────────────
+   *  TYPES  (JSDoc — no build step, so this is our TypeScript)
+   * ──────────────────────────────────────────────────────────── */
+  /**
+   * @typedef {Object} User
+   * @property {string} id
+   * @property {string} name
+   * @property {string} username
+   * @property {string} email
+   * @property {string} bio
+   * @property {string} country
+   * @property {string[]} cuisines
+   * @property {string} diet
+   * @property {string[]} allergies
+   */
+  /** @typedef {Object} Preferences
+   * @property {string} budget @property {string[]} mealtimes @property {string} goal
+   * @property {string[]} favFoods @property {string[]} avoid @property {string} skill */
+  /** @typedef {Object} Restaurant
+   * @property {string} id @property {string} name @property {string} cuisine
+   * @property {string} area @property {string} emoji @property {number} rating
+   * @property {number} reviews @property {boolean} verified @property {boolean} open
+   * @property {string} priceRange @property {string[]} tags @property {string} phone
+   * @property {string} whatsapp @property {string} website @property {string} hours
+   * @property {Array<Object>} menu @property {Array<Object>} reviews_data */
+  /** @typedef {Object} Recipe
+   * @property {string} id @property {string} source ('mealdb'|'edamam')
+   * @property {string} name @property {string} thumb @property {string} category
+   * @property {string} area @property {Array<{name:string,measure:string}>} ingredients
+   * @property {string[]} steps @property {number} [calories] @property {number} [servings] */
+  /** @typedef {Object} MealPlanEntry
+   * @property {string} slot ('breakfast'|'lunch'|'dinner'|'snack')
+   * @property {Recipe} recipe */
+  /** @typedef {Object} Notification
+   * @property {string} id @property {string} type @property {string} icon
+   * @property {string} color @property {string} title @property {string} msg
+   * @property {string} time @property {boolean} unread */
+  /** @typedef {Object} Settings
+   * @property {boolean} darkMode @property {boolean} pushNotifications
+   * @property {boolean} emailNotifications */
+  /** @typedef {Object} Vendor
+   * @property {string} id @property {string} businessName @property {string} ownerName
+   * @property {string} email @property {string} status ('pending'|'approved'|'rejected') */
+  /** @typedef {Object} Order
+   * @property {string} id @property {string} restaurantId @property {string} userId
+   * @property {Array<Object>} items @property {number} total @property {string} status */
+  /** @typedef {Object} Favourite
+   * @property {string} id @property {'recipe'|'restaurant'} type @property {string} refId */
+  /** @typedef {Object} AIResponse
+   * @property {string} text @property {boolean} ok @property {string} [error] */
+
+  /* ────────────────────────────────────────────────────────────
+   *  LOCAL STORAGE HELPERS  (offline cache — not the source of truth)
+   * ──────────────────────────────────────────────────────────── */
+  function lsGet(key, fallback) {
+    try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+    catch { return fallback; }
+  }
+  function lsSet(key, val) {
+    try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
+  }
+  function lsDel(key) { try { localStorage.removeItem(key); } catch {} }
+  function uid() { return 'id_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+  function slugify(str) {
+    return (str || '').toLowerCase().trim()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '') || 'vendor';
+  }
+  function makeUniqueSlug(businessName) {
+    const base = slugify(businessName);
+    const taken = new Set(lsGet('noura_restaurants', []).map((r) => r.slug).filter(Boolean));
+    if (!taken.has(base)) return base;
+    let i = 2;
+    while (taken.has(`${base}-${i}`)) i++;
+    return `${base}-${i}`;
+  }
+
+  /* ────────────────────────────────────────────────────────────
+   *  API CLIENT  — one place that knows how to reach the backend.
+   *  Every service calls apiRequest() first. If BACKEND_READY is
+   *  false, or the call fails/times out, callers get a typed
+   *  result they can branch on ({ok:false, reason}) instead of a
+   *  thrown crash — screens use this to show loading/empty/error
+   *  states, never fake data.
+   * ──────────────────────────────────────────────────────────── */
+  const REQUEST_TIMEOUT_MS = 10000;
+
+  async function apiRequest(path, { method = 'GET', body, headers = {}, timeoutMs = REQUEST_TIMEOUT_MS } = {}) {
+    if (!ENV.BACKEND_READY || !ENV.API_BASE_URL) {
+      return { ok: false, reason: 'no_backend', data: null };
+    }
+    try {
+      const token = AuthStore.getAccessToken();
+      const res = await fetch(ENV.API_BASE_URL + path, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: 'Bearer ' + token } : {}),
+          ...headers,
+        },
+        body: body ? JSON.stringify(body) : undefined,
+        signal: AbortSignal.timeout(timeoutMs),
+      });
+      if (res.status === 401) return { ok: false, reason: 'auth', data: null };
+      if (!res.ok) return { ok: false, reason: 'server', status: res.status, data: null };
+      const data = await res.json().catch(() => null);
+      return { ok: true, reason: null, data };
+    } catch (err) {
+      const reason = err?.name === 'TimeoutError' || err?.name === 'AbortError' ? 'timeout' : 'network';
+      return { ok: false, reason, data: null };
+    }
+  }
+
+  /* ────────────────────────────────────────────────────────────
+   *  SUPABASE CLIENT — lazy singleton. Only exists once the
+   *  Supabase JS SDK is loaded (via CDN script tag) and a real
+   *  project URL/key are set in config.js.
+   * ──────────────────────────────────────────────────────────── */
+  let _sb = null;
+  function getSupabase() {
+    if (_sb) return _sb;
+    if (!ENV.SUPABASE_URL || !ENV.SUPABASE_ANON_KEY || typeof window.supabase === 'undefined') return null;
+    _sb = window.supabase.createClient(ENV.SUPABASE_URL, ENV.SUPABASE_ANON_KEY);
+    return _sb;
+  }
+
+  /* ────────────────────────────────────────────────────────────
+   *  AUTH STORE — token persistence (secure logout, persistent
+   *  login, refresh token). Swap localStorage for httpOnly
+   *  cookies set by the backend once /auth endpoints exist.
+   * ──────────────────────────────────────────────────────────── */
+  const AuthStore = {
+    getAccessToken: () => lsGet('noura_access_token', null),
+    getRefreshToken: () => lsGet('noura_refresh_token', null),
+    setTokens: (access, refresh) => { lsSet('noura_access_token', access); if (refresh) lsSet('noura_refresh_token', refresh); },
+    clearTokens: () => { lsDel('noura_access_token'); lsDel('noura_refresh_token'); },
+    isPersisted: () => !!lsGet('noura_access_token', null) || !!lsGet('noura_local_session', null),
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  AUTH SERVICE
+   * ════════════════════════════════════════════════════════════ */
+  const authService = {
+    /** @returns {Promise<{ok:boolean, user:User|null, reason?:string}>} */
+    async login(email, password) {
+      const sb = getSupabase();
+      if (sb) {
+        const { data, error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) return { ok: false, user: null, reason: error.message || 'auth_error' };
+        AuthStore.setTokens(data.session.access_token, data.session.refresh_token);
+        const { user } = await userProfileService.loadProfile();
+        return { ok: true, user };
+      }
+      const res = await apiRequest('/auth/login', { method: 'POST', body: { email, password } });
+      if (res.ok) {
+        AuthStore.setTokens(res.data.accessToken, res.data.refreshToken);
+        userProfileService._cacheUser(res.data.user);
+        return { ok: true, user: res.data.user };
+      }
+      if (res.reason === 'no_backend') {
+        // No backend configured yet — keep the user's real entry, never invent one.
+        const existing = userProfileService._getCachedUser();
+        const user = existing?.email === email ? existing : { ...userProfileService._blankUser(), email };
+        lsSet('noura_local_session', { email, since: Date.now() });
+        userProfileService._cacheUser(user);
+        return { ok: true, user, reason: 'no_backend' };
+      }
+      return { ok: false, user: null, reason: res.reason };
+    },
+
+    async register({ name, username, email, password }) {
+      const sb = getSupabase();
+      if (sb) {
+        const { data, error } = await sb.auth.signUp({
+          email, password,
+          options: { data: { name, username: '@' + username.replace(/^@/, '') } },
+        });
+        if (error) return { ok: false, user: null, reason: error.message || 'auth_error' };
+        if (!data.session) {
+          // Email confirmation is required before a session exists.
+          return { ok: true, user: { name, username, email }, reason: 'confirm_email' };
+        }
+        AuthStore.setTokens(data.session.access_token, data.session.refresh_token);
+        // Belt-and-suspenders: the DB trigger creates the row, but upsert here
+        // in case the trigger hasn't landed yet by the time we read it back.
+        await sb.from('profiles').upsert({ id: data.user.id, email, name, username: '@' + username.replace(/^@/, '') });
+        const { user } = await userProfileService.loadProfile();
+        return { ok: true, user };
+      }
+      const res = await apiRequest('/auth/register', { method: 'POST', body: { name, username, email, password } });
+      if (res.ok) {
+        AuthStore.setTokens(res.data.accessToken, res.data.refreshToken);
+        userProfileService._cacheUser(res.data.user);
+        return { ok: true, user: res.data.user };
+      }
+      if (res.reason === 'no_backend') {
+        const user = { ...userProfileService._blankUser(), name, username: '@' + username.replace(/^@/, ''), email };
+        lsSet('noura_local_session', { email, since: Date.now() });
+        userProfileService._cacheUser(user);
+        return { ok: true, user, reason: 'no_backend' };
+      }
+      return { ok: false, user: null, reason: res.reason };
+    },
+
+    async forgotPassword(email) {
+      const sb = getSupabase();
+      if (sb) {
+        const { error } = await sb.auth.resetPasswordForEmail(email);
+        return { ok: !error, reason: error?.message };
+      }
+      const res = await apiRequest('/auth/forgot-password', { method: 'POST', body: { email } });
+      if (res.ok) return { ok: true };
+      if (res.reason === 'no_backend') return { ok: true, reason: 'no_backend' }; // UI shows "check your email" either way
+      return { ok: false, reason: res.reason };
+    },
+
+    /** Continue with Google — redirects the browser; session is picked up
+     *  on return via Supabase's own auth state, not a direct return value. */
+    async loginWithGoogle() {
+      const sb = getSupabase();
+      if (sb) {
+        const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href } });
+        return { ok: !error, reason: error?.message };
+      }
+      return { ok: false, reason: 'not_configured' };
+    },
+
+    async refreshToken() {
+      const sb = getSupabase();
+      if (sb) {
+        const { data, error } = await sb.auth.refreshSession();
+        if (error) return { ok: false };
+        AuthStore.setTokens(data.session.access_token, data.session.refresh_token);
+        return { ok: true };
+      }
+      const refresh = AuthStore.getRefreshToken();
+      if (!refresh) return { ok: false };
+      const res = await apiRequest('/auth/refresh', { method: 'POST', body: { refreshToken: refresh } });
+      if (res.ok) { AuthStore.setTokens(res.data.accessToken, res.data.refreshToken); return { ok: true }; }
+      return { ok: false };
+    },
+
+    async logout() {
+      const sb = getSupabase();
+      if (sb) await sb.auth.signOut();
+      else if (ENV.BACKEND_READY) await apiRequest('/auth/logout', { method: 'POST' });
+      AuthStore.clearTokens();
+      lsDel('noura_local_session');
+      lsDel('noura_user');
+    },
+
+    isLoggedIn: () => AuthStore.isPersisted(),
+
+    /** Call once on app load. Picks up a real Supabase session (e.g.
+     *  right after an OAuth redirect back from Google) and mirrors it
+     *  into our own AuthStore so isLoggedIn() reflects it correctly. */
+    async syncSession() {
+      const sb = getSupabase();
+      if (!sb) return;
+      const { data } = await sb.auth.getSession();
+      if (data?.session) AuthStore.setTokens(data.session.access_token, data.session.refresh_token);
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  USER PROFILE SERVICE
+   * ════════════════════════════════════════════════════════════ */
+  const userProfileService = {
+    _blankUser: () => ({ id: '', name: '', username: '', email: '', bio: '', country: '', cuisines: [], diet: '', allergies: [] }),
+    _getCachedUser: () => lsGet('noura_user', null),
+    _cacheUser: (u) => lsSet('noura_user', u),
+
+    /** @returns {Promise<{ok:boolean, user:User|null, loading:boolean}>} */
+    async loadProfile() {
+      const sb = getSupabase();
+      if (sb) {
+        const { data: sess } = await sb.auth.getSession();
+        const uid = sess?.session?.user?.id;
+        if (!uid) return { ok: false, user: null };
+        const { data, error } = await sb.from('profiles').select('*').eq('id', uid).single();
+        if (error) return { ok: false, user: this._getCachedUser() };
+        const user = {
+          id: data.id, name: data.name || '', username: data.username || '', email: data.email || '',
+          bio: data.bio || '', country: data.country || '', cuisines: data.cuisines || [],
+          diet: data.diet || '', allergies: data.allergies || [],
+        };
+        this._cacheUser(user);
+        return { ok: true, user };
+      }
+      const res = await apiRequest('/user/profile', { method: 'GET' });
+      if (res.ok) { this._cacheUser(res.data); return { ok: true, user: res.data }; }
+      // No backend yet: fall back to the user's own saved data (never demo data).
+      const cached = this._getCachedUser();
+      return { ok: !!cached, user: cached || null };
+    },
+
+    async updateProfile(patch) {
+      const sb = getSupabase();
+      if (sb) {
+        const { data: sess } = await sb.auth.getSession();
+        const uid = sess?.session?.user?.id;
+        if (!uid) return { ok: false };
+        const { error } = await sb.from('profiles').update(patch).eq('id', uid);
+        if (error) return { ok: false, reason: error.message };
+        const merged = { ...(this._getCachedUser() || this._blankUser()), ...patch };
+        this._cacheUser(merged);
+        return { ok: true, user: merged };
+      }
+      const res = await apiRequest('/user/profile', { method: 'PATCH', body: patch });
+      if (res.ok) { this._cacheUser(res.data); return { ok: true, user: res.data }; }
+      const merged = { ...(this._getCachedUser() || this._blankUser()), ...patch };
+      this._cacheUser(merged);
+      return { ok: true, user: merged, reason: res.reason };
+    },
+
+    async loadPreferences() {
+      const sb = getSupabase();
+      if (sb) {
+        const { data: sess } = await sb.auth.getSession();
+        const uid = sess?.session?.user?.id;
+        if (uid) {
+          const { data, error } = await sb.from('user_preferences').select('*').eq('user_id', uid).maybeSingle();
+          if (!error) {
+            const prefs = data
+              ? { budget: data.budget || '', mealtimes: data.mealtimes || [], goal: data.goal || '', favFoods: data.fav_foods || [], avoid: data.avoid || [], skill: data.skill || '' }
+              : this._blankPrefs();
+            lsSet('noura_prefs', prefs);
+            return { ok: true, prefs };
+          }
+        }
+      }
+      const res = await apiRequest('/user/preferences', { method: 'GET' });
+      if (res.ok) { lsSet('noura_prefs', res.data); return { ok: true, prefs: res.data }; }
+      return { ok: true, prefs: lsGet('noura_prefs', this._blankPrefs()) };
+    },
+    _blankPrefs: () => ({ budget: '', mealtimes: [], goal: '', favFoods: [], avoid: [], skill: '' }),
+
+    async updatePreferences(patch) {
+      const merged = { ...lsGet('noura_prefs', this._blankPrefs()), ...patch };
+      const sb = getSupabase();
+      if (sb) {
+        const { data: sess } = await sb.auth.getSession();
+        const uid = sess?.session?.user?.id;
+        if (uid) {
+          await sb.from('user_preferences').upsert({
+            user_id: uid, budget: merged.budget, mealtimes: merged.mealtimes, goal: merged.goal,
+            fav_foods: merged.favFoods, avoid: merged.avoid, skill: merged.skill,
+          });
+          lsSet('noura_prefs', merged);
+          return { ok: true, prefs: merged };
+        }
+      }
+      const res = await apiRequest('/user/preferences', { method: 'PATCH', body: merged });
+      lsSet('noura_prefs', merged);
+      return { ok: true, prefs: merged, reason: res.ok ? null : res.reason };
+    },
+
+    async changePassword(currentPassword, newPassword) {
+      const res = await apiRequest('/user/change-password', { method: 'POST', body: { currentPassword, newPassword } });
+      if (res.ok) return { ok: true };
+      if (res.reason === 'no_backend') return { ok: false, reason: 'no_backend' };
+      return { ok: false, reason: res.reason };
+    },
+
+    async changeEmail(newEmail, password) {
+      const res = await apiRequest('/user/change-email', { method: 'POST', body: { newEmail, password } });
+      if (res.ok) { const u = { ...(this._getCachedUser() || {}), email: newEmail }; this._cacheUser(u); return { ok: true, user: u }; }
+      if (res.reason === 'no_backend') { const u = { ...(this._getCachedUser() || {}), email: newEmail }; this._cacheUser(u); return { ok: true, user: u, reason: 'no_backend' }; }
+      return { ok: false, reason: res.reason };
+    },
+
+    async deleteAccount() {
+      const res = await apiRequest('/user/account', { method: 'DELETE' });
+      await authService.logout();
+      lsDel('noura_prefs'); lsDel('noura_saved'); lsDel('noura_fav_restaurants');
+      return { ok: res.ok || res.reason === 'no_backend' };
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  RESTAURANT SERVICE
+   *  Real restaurant records come from the vendor portal (which
+   *  writes to the same 'noura_restaurants' store / future
+   *  GET/POST /restaurants API). Nothing here is sample data —
+   *  an empty list means no vendor has published yet.
+   * ════════════════════════════════════════════════════════════ */
+  function mapRestaurantRow(row) {
+    return {
+      id: row.id, slug: row.slug, name: row.name, cuisine: row.cuisine, area: row.area,
+      emoji: row.emoji || '🍽️', rating: row.rating, reviews: row.review_count ?? (row.reviews?.length || 0),
+      verified: row.verified, open: row.open, priceRange: row.price_range,
+      tags: row.tags || [], phone: row.phone, whatsapp: row.whatsapp, website: row.website, hours: row.hours,
+      menu: (row.menu_items || []).map((m) => ({ id: m.id, name: m.name, price: m.price, cat: m.category, desc: m.description, emoji: m.emoji || '🍽️', time: m.prep_time, available: m.available })),
+      reviews_data: (row.reviews || []).map((r) => ({ id: r.id, author: r.author, stars: r.stars, text: r.text, date: r.created_at ? new Date(r.created_at).toLocaleDateString() : '', reply: r.reply, replied: r.replied })),
+    };
+  }
+
+  const restaurantService = {
+    async list() {
+      const sb = getSupabase();
+      if (sb) {
+        const { data, error } = await sb.from('restaurants').select('*, menu_items(*), reviews(*)').order('created_at', { ascending: false });
+        if (!error) { const restaurants = (data || []).map(mapRestaurantRow); lsSet('noura_restaurants', restaurants); return { ok: true, loading: false, restaurants }; }
+      }
+      const res = await apiRequest('/restaurants', { method: 'GET' });
+      if (res.ok) { lsSet('noura_restaurants', res.data); return { ok: true, loading: false, restaurants: res.data }; }
+      return { ok: true, loading: false, restaurants: lsGet('noura_restaurants', []) };
+    },
+    async get(id) {
+      const sb = getSupabase();
+      if (sb) {
+        const { data, error } = await sb.from('restaurants').select('*, menu_items(*), reviews(*)').eq('id', id).maybeSingle();
+        if (!error && data) return { ok: true, restaurant: mapRestaurantRow(data) };
+      }
+      const res = await apiRequest('/restaurants/' + id, { method: 'GET' });
+      if (res.ok) return { ok: true, restaurant: res.data };
+      const local = lsGet('noura_restaurants', []).find((r) => r.id === id) || null;
+      return { ok: !!local, restaurant: local };
+    },
+    async getBySlug(slug) {
+      const sb = getSupabase();
+      if (sb) {
+        const { data, error } = await sb.from('restaurants').select('*, menu_items(*), reviews(*)').eq('slug', slug).maybeSingle();
+        if (!error && data) return { ok: true, restaurant: mapRestaurantRow(data) };
+      }
+      const res = await apiRequest('/restaurants/slug/' + slug, { method: 'GET' });
+      if (res.ok) return { ok: true, restaurant: res.data };
+      const local = lsGet('noura_restaurants', []).find((r) => r.slug === slug) || null;
+      return { ok: !!local, restaurant: local };
+    },
+    async search(query) {
+      const { restaurants } = await this.list();
+      const v = (query || '').toLowerCase().trim();
+      if (!v) return restaurants;
+      return restaurants.filter((r) =>
+        r.name?.toLowerCase().includes(v) || r.cuisine?.toLowerCase().includes(v) || (r.tags || []).some((t) => t.toLowerCase().includes(v))
+      );
+    },
+    async filterByCategory(cat) {
+      const { restaurants } = await this.list();
+      if (cat === 'all') return restaurants;
+      return restaurants.filter((r) => r.cuisine === cat || (r.tags || []).includes(cat));
+    },
+    async submitReview(restaurantId, review) {
+      challengesService.incrementReviewsWritten();
+      const sb = getSupabase();
+      if (sb) {
+        const { data: sess } = await sb.auth.getSession();
+        const uid = sess?.session?.user?.id;
+        const { error } = await sb.from('reviews').insert({
+          restaurant_id: restaurantId, user_id: uid || null,
+          author: review.author, stars: review.stars, text: review.text,
+        });
+        if (!error) return { ok: true };
+      }
+      const res = await apiRequest(`/restaurants/${restaurantId}/reviews`, { method: 'POST', body: review });
+      if (res.ok) return { ok: true };
+      // Local fallback so vendors/testers still see it reflected until backend exists.
+      const rests = lsGet('noura_restaurants', []);
+      const r = rests.find((x) => x.id === restaurantId);
+      if (r) { r.reviews_data = r.reviews_data || []; r.reviews_data.unshift(review); r.reviews = (r.reviews || 0) + 1; lsSet('noura_restaurants', rests); }
+      return { ok: true, reason: 'no_backend' };
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  RECIPE SERVICE
+   *  Wraps the two real, live recipe data providers (TheMealDB
+   *  for global dishes, Edamam for African/local dishes). These
+   *  are genuine external data sources, not mock data — kept
+   *  exactly as before, just moved behind one service boundary.
+   * ════════════════════════════════════════════════════════════ */
+  const MEAL_BASE = ENV.MEALDB_BASE_URL || 'https://www.themealdb.com/api/json/v1/1';
+  const EDAMAM_APP_ID = ENV.EDAMAM_APP_ID;
+  const EDAMAM_APP_KEY = ENV.EDAMAM_APP_KEY;
+  const EDAMAM_BASE = 'https://api.edamam.com/api/recipes/v2';
+  const EDAMAM_READY = !!(EDAMAM_APP_ID && EDAMAM_APP_ID !== 'YOUR_EDAMAM_APP_ID');
+  const IS_LOCAL_PROTOCOL = ['file:', 'null:'].includes(location.protocol) || ['localhost', '127.0.0.1'].includes(location.hostname);
+  const PROXIES = ENV.DEV_CORS_PROXIES || [];
+
+  const LOCAL_CUISINE_GROUPS = {
+    '🇳🇬 Nigerian': ['jollof rice', 'egusi soup', 'pounded yam', 'suya', 'moi moi', 'pepper soup', 'afang soup', 'efo riro', 'ofada rice', 'ogbono soup', 'akara', 'puff puff', 'banga soup', 'tuwo shinkafa', 'chin chin'],
+    '🇬🇭 Ghanaian': ['fufu', 'kontomire stew', 'kelewele', 'groundnut soup', 'waakye', 'banku', 'tilapia', 'red red', 'light soup ghana', 'jollof ghana', 'tom brown porridge'],
+    '🇰🇪 Kenyan': ['ugali', 'sukuma wiki', 'nyama choma', 'githeri', 'pilau kenya', 'mukimo', 'mandazi', 'chapati kenya', 'matoke', 'wali wa nazi'],
+    '🌍 East African': ['injera', 'doro wat', 'kitfo', 'tibs', 'ful medames', 'samosa', 'pilau', 'biryani east africa'],
+    '🌍 West African': ['thieboudienne', 'yassa', 'maafe', 'ndole', 'egusi', 'plantain stew', 'palm nut soup', 'groundnut stew'],
+    '🌍 South African': ['bobotie', 'bunny chow', 'boerewors', 'pap', 'chakalaka', 'koeksisters', 'braai', 'potjiekos'],
+  };
+
+  async function mealDbFetch(path) {
+    const directUrl = MEAL_BASE + path;
+    if (!IS_LOCAL_PROTOCOL) {
+      try { const res = await fetch(directUrl); if (!res.ok) throw new Error('HTTP ' + res.status); return await res.json(); }
+      catch { return null; }
+    }
+    for (const mkProxy of PROXIES) {
+      try {
+        const res = await fetch(mkProxy(directUrl), { signal: AbortSignal.timeout(9000) });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return await res.json();
+      } catch { /* try next proxy */ }
+    }
+    return null;
+  }
+
+  async function edamamFetch(query, opts = {}) {
+    if (!EDAMAM_READY) return null;
+    const params = new URLSearchParams({
+      type: 'public', q: query, app_id: EDAMAM_APP_ID, app_key: EDAMAM_APP_KEY,
+      from: opts.from || 0, to: opts.to || 20, ...(opts.extra || {}),
+    });
+    try {
+      const res = await fetch(EDAMAM_BASE + '?' + params.toString(), { signal: AbortSignal.timeout(10000) });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return await res.json();
+    } catch { return null; }
+  }
+
+  function normaliseEdamam(hit) {
+    const r = hit.recipe;
+    return {
+      id: hit._links?.self?.href || r.label, idMeal: hit._links?.self?.href || r.label,
+      name: r.label, strMeal: r.label, thumb: r.image, strMealThumb: r.image,
+      category: r.cuisineType?.[0] || 'Local', strCategory: r.cuisineType?.[0] || 'Local',
+      area: (r.cuisineType || []).join(', '), strArea: (r.cuisineType || []).join(', '),
+      source: 'edamam', ingredients: r.ingredientLines || [], calories: Math.round(r.calories || 0),
+      servings: r.yield || 1, totalTime: r.totalTime || 0, dietLabels: r.dietLabels || [],
+      healthLabels: r.healthLabels || [], url: r.url, strSource: r.url,
+    };
+  }
+
+  const recipeService = {
+    isLocalProviderReady: EDAMAM_READY,
+    localCuisineGroups: LOCAL_CUISINE_GROUPS,
+
+    mealDb: {
+      search: (q) => mealDbFetch('/search.php?s=' + encodeURIComponent(q)),
+      byId: (id) => mealDbFetch('/lookup.php?i=' + id),
+      random: () => mealDbFetch('/random.php'),
+      byCategory: (c) => mealDbFetch('/filter.php?c=' + encodeURIComponent(c)),
+      categories: () => mealDbFetch('/categories.php'),
+      randoms: async (n) => {
+        const results = await Promise.all(Array.from({ length: n }, () => mealDbFetch('/random.php')));
+        return results.filter(Boolean).map((r) => r.meals?.[0]).filter(Boolean);
+      },
+    },
+
+    local: {
+      normalise: normaliseEdamam,
+      search: (q, from = 0) => edamamFetch(q, { from, to: from + 20 }),
+      byGroup: async (label) => {
+        if (!EDAMAM_READY) return [];
+        const terms = LOCAL_CUISINE_GROUPS[label] || [label];
+        const results = await Promise.all(terms.slice(0, 3).map((t) => edamamFetch(t, { to: 8 })));
+        return results.filter(Boolean).flatMap((d) => d.hits || []).map(normaliseEdamam);
+      },
+      byId: async (selfUrl) => {
+        if (!EDAMAM_READY || !selfUrl?.startsWith('http')) return null;
+        const url = selfUrl + '?type=public&app_id=' + EDAMAM_APP_ID + '&app_key=' + EDAMAM_APP_KEY;
+        try {
+          const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return normaliseEdamam(await res.json());
+        } catch { return null; }
+      },
+    },
+
+    getIngredients(meal) {
+      const list = [];
+      for (let i = 1; i <= 20; i++) {
+        const name = (meal['strIngredient' + i] || '').trim();
+        const measure = (meal['strMeasure' + i] || '').trim();
+        if (name) list.push({ name, measure });
+      }
+      return list;
+    },
+    getSteps(meal) {
+      const raw = (meal.strInstructions || '').trim();
+      if (!raw) return [];
+      let steps = raw.split(/\r?\n/).map((s) => s.replace(/^\s*\d+[.):\-]\s*/, '').trim()).filter((s) => s.length > 15);
+      if (steps.length < 2) steps = raw.split(/(?<=[.!?])\s{1,3}(?=[A-Z])/).filter((s) => s.trim().length > 15);
+      return steps.slice(0, 15);
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  MEAL PLAN SERVICE
+   * ════════════════════════════════════════════════════════════ */
+  const mealPlanService = {
+    async loadMealPlan() {
+      const res = await apiRequest('/meal-plan', { method: 'GET' });
+      if (res.ok) return { ok: true, plan: res.data };
+      // No backend yet: build today's plan from live recipe data (not fake meals).
+      const meals = await recipeService.mealDb.randoms(4);
+      if (!meals.length) return { ok: false, plan: [] };
+      const slots = ['breakfast', 'lunch', 'dinner', 'snack'];
+      const plan = meals.map((m, i) => ({ slot: slots[i], recipe: m }));
+      return { ok: true, plan, reason: 'no_backend' };
+    },
+    async savePlan(plan) {
+      const res = await apiRequest('/meal-plan', { method: 'POST', body: plan });
+      return { ok: res.ok || true, reason: res.ok ? null : res.reason };
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  NOTIFICATION SERVICE  — no seed/demo notifications. An empty
+   *  inbox is a real, valid state until the backend sends one.
+   * ════════════════════════════════════════════════════════════ */
+  const notificationService = {
+    async list() {
+      const res = await apiRequest('/notifications', { method: 'GET' });
+      if (res.ok) { lsSet('noura_notifications', res.data); return { ok: true, notifications: res.data }; }
+      return { ok: true, notifications: lsGet('noura_notifications', []) };
+    },
+    async markRead(id) {
+      await apiRequest(`/notifications/${id}/read`, { method: 'POST' });
+      const ns = lsGet('noura_notifications', []);
+      const n = ns.find((x) => x.id === id);
+      if (n) { n.unread = false; lsSet('noura_notifications', ns); }
+    },
+    async markAllRead() {
+      await apiRequest('/notifications/read-all', { method: 'POST' });
+      lsSet('noura_notifications', lsGet('noura_notifications', []).map((n) => ({ ...n, unread: false })));
+    },
+    async hasUnread() { const { notifications } = await this.list(); return notifications.some((n) => n.unread); },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  FAVOURITES SERVICE  (saved recipes + favourite restaurants)
+   * ════════════════════════════════════════════════════════════ */
+  const favouritesService = {
+    async _uid() {
+      const sb = getSupabase(); if (!sb) return null;
+      const { data } = await sb.auth.getSession();
+      return data?.session?.user?.id || null;
+    },
+    async listRecipes() {
+      const sb = getSupabase(); const uid = await this._uid();
+      if (sb && uid) {
+        const { data, error } = await sb.from('favourite_recipes').select('*').eq('user_id', uid);
+        if (!error) {
+          const recipes = (data || []).map((r) => ({ id: r.recipe_id, source: r.source, name: r.name, thumb: r.thumb, category: r.category, area: r.area }));
+          lsSet('noura_saved', recipes); return recipes;
+        }
+      }
+      const res = await apiRequest('/favorites?type=recipe', { method: 'GET' });
+      if (res.ok) { lsSet('noura_saved', res.data); return res.data; }
+      return lsGet('noura_saved', []);
+    },
+    async toggleRecipe(recipe) {
+      const saved = await this.listRecipes();
+      const idx = saved.findIndex((r) => r.id === recipe.id);
+      const willSave = idx < 0;
+      const sb = getSupabase(); const uid = await this._uid();
+      if (sb && uid) {
+        if (willSave) await sb.from('favourite_recipes').insert({ user_id: uid, recipe_id: recipe.id, source: recipe.source, name: recipe.name, thumb: recipe.thumb, category: recipe.category, area: recipe.area });
+        else await sb.from('favourite_recipes').delete().eq('user_id', uid).eq('recipe_id', recipe.id);
+        if (willSave) saved.push(recipe); else saved.splice(idx, 1);
+        lsSet('noura_saved', saved);
+        return { ok: true, saved: willSave };
+      }
+      if (willSave) saved.push(recipe); else saved.splice(idx, 1);
+      lsSet('noura_saved', saved);
+      const res = await apiRequest('/favorites', { method: willSave ? 'POST' : 'DELETE', body: { type: 'recipe', refId: recipe.id } });
+      return { ok: true, saved: willSave, reason: res.ok ? null : res.reason };
+    },
+    async removeRecipe(id) {
+      const sb = getSupabase(); const uid = await this._uid();
+      if (sb && uid) await sb.from('favourite_recipes').delete().eq('user_id', uid).eq('recipe_id', id);
+      lsSet('noura_saved', lsGet('noura_saved', []).filter((r) => r.id !== id));
+      if (!sb) await apiRequest('/favorites', { method: 'DELETE', body: { type: 'recipe', refId: id } });
+    },
+    async listRestaurantIds() {
+      const sb = getSupabase(); const uid = await this._uid();
+      if (sb && uid) {
+        const { data, error } = await sb.from('favourite_restaurants').select('restaurant_id').eq('user_id', uid);
+        if (!error) { const ids = (data || []).map((r) => r.restaurant_id); lsSet('noura_fav_restaurants', ids); return ids; }
+      }
+      const res = await apiRequest('/favorites?type=restaurant', { method: 'GET' });
+      if (res.ok) { lsSet('noura_fav_restaurants', res.data); return res.data; }
+      return lsGet('noura_fav_restaurants', []);
+    },
+    async toggleRestaurant(id) {
+      const favs = await this.listRestaurantIds();
+      const idx = favs.indexOf(id);
+      const willSave = idx < 0;
+      const sb = getSupabase(); const uid = await this._uid();
+      if (sb && uid) {
+        if (willSave) await sb.from('favourite_restaurants').insert({ user_id: uid, restaurant_id: id });
+        else await sb.from('favourite_restaurants').delete().eq('user_id', uid).eq('restaurant_id', id);
+        if (willSave) favs.push(id); else favs.splice(idx, 1);
+        lsSet('noura_fav_restaurants', favs);
+        return { ok: true, saved: willSave };
+      }
+      if (willSave) favs.push(id); else favs.splice(idx, 1);
+      lsSet('noura_fav_restaurants', favs);
+      const res = await apiRequest('/favorites', { method: willSave ? 'POST' : 'DELETE', body: { type: 'restaurant', refId: id } });
+      return { ok: true, saved: willSave, reason: res.ok ? null : res.reason };
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  SETTINGS SERVICE
+   * ════════════════════════════════════════════════════════════ */
+  const settingsService = {
+    _defaults: () => ({ darkMode: true, pushNotifications: true, emailNotifications: true }),
+    async load() {
+      const res = await apiRequest('/user/settings', { method: 'GET' });
+      if (res.ok) { lsSet('noura_settings', res.data); return res.data; }
+      return lsGet('noura_settings', this._defaults());
+    },
+    async update(patch) {
+      const merged = { ...lsGet('noura_settings', this._defaults()), ...patch };
+      lsSet('noura_settings', merged);
+      const res = await apiRequest('/user/settings', { method: 'PATCH', body: merged });
+      return { ok: true, settings: merged, reason: res.ok ? null : res.reason };
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  VENDOR AUTH + PROFILE SERVICE
+   * ════════════════════════════════════════════════════════════ */
+  function mapVendorRow(row) {
+    return {
+      id: row.auth_user_id, dbId: row.id, businessName: row.business_name, ownerName: row.owner_name,
+      email: row.email, category: row.category, initial: (row.business_name || '?').charAt(0).toUpperCase(),
+      phone: row.phone, whatsapp: row.whatsapp, website: row.website, instagram: row.instagram, facebook: row.facebook,
+      desc: row.description, country: row.country, state: row.state, city: row.city, address: row.address,
+      emoji: row.emoji || '🍽️', priceRange: row.price_range, hours: row.hours, slug: row.slug,
+      status: row.status, setupDone: row.setup_done, restaurantId: row.restaurant_id,
+    };
+  }
+
+  const vendorService = {
+    _get: () => lsGet('noura_vendor', null),
+    _set: (v) => lsSet('noura_vendor', v),
+
+    isLoggedIn() { return !!this._get(); },
+    getVendor() { return this._get(); },
+
+    async login(email, password) {
+      const sb = getSupabase();
+      if (sb) {
+        const { data, error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) return { ok: false, reason: error.message || 'auth_error' };
+        AuthStore.setTokens(data.session.access_token, data.session.refresh_token);
+        const { data: row, error: vErr } = await sb.from('vendors').select('*').eq('auth_user_id', data.user.id).maybeSingle();
+        if (vErr || !row) return { ok: false, reason: 'not_a_vendor' };
+        const vendor = mapVendorRow(row);
+        this._set(vendor);
+        return { ok: true, vendor };
+      }
+      const res = await apiRequest('/vendor/auth/login', { method: 'POST', body: { email, password } });
+      if (res.ok) { AuthStore.setTokens(res.data.accessToken, res.data.refreshToken); this._set(res.data.vendor); return { ok: true, vendor: res.data.vendor }; }
+      if (res.reason === 'no_backend') {
+        const existing = this._get();
+        if (existing && existing.email === email) return { ok: true, vendor: existing, reason: 'no_backend' };
+        return { ok: false, reason: 'not_found' }; // never fabricate a vendor account
+      }
+      return { ok: false, reason: res.reason };
+    },
+
+    async register({ businessName, ownerName, email, password, category }) {
+      const sb = getSupabase();
+      if (sb) {
+        const { data, error } = await sb.auth.signUp({ email, password, options: { data: { business_name: businessName, owner_name: ownerName } } });
+        if (error) return { ok: false, reason: error.message || 'auth_error' };
+        const slug = makeUniqueSlug(businessName);
+        const vendorRow = {
+          auth_user_id: data.user.id, business_name: businessName, owner_name: ownerName,
+          email, category, slug, status: 'pending', setup_done: false,
+        };
+        if (data.session) {
+          AuthStore.setTokens(data.session.access_token, data.session.refresh_token);
+          const { data: inserted, error: insErr } = await sb.from('vendors').insert(vendorRow).select().single();
+          if (insErr) return { ok: false, reason: insErr.message };
+          const vendor = mapVendorRow(inserted);
+          this._set(vendor);
+          return { ok: true, vendor };
+        }
+        // Email confirmation required — the vendors row gets created on first login instead.
+        return { ok: true, vendor: { businessName, ownerName, email, category, slug }, reason: 'confirm_email' };
+      }
+      const res = await apiRequest('/vendor/auth/register', { method: 'POST', body: { businessName, ownerName, email, password, category } });
+      if (res.ok) { AuthStore.setTokens(res.data.accessToken, res.data.refreshToken); this._set(res.data.vendor); return { ok: true, vendor: res.data.vendor }; }
+      const vendor = {
+        id: uid(), businessName, ownerName, email, category,
+        initial: (businessName || '?').charAt(0).toUpperCase(),
+        slug: makeUniqueSlug(businessName),
+        setupDone: false, status: 'pending', restaurantId: null,
+      };
+      this._set(vendor);
+      return { ok: true, vendor, reason: 'no_backend' };
+    },
+
+    async forgotPassword(email) {
+      const sb = getSupabase();
+      if (sb) { const { error } = await sb.auth.resetPasswordForEmail(email); return { ok: !error, reason: error?.message }; }
+      const res = await apiRequest('/vendor/auth/forgot-password', { method: 'POST', body: { email } });
+      return { ok: res.ok || res.reason === 'no_backend' };
+    },
+
+    async logout() {
+      const sb = getSupabase();
+      if (sb) await sb.auth.signOut();
+      else if (ENV.BACKEND_READY) await apiRequest('/vendor/auth/logout', { method: 'POST' });
+      AuthStore.clearTokens();
+    },
+
+    async updateProfile(patch) {
+      const sb = getSupabase();
+      if (sb) {
+        const { data: sess } = await sb.auth.getSession();
+        const uid = sess?.session?.user?.id;
+        if (!uid) return { ok: false };
+        const dbPatch = {
+          business_name: patch.businessName, owner_name: patch.ownerName, category: patch.category,
+          phone: patch.phone, whatsapp: patch.whatsapp, website: patch.website, instagram: patch.instagram, facebook: patch.facebook,
+          description: patch.desc, country: patch.country, state: patch.state, city: patch.city, address: patch.address,
+          emoji: patch.emoji, price_range: patch.priceRange, hours: patch.hours, setup_done: patch.setupDone,
+        };
+        Object.keys(dbPatch).forEach((k) => dbPatch[k] === undefined && delete dbPatch[k]);
+        const { data: updated, error } = await sb.from('vendors').update(dbPatch).eq('auth_user_id', uid).select().single();
+        if (error) return { ok: false, reason: error.message };
+        const vendor = mapVendorRow(updated);
+        this._set(vendor);
+        await vendorMenuService.publishToDirectory();
+        return { ok: true, vendor };
+      }
+      const merged = { ...(this._get() || {}), ...patch };
+      const res = await apiRequest('/vendor/profile', { method: 'PATCH', body: merged });
+      this._set(merged);
+      await vendorMenuService.publishToDirectory(); // keep the public listing in sync
+      return { ok: true, vendor: merged, reason: res.ok ? null : res.reason };
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  VENDOR MENU SERVICE — also the bridge that publishes the
+   *  vendor's profile + menu into the public restaurant directory
+   *  (the same store restaurantService reads on the consumer app).
+   * ════════════════════════════════════════════════════════════ */
+  const vendorMenuService = {
+    _key: () => 'noura_vendor_menu',
+
+    /** Creates the restaurants row for this vendor if it doesn't exist yet,
+     *  and keeps vendor.restaurantId in sync both locally and in the DB. */
+    async _ensureRestaurant() {
+      const sb = getSupabase(); if (!sb) return null;
+      const v = vendorService.getVendor(); if (!v) return null;
+      if (v.restaurantId) return v.restaurantId;
+      const slug = v.slug || makeUniqueSlug(v.businessName);
+      const { data, error } = await sb.from('restaurants').insert({
+        vendor_id: v.dbId, slug, name: v.businessName, cuisine: v.category || '',
+        area: v.city ? `${v.city}, ${v.state || ''}`.trim() : '', emoji: v.emoji || '🍽️',
+        verified: v.status === 'approved', open: true, price_range: v.priceRange || '',
+        tags: [v.category].filter(Boolean), phone: v.phone || '', whatsapp: v.whatsapp || '',
+        website: v.website || '', hours: v.hours || '',
+      }).select().single();
+      if (error) return null;
+      v.restaurantId = data.id; v.slug = data.slug; vendorService._set(v);
+      await sb.from('vendors').update({ restaurant_id: data.id }).eq('auth_user_id', v.id);
+      return data.id;
+    },
+
+    async list() {
+      const sb = getSupabase(); const v = vendorService.getVendor();
+      if (sb && v?.restaurantId) {
+        const { data, error } = await sb.from('menu_items').select('*').eq('restaurant_id', v.restaurantId).order('created_at');
+        if (!error) {
+          const menu = (data || []).map((m) => ({ id: m.id, name: m.name, price: m.price, cat: m.category, desc: m.description, emoji: m.emoji, time: m.prep_time, available: m.available }));
+          lsSet(this._key(), menu); return menu;
+        }
+      }
+      const res = await apiRequest('/vendor/menu', { method: 'GET' });
+      if (res.ok) { lsSet(this._key(), res.data); return res.data; }
+      return lsGet(this._key(), []);
+    },
+
+    async save(item, idx = -1) {
+      const sb = getSupabase();
+      if (sb) {
+        const restaurantId = await this._ensureRestaurant();
+        if (restaurantId) {
+          const dbItem = { restaurant_id: restaurantId, name: item.name, price: item.price, category: item.cat, description: item.desc, emoji: item.emoji, prep_time: item.time, available: item.available };
+          if (idx >= 0) {
+            const menu = await this.list();
+            if (menu[idx]?.id) await sb.from('menu_items').update(dbItem).eq('id', menu[idx].id);
+          } else {
+            await sb.from('menu_items').insert(dbItem);
+          }
+          const menu = await this.list();
+          return { ok: true, menu };
+        }
+      }
+      const menu = await this.list();
+      if (idx >= 0) menu[idx] = item; else menu.push(item);
+      lsSet(this._key(), menu);
+      await apiRequest('/vendor/menu', { method: 'POST', body: item });
+      await this.publishToDirectory();
+      return { ok: true, menu };
+    },
+
+    async remove(idx) {
+      const sb = getSupabase();
+      if (sb) {
+        const menu = await this.list();
+        if (menu[idx]?.id) { await sb.from('menu_items').delete().eq('id', menu[idx].id); return { ok: true, menu: await this.list() }; }
+      }
+      const menu = await this.list();
+      menu.splice(idx, 1);
+      lsSet(this._key(), menu);
+      await this.publishToDirectory();
+      return { ok: true, menu };
+    },
+
+    async toggleAvailable(idx) {
+      const sb = getSupabase();
+      if (sb) {
+        const menu = await this.list();
+        const item = menu[idx];
+        if (item?.id) { await sb.from('menu_items').update({ available: !item.available }).eq('id', item.id); return { ok: true, menu: await this.list() }; }
+      }
+      const menu = await this.list();
+      if (menu[idx]) menu[idx].available = !menu[idx].available;
+      lsSet(this._key(), menu);
+      await this.publishToDirectory();
+      return { ok: true, menu };
+    },
+
+    /** Syncs the restaurant-level fields (name, contact info, etc.) to the
+     *  public directory. With Supabase this is the restaurants row itself
+     *  (menu items are managed as their own rows, not re-pushed here). */
+    async publishToDirectory() {
+      const v = vendorService.getVendor();
+      if (!v || !v.setupDone) return;
+      const sb = getSupabase();
+      if (sb) {
+        const restaurantId = await this._ensureRestaurant();
+        if (restaurantId) {
+          await sb.from('restaurants').update({
+            name: v.businessName, cuisine: v.category || '', area: v.city ? `${v.city}, ${v.state || ''}`.trim() : '',
+            emoji: v.emoji || '🍽️', verified: v.status === 'approved', price_range: v.priceRange || '',
+            tags: [v.category].filter(Boolean), phone: v.phone || '', whatsapp: v.whatsapp || '',
+            website: v.website || '', hours: v.hours || '',
+          }).eq('id', restaurantId);
+        }
+        return;
+      }
+      // Local fallback — same shared-directory trick as before.
+      const menu = await this.list();
+      const restaurants = lsGet('noura_restaurants', []);
+      const existingIdx = restaurants.findIndex((r) => r.id === v.restaurantId);
+      const record = {
+        id: v.restaurantId || uid(), slug: v.slug || makeUniqueSlug(v.businessName),
+        name: v.businessName, cuisine: v.category || '', area: v.city ? `${v.city}, ${v.state || ''}`.trim() : '',
+        emoji: v.emoji || '🍽️', rating: existingIdx >= 0 ? restaurants[existingIdx].rating : null,
+        reviews: existingIdx >= 0 ? restaurants[existingIdx].reviews : 0,
+        verified: v.status === 'approved', open: true, priceRange: v.priceRange || '',
+        tags: [v.category].filter(Boolean), phone: v.phone || '', whatsapp: v.whatsapp || '',
+        website: v.website || '', hours: v.hours || '', desc: v.desc || '',
+        instagram: v.instagram || '', facebook: v.facebook || '', email: v.email || '',
+        menu: menu.filter((m) => m.available !== false),
+        reviews_data: existingIdx >= 0 ? restaurants[existingIdx].reviews_data || [] : [],
+      };
+      if (existingIdx >= 0) restaurants[existingIdx] = { ...restaurants[existingIdx], ...record };
+      else restaurants.push(record);
+      lsSet('noura_restaurants', restaurants);
+      if (!v.restaurantId) { v.restaurantId = record.id; vendorService._set(v); }
+      if (!v.slug) { v.slug = record.slug; vendorService._set(v); }
+      await apiRequest('/restaurants', { method: 'POST', body: record }); // no-ops until backend exists
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  VENDOR ORDER SERVICE — empty until a real order comes in.
+   * ════════════════════════════════════════════════════════════ */
+  const vendorOrderService = {
+    async list() {
+      const res = await apiRequest('/vendor/orders', { method: 'GET' });
+      if (res.ok) { lsSet('noura_vendor_orders', res.data); return res.data; }
+      return lsGet('noura_vendor_orders', []);
+    },
+    async updateStatus(orderId, status) {
+      const orders = await this.list();
+      const o = orders.find((x) => x.id === orderId);
+      if (o) o.status = status;
+      lsSet('noura_vendor_orders', orders);
+      await apiRequest(`/vendor/orders/${orderId}`, { method: 'PATCH', body: { status } });
+      return { ok: true, orders };
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  VENDOR PROMOTIONS SERVICE
+   * ════════════════════════════════════════════════════════════ */
+  const vendorPromoService = {
+    async list() {
+      const res = await apiRequest('/vendor/promotions', { method: 'GET' });
+      if (res.ok) { lsSet('noura_vendor_promos', res.data); return res.data; }
+      return lsGet('noura_vendor_promos', []);
+    },
+    async create(promo) {
+      const promos = await this.list(); promos.push({ id: uid(), ...promo });
+      lsSet('noura_vendor_promos', promos);
+      await apiRequest('/vendor/promotions', { method: 'POST', body: promo });
+      return { ok: true, promos };
+    },
+    async remove(idx) {
+      const promos = await this.list(); promos.splice(idx, 1);
+      lsSet('noura_vendor_promos', promos);
+      return { ok: true, promos };
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  VENDOR REVIEWS SERVICE — reads the real reviews already
+   *  attached to this vendor's published restaurant record.
+   * ════════════════════════════════════════════════════════════ */
+  const vendorReviewService = {
+    async list() {
+      const v = vendorService.getVendor(); if (!v?.restaurantId) return [];
+      const sb = getSupabase();
+      if (sb) {
+        const { data, error } = await sb.from('reviews').select('*').eq('restaurant_id', v.restaurantId).order('created_at', { ascending: false });
+        if (!error) return (data || []).map((r) => ({ id: r.id, author: r.author, stars: r.stars, text: r.text, date: r.created_at ? new Date(r.created_at).toLocaleDateString() : '', reply: r.reply, replied: r.replied }));
+      }
+      const r = lsGet('noura_restaurants', []).find((x) => x.id === v.restaurantId);
+      return r?.reviews_data || [];
+    },
+    async reply(reviewIndex, replyText) {
+      const v = vendorService.getVendor(); if (!v?.restaurantId) return { ok: false };
+      const sb = getSupabase();
+      if (sb) {
+        const reviews = await this.list();
+        const review = reviews[reviewIndex];
+        if (review?.id) { await sb.from('reviews').update({ reply: replyText, replied: true }).eq('id', review.id); return { ok: true }; }
+      }
+      const restaurants = lsGet('noura_restaurants', []);
+      const r = restaurants.find((x) => x.id === v.restaurantId);
+      if (r?.reviews_data?.[reviewIndex]) { r.reviews_data[reviewIndex].replied = true; r.reviews_data[reviewIndex].reply = replyText; }
+      lsSet('noura_restaurants', restaurants);
+      await apiRequest(`/vendor/reviews/${reviewIndex}/reply`, { method: 'POST', body: { reply: replyText } });
+      return { ok: true };
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  VENDOR ANALYTICS SERVICE — real, locally-derivable numbers
+   *  only (menu size, review average, order counts). Profile
+   *  views / impressions genuinely require backend tracking, so
+   *  those stay at 0 with a "connect backend to track this" note
+   *  instead of a random placeholder number.
+   * ════════════════════════════════════════════════════════════ */
+  const vendorAnalyticsService = {
+    async summary() {
+      const res = await apiRequest('/vendor/analytics/summary', { method: 'GET' });
+      if (res.ok) return { ...res.data, live: true };
+      const menu = await vendorMenuService.list();
+      const orders = await vendorOrderService.list();
+      const reviews = await vendorReviewService.list();
+      const avgRating = reviews.length ? (reviews.reduce((a, r) => a + r.stars, 0) / reviews.length).toFixed(1) : null;
+      return {
+        live: false, views: null, favourites: null, // requires backend tracking — not fabricated
+        menuItems: menu.length, totalOrders: orders.length,
+        pendingOrders: orders.filter((o) => !['Completed', 'Cancelled'].includes(o.status)).length,
+        avgRating, reviewCount: reviews.length,
+      };
+    },
+    /** Weekly order volume / revenue growth need real historical order
+     *  timestamps from a backend — return null (not fake trend lines)
+     *  until that data source exists. */
+    async trends() {
+      const res = await apiRequest('/vendor/analytics/trends', { method: 'GET' });
+      if (res.ok) return { ...res.data, live: true };
+      return { live: false, weekly: null, popularItems: null, growth: null };
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  MEDIA SERVICE — real photo uploads via Supabase Storage.
+   *  Falls back to an honest "needs backend" response when no
+   *  Supabase project is linked, instead of pretending to upload.
+   * ════════════════════════════════════════════════════════════ */
+  const mediaService = {
+    canUpload: () => !!getSupabase(),
+    async uploadMealPhoto(file, caption) {
+      const sb = getSupabase();
+      if (!sb) return { ok: false, reason: 'no_backend' };
+      const { data: sess } = await sb.auth.getSession();
+      const uid = sess?.session?.user?.id;
+      if (!uid) return { ok: false, reason: 'not_logged_in' };
+      const path = `${uid}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '')}`;
+      const { error: upErr } = await sb.storage.from('meal-photos').upload(path, file);
+      if (upErr) return { ok: false, reason: upErr.message };
+      const { data: pub } = sb.storage.from('meal-photos').getPublicUrl(path);
+      const { error: insErr } = await sb.from('meal_photos').insert({ user_id: uid, photo_url: pub.publicUrl, caption: caption || '' });
+      if (insErr) return { ok: false, reason: insErr.message };
+      return { ok: true, url: pub.publicUrl };
+    },
+    async myPhotoCount() {
+      const sb = getSupabase();
+      if (!sb) return 0;
+      const { data: sess } = await sb.auth.getSession();
+      const uid = sess?.session?.user?.id;
+      if (!uid) return 0;
+      const { count } = await sb.from('meal_photos').select('id', { count: 'exact', head: true }).eq('user_id', uid);
+      return count || 0;
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  WAITLIST SERVICE  (landing page)
+   * ════════════════════════════════════════════════════════════ */
+  const waitlistService = {
+    async getCount() {
+      const res = await apiRequest('/waitlist/count', { method: 'GET' });
+      if (res.ok) return res.data.count;
+      return lsGet('noura_wl_count', 0);
+    },
+    async join({ name, email, country, feature }) {
+      const res = await apiRequest('/waitlist', { method: 'POST', body: { name, email, country, feature } });
+      if (!res.ok && res.reason !== 'no_backend') return { ok: false, reason: res.reason };
+      // Local fallback so the counter still feels alive before a backend exists.
+      const entries = lsGet('noura_waitlist', []);
+      entries.push({ name, email, country, feature, joined: new Date().toISOString() });
+      lsSet('noura_waitlist', entries);
+      const count = (await this.getCount()) + 1;
+      lsSet('noura_wl_count', count);
+      return { ok: true, count, reason: res.ok ? null : 'no_backend' };
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  ADVERTISING SERVICE
+   *  Real CRUD from Admin, real serving logic on the consumer/
+   *  vendor apps. Status is computed from dates + a pause flag,
+   *  never hardcoded. Placements: home_banner, feed_card,
+   *  search_results, restaurant_page, popup, slide_in.
+   * ════════════════════════════════════════════════════════════ */
+  const adsService = {
+    _key: 'noura_ads',
+    _computeStatus(ad) {
+      if (ad.paused) return 'Paused';
+      const today = new Date().toISOString().slice(0, 10);
+      if (ad.startDate && today < ad.startDate) return 'Scheduled';
+      if (ad.endDate && today > ad.endDate) return 'Expired';
+      return 'Running';
+    },
+    async list() {
+      const res = await apiRequest('/admin/ads', { method: 'GET' });
+      const raw = res.ok ? res.data : lsGet(this._key, []);
+      if (res.ok) lsSet(this._key, raw);
+      return raw.map((ad) => ({ ...ad, status: this._computeStatus(ad) }));
+    },
+    async create(ad) {
+      const ads = lsGet(this._key, []);
+      const entry = { id: uid(), impressions: 0, clicks: 0, paused: false, createdAt: new Date().toISOString(), ...ad };
+      ads.push(entry);
+      lsSet(this._key, ads);
+      await apiRequest('/admin/ads', { method: 'POST', body: entry });
+      return { ok: true, ad: entry };
+    },
+    async update(id, patch) {
+      const ads = lsGet(this._key, []);
+      const ad = ads.find((a) => a.id === id);
+      if (ad) Object.assign(ad, patch);
+      lsSet(this._key, ads);
+      await apiRequest(`/admin/ads/${id}`, { method: 'PATCH', body: patch });
+      return { ok: true };
+    },
+    async remove(id) {
+      lsSet(this._key, lsGet(this._key, []).filter((a) => a.id !== id));
+      await apiRequest(`/admin/ads/${id}`, { method: 'DELETE' });
+      return { ok: true };
+    },
+    async togglePause(id) {
+      const ads = lsGet(this._key, []);
+      const ad = ads.find((a) => a.id === id);
+      if (ad) ad.paused = !ad.paused;
+      lsSet(this._key, ads);
+      return { ok: true, paused: ad?.paused };
+    },
+    /** What the consumer/vendor app actually calls to serve an ad. */
+    async getActiveForPlacement(placement, viewerType = 'user') {
+      const all = await this.list();
+      return all.filter((ad) =>
+        ad.status === 'Running' &&
+        ad.placement === placement &&
+        (ad.audience === 'everyone' || ad.audience === viewerType + 's' || ad.audience === viewerType)
+      );
+    },
+    async recordImpression(id) {
+      const ads = lsGet(this._key, []);
+      const ad = ads.find((a) => a.id === id);
+      if (ad) ad.impressions = (ad.impressions || 0) + 1;
+      lsSet(this._key, ads);
+    },
+    async recordClick(id) {
+      const ads = lsGet(this._key, []);
+      const ad = ads.find((a) => a.id === id);
+      if (ad) ad.clicks = (ad.clicks || 0) + 1;
+      lsSet(this._key, ads);
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  CHALLENGES SERVICE
+   *  Real, locally-tracked progress against actual user actions
+   *  (reviews written, restaurants explored, streak days, meals
+   *  opened). Community-wide leaderboards need a backend to
+   *  compare across users — labeled honestly where relevant.
+   * ════════════════════════════════════════════════════════════ */
+  const challengesAdminService = {
+    async _call(action, payload) {
+      const res = await fetch(`${ENV.SUPABASE_URL}/functions/v1/admin-challenges`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-key': ENV.ADMIN_API_KEY },
+        body: JSON.stringify({ action, payload }),
+      }).catch(() => null);
+      if (!res) return { ok: false, error: 'network' };
+      return res.json();
+    },
+    list() { return this._call('list'); },
+    create(challenge) { return this._call('create', challenge); },
+    remove(id) { return this._call('delete', { id }); },
+    toggle(id, active) { return this._call('toggle', { id, active }); },
+  };
+
+  const CHALLENGE_DEFS = [
+    { id: 'cook-weekend',  icon: '🍳', title: 'Cook This Weekend',     desc: 'Open and view 1 recipe this week.',            metric: 'mealsOpened',       target: 1 },
+    { id: 'rate-5',        icon: '⭐', title: 'Rate 5 Restaurants',     desc: 'Leave 5 real restaurant reviews.',             metric: 'reviewsWritten',    target: 5 },
+    { id: 'campus-hunt',   icon: '🗺️', title: 'Campus Food Hunt',       desc: 'Explore 3 different restaurants on Noura.',    metric: 'restaurantsViewed', target: 3 },
+    { id: 'healthy-week',  icon: '🥗', title: 'Healthy Week',           desc: 'Keep a 7-day login streak.',                   metric: 'streakDays',        target: 7 },
+    { id: 'street-food',   icon: '🌮', title: 'Street Food Challenge',  desc: 'Open 3 different recipes.',                    metric: 'mealsOpened',       target: 3 },
+    { id: 'upload-meal',   icon: '📸', title: 'Upload Your Best Meal',  desc: 'Share a real photo of a meal you made or ordered.', metric: 'manual', target: 1 },
+  ];
+  const BADGE_LABELS = { 'cook-weekend':'🍳 Home Cook', 'rate-5':'⭐ Top Reviewer', 'campus-hunt':'🗺️ Explorer', 'healthy-week':'🥗 Healthy Streak', 'street-food':'🌮 Street Food Fan', 'upload-meal':'📸 Foodie Photographer' };
+
+  const challengesService = {
+    async list() {
+      const sb = getSupabase();
+      if (sb) {
+        const today = new Date().toISOString().slice(0, 10);
+        const { data, error } = await sb.from('challenges').select('*')
+          .eq('active', true).lte('start_date', today)
+          .or(`end_date.is.null,end_date.gte.${today}`);
+        if (!error && data && data.length) {
+          return data.map((c) => ({ id: c.id, icon: c.icon || '🏆', title: c.title, desc: c.description || '', metric: c.metric, target: c.target }));
+        }
+      }
+      return CHALLENGE_DEFS;
+    },
+    _joined() { return lsGet('noura_challenges_joined', []); },
+    _badges() { return lsGet('noura_badges', []); },
+    isJoined(id) { return this._joined().includes(id); },
+    join(id) {
+      const joined = this._joined();
+      if (!joined.includes(id)) { joined.push(id); lsSet('noura_challenges_joined', joined); }
+    },
+    leave(id) { lsSet('noura_challenges_joined', this._joined().filter((x) => x !== id)); },
+    incrementReviewsWritten() { lsSet('noura_reviews_written', (lsGet('noura_reviews_written', 0)) + 1); },
+    recordRestaurantViewed(id) {
+      const seen = new Set(lsGet('noura_restaurants_viewed', []));
+      seen.add(id); lsSet('noura_restaurants_viewed', [...seen]);
+    },
+    markManualDone(id) {
+      const manual = lsGet('noura_challenges_manual', []);
+      if (!manual.includes(id)) { manual.push(id); lsSet('noura_challenges_manual', manual); }
+    },
+    getProgress(def, streakDaysFn) {
+      let current = 0;
+      if (def.metric === 'mealsOpened')       current = lsGet('nMealsOpened', 0);
+      else if (def.metric === 'reviewsWritten')    current = lsGet('noura_reviews_written', 0);
+      else if (def.metric === 'restaurantsViewed') current = lsGet('noura_restaurants_viewed', []).length;
+      else if (def.metric === 'streakDays')        current = streakDaysFn ? streakDaysFn() : 0;
+      else if (def.metric === 'manual')            current = lsGet('noura_challenges_manual', []).includes(def.id) ? 1 : 0;
+      const done = current >= def.target;
+      if (done && !this._badges().includes(def.id)) {
+        const badges = this._badges(); badges.push(def.id); lsSet('noura_badges', badges);
+      }
+      return { current: Math.min(current, def.target), target: def.target, done };
+    },
+    getMyBadges() { return this._badges().map((id) => BADGE_LABELS[id]).filter(Boolean); },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  AUDIT LOG SERVICE  — records every real admin action taken
+   *  on this device. Platform-wide audit trails (across every
+   *  admin, every device) need a backend to centralize; this is
+   *  the honest local-first version of that.
+   * ════════════════════════════════════════════════════════════ */
+  const auditLogService = {
+    log(action, details) {
+      const entries = lsGet('noura_audit_log', []);
+      entries.unshift({ action, details, admin: 'admin@noura.app', time: new Date().toISOString() });
+      lsSet('noura_audit_log', entries.slice(0, 500));
+    },
+    list() { return lsGet('noura_audit_log', []); },
+    clear() { lsSet('noura_audit_log', []); },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  PLATFORM SERVICE — maintenance mode + feature toggles.
+   *  Local-first, but genuinely wired: the consumer app actually
+   *  checks this flag on load and shows a maintenance screen.
+   * ════════════════════════════════════════════════════════════ */
+  const platformService = {
+    isMaintenanceMode() { return lsGet('noura_maintenance_mode', false); },
+    setMaintenanceMode(on) { lsSet('noura_maintenance_mode', !!on); },
+    getFeatureFlags() { return lsGet('noura_feature_flags', { aiChat: true, restaurantDiscovery: true, mealPlanner: true, waitlist: true }); },
+    setFeatureFlag(key, val) { const f = this.getFeatureFlags(); f[key] = val; lsSet('noura_feature_flags', f); },
+  };
+
+  const adminActionsService = {
+    async _call(action, payload) {
+      if (!ENV.SUPABASE_URL) return { ok: false, error: 'no_backend' };
+      const res = await fetch(`${ENV.SUPABASE_URL}/functions/v1/admin-actions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-key': ENV.ADMIN_API_KEY },
+        body: JSON.stringify({ action, payload }),
+      }).catch(() => null);
+      if (!res) return { ok: false, error: 'network' };
+      return res.json();
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  ADMIN SERVICE
+   *  Users and reports genuinely need a backend (each person's
+   *  data lives in their own browser locally) — those start
+   *  empty. Vendors and reviews are derived from the one real
+   *  shared store both apps already write to: noura_restaurants.
+   * ════════════════════════════════════════════════════════════ */
+  const adminService = {
+    async login(email, password) {
+      const res = await apiRequest('/admin/auth/login', { method: 'POST', body: { email, password } });
+      if (res.ok) { AuthStore.setTokens(res.data.accessToken, res.data.refreshToken); return { ok: true, demo: false }; }
+      return { ok: true, demo: true }; // local demo mode — no backend connected yet
+    },
+
+    async listUsers() {
+      const real = await adminActionsService._call('listUsers');
+      if (real.ok) return real.data;
+      const res = await apiRequest('/admin/users', { method: 'GET' });
+      if (res.ok) return res.data;
+      return []; // no cross-device user directory exists without a backend
+    },
+    async setUserStatus(id, status) {
+      const real = await adminActionsService._call('setUserStatus', { userId: id, status });
+      if (real.ok) return { ok: true };
+      const res = await apiRequest(`/admin/users/${id}/status`, { method: 'PATCH', body: { status } });
+      return { ok: res.ok || res.reason === 'no_backend' };
+    },
+
+    async listVendors() {
+      const res = await apiRequest('/admin/vendors', { method: 'GET' });
+      if (res.ok) return res.data;
+      // Local fallback: every published restaurant IS a vendor listing.
+      const { restaurants } = await restaurantService.list();
+      return restaurants.map((r) => ({
+        id: r.id, businessName: r.name, owner: r.owner || '—', category: r.cuisine || '—',
+        menuItems: (r.menu || []).length, rating: r.rating || 0,
+        status: r.suspended ? 'suspended' : r.verified ? 'approved' : 'pending',
+      }));
+    },
+    async setVendorStatus(id, status) {
+      const real = await adminActionsService._call('setVendorStatus', { restaurantId: id, status });
+      const restaurants = lsGet('noura_restaurants', []);
+      const r = restaurants.find((x) => x.id === id);
+      if (r) { r.verified = status === 'approved'; r.suspended = status === 'suspended'; lsSet('noura_restaurants', restaurants); }
+      return { ok: real.ok, reason: real.ok ? null : real.error };
+    },
+    async featureVendor(id) {
+      const real = await adminActionsService._call('featureVendor', { restaurantId: id });
+      return { ok: real.ok, reason: real.ok ? null : real.error };
+    },
+
+    /** Real menu items aggregated across every published restaurant. */
+    async listAllMeals() {
+      const { restaurants } = await restaurantService.list();
+      return restaurants.flatMap((r) => (r.menu || []).map((m, i) => ({ ...m, restaurant: r.name, restaurantId: r.id, index: i })));
+    },
+    async removeMeal(restaurantId, itemId) {
+      const real = await adminActionsService._call('removeMeal', { itemId });
+      if (real.ok) return { ok: true };
+      const restaurants = lsGet('noura_restaurants', []);
+      const r = restaurants.find((x) => x.id === restaurantId);
+      if (r?.menu) { const idx = r.menu.findIndex((m) => m.id === itemId); if (idx >= 0) r.menu.splice(idx, 1); }
+      lsSet('noura_restaurants', restaurants);
+      return { ok: true, reason: real.error };
+    },
+
+    async listReports() {
+      const res = await apiRequest('/admin/reports', { method: 'GET' });
+      if (res.ok) return res.data;
+      return []; // no fabricated abuse reports
+    },
+    async resolveReport(id) {
+      const real = await adminActionsService._call('resolveReport', { reportId: id });
+      return { ok: real.ok, reason: real.ok ? null : real.error };
+    },
+
+    /** Real reviews aggregated across every published restaurant. */
+    async listAllReviews() {
+      const res = await apiRequest('/admin/reviews', { method: 'GET' });
+      if (res.ok) return res.data;
+      const { restaurants } = await restaurantService.list();
+      return restaurants.flatMap((r) => (r.reviews_data || []).map((rv, i) => ({ ...rv, restaurant: r.name, restaurantId: r.id, index: i })));
+    },
+    async removeReview(restaurantId, reviewId) {
+      const real = await adminActionsService._call('removeReview', { reviewId });
+      if (real.ok) return { ok: true };
+      const restaurants = lsGet('noura_restaurants', []);
+      const r = restaurants.find((x) => x.id === restaurantId);
+      if (r?.reviews_data) { const idx = r.reviews_data.findIndex((rv) => rv.id === reviewId); if (idx >= 0) { r.reviews_data.splice(idx, 1); r.reviews = r.reviews_data.length; } }
+      lsSet('noura_restaurants', restaurants);
+      return { ok: true, reason: real.error };
+    },
+    async removeRestaurant(id) {
+      const real = await adminActionsService._call('removeRestaurant', { restaurantId: id });
+      lsSet('noura_restaurants', lsGet('noura_restaurants', []).filter((r) => r.id !== id));
+      return { ok: real.ok, reason: real.ok ? null : real.error };
+    },
+
+    async listNotifications() {
+      const res = await apiRequest('/admin/notifications', { method: 'GET' });
+      if (res.ok) return res.data;
+      return lsGet('noura_admin_notifs', []);
+    },
+    /** audience: {type:'everyone'|'vendors'|'users'|'country'|'cuisine', value?} */
+    async broadcastNotification({ title, message, audience }) {
+      const audienceLabel = audience.type === 'everyone' ? 'Everyone'
+        : audience.type === 'vendors' ? 'Vendors only'
+        : audience.type === 'users' ? 'Users only'
+        : audience.type === 'country' ? `Users in ${audience.value}`
+        : audience.type === 'cuisine' ? `Fans of ${audience.value}`
+        : 'Everyone';
+      const res = await apiRequest('/admin/notifications', { method: 'POST', body: { title, message, audience } });
+      const entry = { id: uid(), title, message, audience, audienceLabel, date: 'Just now', createdAt: new Date().toISOString() };
+      const sent = lsGet('noura_admin_notifs', []); sent.unshift(entry); lsSet('noura_admin_notifs', sent);
+      // Also queue it for real delivery — consumer/vendor apps pull matching broadcasts on load.
+      const queue = lsGet('noura_broadcast_queue', []); queue.push(entry); lsSet('noura_broadcast_queue', queue.slice(-100));
+      return { ok: true, reason: res.ok ? null : res.reason, audienceLabel };
+    },
+
+    /** Called by the consumer app on load — delivers any broadcasts
+     *  targeted at this user into their real notification inbox. */
+    async pullBroadcastsForUser(user, prefs) {
+      const queue = lsGet('noura_broadcast_queue', []);
+      const seen = new Set(lsGet('noura_broadcasts_seen_user', []));
+      const matches = queue.filter((b) => !seen.has(b.id) && (
+        b.audience.type === 'everyone' || b.audience.type === 'users' ||
+        (b.audience.type === 'country' && user?.country === b.audience.value) ||
+        (b.audience.type === 'cuisine' && (prefs?.favFoods || []).includes(b.audience.value))
+      ));
+      if (!matches.length) return;
+      const inbox = lsGet('noura_notifications', []);
+      matches.forEach((b) => inbox.unshift({ id: uid(), type: 'announcement', icon: '📢', color: '#E8943A22', title: b.title, msg: b.message, time: 'Just now', unread: true }));
+      lsSet('noura_notifications', inbox);
+      lsSet('noura_broadcasts_seen_user', [...seen, ...matches.map((b) => b.id)]);
+    },
+    /** Same idea, for the vendor portal. */
+    async pullBroadcastsForVendor() {
+      const queue = lsGet('noura_broadcast_queue', []);
+      const seen = new Set(lsGet('noura_broadcasts_seen_vendor', []));
+      const matches = queue.filter((b) => !seen.has(b.id) && (b.audience.type === 'everyone' || b.audience.type === 'vendors'));
+      if (!matches.length) return;
+      const inbox = lsGet('noura_vendor_notifications', []);
+      matches.forEach((b) => inbox.unshift({ id: uid(), title: b.title, msg: b.message, time: 'Just now', unread: true }));
+      lsSet('noura_vendor_notifications', inbox);
+      lsSet('noura_broadcasts_seen_vendor', [...seen, ...matches.map((b) => b.id)]);
+    },
+
+    /** Platform-wide analytics need a backend to aggregate across
+     *  users/devices. Locally we can only report what actually
+     *  exists in the shared restaurant directory on this device. */
+    async summary() {
+      const res = await apiRequest('/admin/analytics/summary', { method: 'GET' });
+      if (res.ok) return { ...res.data, live: true };
+      const vendors = await this.listVendors();
+      const reviews = await this.listAllReviews();
+      return {
+        live: false, totalUsers: null, dau: null, // needs backend
+        totalVendors: vendors.length, approvedVendors: vendors.filter((v) => v.status === 'approved').length,
+        totalReviews: reviews.length,
+      };
+    },
+    async trends() {
+      const res = await apiRequest('/admin/analytics/trends', { method: 'GET' });
+      if (res.ok) return { ...res.data, live: true };
+      return { live: false, dau: null, searchTerms: null, geo: null, aiUsage: null };
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  AI SERVICE  (Noura AI chat + ingredient-based recipe finder)
+   * ════════════════════════════════════════════════════════════ */
+  const GEMINI_SYSTEM = `You are Noura AI, an expert food companion for the Noura app — an African and global food discovery platform. You are a genuine food expert, not a generic chatbot. You can:
+- Recommend meals and dishes based on mood, budget, or occasion
+- Generate full recipes from ingredients or a dish name
+- Modify recipes for diets (vegan, spicy, low-carb, gluten-free, halal, etc.)
+- Suggest specific restaurants FROM THE "REAL NOURA VENDORS" LIST below when relevant — never invent a restaurant that isn't in that list
+- Explain nutrition facts and answer cooking/technique questions
+- Suggest groceries or ingredient substitutions
+- Help someone decide what to eat when they're unsure
+Be concise (max 4-6 lines unless a full recipe is requested), warm, and practical. Use emojis naturally. Bold key items with **text**. Currency: ₦ for Nigeria. If asked about restaurants and none are in the list below, say Noura doesn't have vendors in that area yet rather than inventing one.`;
+
+  async function buildLocalContext() {
+    try {
+      const { restaurants } = await restaurantService.list();
+      if (!restaurants.length) return '';
+      const sample = restaurants.slice(0, 15).map(r => `${r.name} (${r.cuisine || 'food'}, ${r.area || 'location unknown'}, ${r.open ? 'open' : 'closed'})`).join('; ');
+      return `\n\nREAL NOURA VENDORS (only reference these by name, never invent others): ${sample}`;
+    } catch { return ''; }
+  }
+
+  const aiService = {
+    _history: [],
+    isConfigured: () => !!(ENV.GEMINI_API_KEY && ENV.GEMINI_API_KEY !== 'YOUR_GEMINI_KEY_HERE'),
+    /** True once a Supabase project is linked — chat then routes through
+     *  the gemini-chat Edge Function so the Gemini key never reaches the
+     *  browser, instead of calling Google directly with a client-side key. */
+    hasSecureProxy: () => !!(ENV.SUPABASE_URL && ENV.SUPABASE_ANON_KEY),
+
+    /** @returns {Promise<AIResponse>} */
+    async chat(message) {
+      if (!this.isConfigured() && !this.hasSecureProxy()) {
+        return { ok: false, error: 'not_configured', text: '🔑 AI chat isn\'t connected yet — add a Gemini key in config.js.' };
+      }
+      this._history.push({ role: 'user', parts: [{ text: message }] });
+      const localContext = await buildLocalContext();
+      const startedAt = Date.now();
+
+      try {
+        let reply;
+        if (this.hasSecureProxy()) {
+          // Secure path: Gemini key lives only in Supabase secrets.
+          // Send the user's real session token (if logged in) so the
+          // function can apply per-account rate limits; anon key otherwise.
+          const sb = getSupabase();
+          let authToken = ENV.SUPABASE_ANON_KEY;
+          if (sb) { const { data: sess } = await sb.auth.getSession(); if (sess?.session?.access_token) authToken = sess.session.access_token; }
+
+          const res = await fetch(`${ENV.SUPABASE_URL}/functions/v1/gemini-chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${authToken}` },
+            body: JSON.stringify({ history: this._history.slice(-20), systemPrompt: GEMINI_SYSTEM + localContext }),
+            signal: AbortSignal.timeout(12000),
+          });
+          const data = await res.json().catch(() => null);
+          if (res.status === 429 && data?.text) {
+            // Rate limited — this is an expected, user-facing state, not a network failure.
+            this._history.pop();
+            return { ok: false, error: 'rate_limited', text: data.text };
+          }
+          if (!res.ok || !data?.ok) throw new Error(data?.error || 'HTTP ' + res.status);
+          reply = data.text;
+        } else {
+          // Fallback: direct call, only used if no Supabase project is linked yet.
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${ENV.GEMINI_MODEL || 'gemini-flash-latest'}:generateContent?key=${ENV.GEMINI_API_KEY}`;
+          const body = { system_instruction: { parts: [{ text: GEMINI_SYSTEM + localContext }] }, contents: this._history.slice(-20), generationConfig: { temperature: 0.85, maxOutputTokens: 400 } };
+          const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: AbortSignal.timeout(12000) });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const data = await res.json();
+          reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, try again!';
+        }
+        this._history.push({ role: 'model', parts: [{ text: reply }] });
+        this._recordStat(true, Date.now() - startedAt);
+        return { ok: true, text: reply };
+      } catch (err) {
+        this._history.pop();
+        this._recordStat(false, Date.now() - startedAt, String(err?.message || err));
+        return { ok: false, error: 'network', text: '😔 Connection issue — check your internet and try again.' };
+      }
+    },
+
+    /** Local per-device usage stats — see adminAnalytics note on why these
+     *  aren't platform-wide without a backend to aggregate them. */
+    _recordStat(success, ms, errorMsg) {
+      const stats = lsGet('noura_ai_stats', { requests: [] });
+      stats.requests.push({ success, ms, error: errorMsg || null, at: new Date().toISOString() });
+      stats.requests = stats.requests.slice(-200);
+      lsSet('noura_ai_stats', stats);
+    },
+    getStats() {
+      const stats = lsGet('noura_ai_stats', { requests: [] });
+      const today = new Date().toDateString();
+      const todayReqs = stats.requests.filter((r) => new Date(r.at).toDateString() === today);
+      const okReqs = stats.requests.filter((r) => r.success && r.ms);
+      const avgMs = okReqs.length ? Math.round(okReqs.reduce((a, r) => a + r.ms, 0) / okReqs.length) : null;
+      const errors = stats.requests.filter((r) => !r.success).slice(-10).reverse();
+      return { today: todayReqs.length, total: stats.requests.length, avgMs, errors };
+    },
+    async checkHealth() {
+      if (!this.isConfigured()) return { ok: false, status: 'not_configured' };
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${ENV.GEMINI_MODEL || 'gemini-flash-latest'}?key=${ENV.GEMINI_API_KEY}`;
+        const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+        return { ok: res.ok, status: res.ok ? 'healthy' : 'error' };
+      } catch { return { ok: false, status: 'unreachable' }; }
+    },
+
+    /** Finds a real recipe matching the first listed ingredient (via recipeService). */
+    async recipeFromIngredients(ingredientsText) {
+      const first = (ingredientsText || '').trim().split(/[,\s]+/)[0];
+      if (!first) return { ok: false, recipe: null };
+      const data = await recipeService.mealDb.search(first);
+      const meal = data?.meals?.[0] || null;
+      return { ok: !!meal, recipe: meal };
+    },
+
+    resetHistory() { this._history = []; },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  PUBLIC EXPORT
+   * ════════════════════════════════════════════════════════════ */
+  window.Services = {
+    env: ENV,
+    auth: authService,
+    profile: userProfileService,
+    restaurants: restaurantService,
+    recipes: recipeService,
+    mealPlan: mealPlanService,
+    notifications: notificationService,
+    favourites: favouritesService,
+    settings: settingsService,
+    ai: aiService,
+    vendor: vendorService,
+    vendorMenu: vendorMenuService,
+    vendorOrders: vendorOrderService,
+    vendorPromos: vendorPromoService,
+    vendorReviews: vendorReviewService,
+    vendorAnalytics: vendorAnalyticsService,
+    admin: adminService,
+    ads: adsService,
+    challenges: challengesService,
+    challengesAdmin: challengesAdminService,
+    media: mediaService,
+    auditLog: auditLogService,
+    platform: platformService,
+    waitlist: waitlistService,
+    // small shared utils screens are allowed to use directly
+    utils: { lsGet, lsSet, lsDel, uid },
+  };
+})();
+
+</script>
+<script>
+/* ===== admin app ===== */
+// ══════════════════════════════════════════════════════
+//  NOURA — ADMIN DASHBOARD
+//  UI / screen logic only. All data through window.Services.
+// ══════════════════════════════════════════════════════
+if (!window.Services) {
+  document.body.innerHTML = '<div style="padding:40px 24px;color:#F2EDE4;font-family:sans-serif;text-align:center"><h2 style="margin-bottom:12px">⚠️ Admin Dashboard couldn\'t start</h2><p style="color:#8A7D6A;line-height:1.6">The service layer failed to load.</p></div>';
+  throw new Error('window.Services is missing.');
+}
+const S = window.Services;
+function el(id){ return document.getElementById(id); }
+let adminLoggedIn = false;
+
+// ── Auth ─────────────────────────────────────────────
+async function doAdminLogin() {
+  const email = el('al-email')?.value;
+  const pass  = el('al-pass')?.value;
+  if (!email || !pass) { aToast('Enter email and password'); return; }
+  const res = await S.admin.login(email, pass);
+  el('as-login').style.display = 'none';
+  el('as-2fa').style.display = 'flex';
+  aToast(res.demo ? 'Demo mode (no backend yet) — code sent to ' + email : 'Code sent to ' + email);
+}
+function tfaNext(input, idx) {
+  if (input.value && idx < 5) { document.querySelectorAll('.tfa-input')[idx+1]?.focus(); }
+}
+function verify2FA() {
+  el('as-2fa').style.display = 'none';
+  el('as-app').classList.add('active');
+  adminLoggedIn = true;
+  history.replaceState({ adminPage: 'pg-dashboard' }, '', '#dashboard');
+  initAdmin();
+}
+function doAdminLogout() {
+  el('as-app').classList.remove('active');
+  el('as-login').style.display = 'flex';
+  adminLoggedIn = false;
+}
+
+// ── Page routing ─────────────────────────────────────
+function aShowPage(pageId, navEl, title, fromPop) {
+  document.querySelectorAll('.body > div').forEach(p => { p.style.display='none'; p.classList.remove('page-enter'); });
+  const page = el(pageId);
+  if (page) { page.style.display = ''; void page.offsetWidth; page.classList.add('page-enter'); }
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (navEl) navEl.classList.add('active');
+  if (el('a-page-title')) el('a-page-title').textContent = title;
+  if (el('a-mob-title'))  el('a-mob-title').textContent  = title;
+  el('a-sidebar')?.classList.remove('open');
+  el('a-sb-overlay')?.classList.remove('on');
+
+  if (!fromPop) {
+    if (pageId === 'pg-dashboard') {
+      history.replaceState({ adminPage: 'pg-dashboard' }, '', '#dashboard');
+    } else if (history.state && history.state.adminPage && history.state.adminPage !== 'pg-dashboard') {
+      history.replaceState({ adminPage: pageId, title }, '', '#' + pageId.replace('pg-',''));
+    } else {
+      history.pushState({ adminPage: pageId, title }, '', '#' + pageId.replace('pg-',''));
+    }
+  }
+
+  if (pageId === 'pg-users')         loadUsers();
+  if (pageId === 'pg-vendors')       loadVendors();
+  if (pageId === 'pg-restaurants')   renderRestaurants();
+  if (pageId === 'pg-meals')         loadMeals();
+  if (pageId === 'pg-challenges')    loadChallenges();
+  if (pageId === 'pg-ads')           loadAds();
+  if (pageId === 'pg-categories')    renderCategories();
+  if (pageId === 'pg-reports')       loadReports();
+  if (pageId === 'pg-reviews')       loadAllReviews();
+  if (pageId === 'pg-ai')            renderAIMonitoring();
+  if (pageId === 'pg-notifications') renderSentNotifs();
+  if (pageId === 'pg-analytics')     renderAnalyticsCharts();
+  if (pageId === 'pg-roles')         renderRoles();
+  if (pageId === 'pg-audit')         renderAuditLog();
+  if (pageId === 'pg-settings')      loadPlatformSettings();
+}
+function toggleAdminSidebar() {
+  el('a-sidebar')?.classList.toggle('open');
+  el('a-sb-overlay')?.classList.toggle('on');
+}
+window.addEventListener('popstate', (e) => {
+  if (!adminLoggedIn) return;
+  const state = e.state;
+  if (state && state.adminPage) {
+    const navEl = document.querySelector(`.nav-item[onclick*="'${state.adminPage}'"]`);
+    aShowPage(state.adminPage, navEl, state.title || 'Dashboard', true);
+  } else {
+    const navEl = document.querySelector(`.nav-item[onclick*="'pg-dashboard'"]`);
+    aShowPage('pg-dashboard', navEl, 'Dashboard', true);
+  }
+});
+
+
+// ── Init / dashboard ──────────────────────────────────
+async function initAdmin() {
+  const [users, vendors, reviews, reports, meals] = await Promise.all([
+    S.admin.listUsers(), S.admin.listVendors(), S.admin.listAllReviews(), S.admin.listReports(), S.admin.listAllMeals()
+  ]);
+  const approved = vendors.filter(v=>v.status==='approved');
+  const pending  = vendors.filter(v=>v.status==='pending');
+  const today = new Date().toDateString();
+  const newToday = users.filter(u => u.joinedAt && new Date(u.joinedAt).toDateString() === today);
+  const aiStats = S.ai.getStats();
+
+  if (el('as-users'))            el('as-users').textContent            = users.length;
+  if (el('as-vendors-total'))    el('as-vendors-total').textContent    = vendors.length;
+  if (el('as-vendors'))          el('as-vendors').textContent          = approved.length;
+  if (el('as-pending-vendors'))  el('as-pending-vendors').textContent  = pending.length;
+  if (el('as-rests'))            el('as-rests').textContent            = approved.length;
+  if (el('as-meals'))            el('as-meals').textContent            = meals.length;
+  if (el('as-reviews'))          el('as-reviews').textContent          = reviews.length;
+  if (el('as-reports-pending'))  el('as-reports-pending').textContent  = reports.filter(r=>r.status!=='resolved').length;
+  if (el('as-ai-today'))         el('as-ai-today').textContent         = aiStats.today;
+  if (el('as-new-today'))        el('as-new-today').textContent        = newToday.length;
+
+  renderUsersTable('dash-users-tbody', users.slice(0,5), true);
+  renderAttentionCard(vendors, reports);
+  const rb = el('reports-badge'); const open = reports.filter(r=>r.status!=='resolved').length;
+  if (rb) { rb.textContent = open; rb.style.display = open ? '' : 'none'; }
+}
+
+function renderAttentionCard(vendors, reports) {
+  const pending = vendors.filter(v=>v.status==='pending');
+  const openReports = reports.filter(r=>r.status!=='resolved');
+  const body = el('dash-attention-body'); if (!body) return;
+  const rows = [];
+  if (pending.length) rows.push(`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--sfu);border-radius:10px"><span style="font-size:13px;color:var(--t1)">⏳ ${pending.length} vendor${pending.length===1?'':'s'} awaiting approval</span><button class="abtn view" onclick="aShowPage('pg-vendors',document.querySelector('.nav-item[onclick*=pg-vendors]'),'Vendors')">Review →</button></div>`);
+  if (openReports.length) rows.push(`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--sfu);border-radius:10px"><span style="font-size:13px;color:var(--t1)">🚩 ${openReports.length} open report${openReports.length===1?'':'s'}</span><button class="abtn view" onclick="aShowPage('pg-reports',document.querySelector('.nav-item[onclick*=pg-reports]'),'Reports')">Review →</button></div>`);
+  const attentionCard = el('dash-attention');
+  if (!rows.length) { if (attentionCard) attentionCard.style.display='none'; return; }
+  if (attentionCard) attentionCard.style.display='';
+  body.innerHTML = rows.join('');
+}
+
+function chartEmptyNotice(canvas, msg) {
+  if (aCharts[canvas.id]) { aCharts[canvas.id].destroy(); delete aCharts[canvas.id]; }
+  canvas.style.display = 'none';
+  const parent = canvas.parentElement;
+  let n = parent.querySelector('.chart-empty-notice');
+  if (!n) { n = document.createElement('div'); n.className='chart-empty-notice'; n.style.cssText='padding:24px 12px;text-align:center;color:var(--t3);font-size:12px'; parent.appendChild(n); }
+  n.textContent = msg;
+}
+
+// ── Users  (no cross-device directory without a backend) ──
+let allUsers = [];
+async function loadUsers() { allUsers = await S.admin.listUsers(); renderUsers(allUsers); }
+function renderUsersTable(tbodyId, users, simple) {
+  const tbody = el(tbodyId); if (!tbody) return;
+  if (!users.length) { tbody.innerHTML = `<tr><td colspan="${simple?4:5}" style="text-align:center;color:var(--t3);padding:40px">No users yet — this list populates once a backend tracks accounts across devices.</td></tr>`; return; }
+  tbody.innerHTML = users.map(u => `<tr>
+    <td><strong>${u.name}</strong></td>
+    <td style="color:var(--t2)">${u.email}</td>
+    <td>${u.country}</td>
+    ${!simple ? `<td>${u.saved}</td><td>${u.streak} 🔥</td>` : ''}
+    <td><span class="badge ${u.status==='active'?'green':'red'}">${u.status}</span></td>
+    ${!simple ? `<td><div class="act">
+      <button class="abtn view" onclick="viewUser('${u.id}')">👁 View</button>
+      <button class="abtn suspend" onclick="toggleUserStatus('${u.id}')">${u.status==='active'?'Suspend':'Restore'}</button>
+      <button class="abtn view" onclick="resetUserPassword('${u.id}')">🔑 Reset PW</button>
+      <button class="abtn delete" onclick="confirmAction('Delete user ${u.name.replace(/'/g,"\\'")}?',()=>deleteUser('${u.id}'))">🗑</button>
+    </div></td>` : `<td><div class="act"><button class="abtn view" onclick="aShowPage('pg-users',null,'Users')">View all</button></div></td>`}
+  </tr>`).join('');
+}
+function renderUsers(users) { renderUsersTable('users-tbody', users, false); }
+function searchUsers(val) { renderUsers(val ? allUsers.filter(u=>u.name.toLowerCase().includes(val.toLowerCase())||u.email.toLowerCase().includes(val.toLowerCase())) : allUsers); }
+function filterUsers(type, btn) {
+  document.querySelectorAll('#pg-users .fchip').forEach(c=>c.classList.remove('active')); if(btn) btn.classList.add('active');
+  renderUsers(type==='all' ? allUsers : allUsers.filter(u=>u.status===type));
+}
+function viewUser(id) {
+  const u=allUsers.find(x=>x.id===id); if(!u) return;
+  aToast(`${u.name} · ${u.email} · ${u.country} · Joined ${u.joinedAt||'—'}`);
+}
+async function toggleUserStatus(id) {
+  const u=allUsers.find(x=>x.id===id); if(!u) return;
+  const next = u.status==='active'?'suspended':'active';
+  await S.admin.setUserStatus(id, next); u.status = next; renderUsers(allUsers);
+  S.auditLog.log(next==='suspended'?'User suspended':'User restored', u.name+' ('+u.email+')');
+  aToast('User status updated');
+}
+async function resetUserPassword(id) {
+  const u=allUsers.find(x=>x.id===id); if(!u) return;
+  S.auditLog.log('Password reset requested', u.name+' ('+u.email+')');
+  aToast('Reset link would be emailed to '+u.email+' — needs backend to actually send it');
+}
+async function deleteUser(id) {
+  const u=allUsers.find(x=>x.id===id); if(!u) return;
+  allUsers = allUsers.filter(x=>x.id!==id); renderUsers(allUsers);
+  S.auditLog.log('User deleted', u.name+' ('+u.email+')');
+  aToast('User deleted');
+}
+
+// ── Vendors  (derived from the real published restaurant directory) ──
+let allVendors = [];
+async function loadVendors() { allVendors = await S.admin.listVendors(); renderVendors(allVendors); }
+function renderVendors(vendors) {
+  const tbody = el('vendors-tbody'); if (!tbody) return;
+  if (!vendors.length) { tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--t3);padding:40px">No vendors yet — they'll appear here once vendors complete onboarding.</td></tr>`; return; }
+  tbody.innerHTML = vendors.map(v => {
+    const statusBadge = {approved:'<span class="badge green">✅ Approved</span>',pending:'<span class="badge orange">⏳ Pending</span>',suspended:'<span class="badge red">🚫 Suspended</span>'}[v.status]||'';
+    return `<tr>
+      <td><strong>${v.businessName}</strong></td>
+      <td style="color:var(--t2)">${v.owner}</td>
+      <td>${v.category}</td>
+      <td>${v.menuItems}</td>
+      <td>${v.rating||'—'}</td>
+      <td>${statusBadge}</td>
+      <td><div class="act">
+        ${v.status==='pending'?`<button class="abtn approve" onclick="vendorAction('${v.id}','approved')">✅ Approve</button><button class="abtn reject" onclick="vendorAction('${v.id}','suspended')">❌ Reject</button>`:''}
+        ${v.status==='approved'?`<button class="abtn feature" onclick="featureVendor('${v.id}')">⭐ Feature</button><button class="abtn suspend" onclick="vendorAction('${v.id}','suspended')">Suspend</button>`:''}
+        ${v.status==='suspended'?`<button class="abtn approve" onclick="vendorAction('${v.id}','approved')">Restore</button>`:''}
+        <button class="abtn view" onclick="viewVendorMenu('${v.id}')">🍽 Menu</button>
+        <button class="abtn delete" onclick="confirmAction('Permanently delete ${v.businessName.replace(/'/g,"\\'")}?',()=>deleteVendor('${v.id}'))">🗑</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+  const pending = vendors.filter(v=>v.status==='pending').length;
+  const pb = el('pending-badge'); if (pb) { pb.textContent=pending; pb.style.display=pending?'':'none'; }}
+async function viewVendorMenu(id) {
+  const { restaurant } = await S.restaurants.get(id);
+  if (!restaurant || !(restaurant.menu||[]).length) { aToast('No menu items yet'); return; }
+  aToast(restaurant.menu.slice(0,3).map(m=>m.name).join(', ') + (restaurant.menu.length>3?` +${restaurant.menu.length-3} more`:''));
+}
+async function deleteVendor(id) {
+  const rests = S.utils.lsGet('noura_restaurants', []);
+  const v = rests.find(r=>r.id===id);
+  S.utils.lsSet('noura_restaurants', rests.filter(r=>r.id!==id));
+  loadVendors();
+  S.auditLog.log('Vendor deleted', v?.name || id);
+  aToast('Vendor deleted');
+}
+function searchVendors(val) { renderVendors(val ? allVendors.filter(v=>v.businessName.toLowerCase().includes(val.toLowerCase())) : allVendors); }
+function filterVendors(type, btn) {
+  document.querySelectorAll('#pg-vendors .fchip').forEach(c=>c.classList.remove('active')); if(btn) btn.classList.add('active');
+  renderVendors(type==='all' ? allVendors : allVendors.filter(v=>v.status===type));
+}
+async function vendorAction(id, status) {
+  const v = allVendors.find(x=>x.id===id);
+  await S.admin.setVendorStatus(id, status);
+  await loadVendors();
+  S.auditLog.log(status==='approved'?'Vendor approved':status==='suspended'?'Vendor suspended':'Vendor updated', v?.businessName || id);
+  aToast(status==='approved'?'Vendor approved ✅':status==='suspended'?'Vendor suspended':'Vendor updated');
+}
+async function featureVendor(id) {
+  const v = allVendors.find(x=>x.id===id);
+  await S.admin.featureVendor(id);
+  S.auditLog.log('Vendor featured', v?.businessName || id);
+  aToast('Featured! ⭐');
+}
+
+// ── Restaurants (reads the same shared directory) ──
+async function renderRestaurants() {
+  const { restaurants } = await S.restaurants.list();
+  const tbody = el('rests-tbody'); if (!tbody) return;
+  if (!restaurants.length) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--t3);padding:40px">No restaurants yet — vendors add them via the Vendor Portal</td></tr>`; return; }
+  tbody.innerHTML = restaurants.map(r=>`<tr>
+    <td><strong>${r.emoji||'🍽️'} ${r.name}</strong></td>
+    <td style="color:var(--t2)">${r.cuisine||'—'}</td>
+    <td style="color:var(--t2)">${r.area||'—'}</td>
+    <td>${r.rating?'⭐ '+r.rating:'—'}</td>
+    <td><span class="badge ${r.open?'green':'gray'}">${r.open?'Open':'Closed'}</span>${r.verified?'<span class="badge orange" style="margin-left:4px">✓ Verified</span>':''}</td>
+    <td><div class="act">
+      <button class="abtn view" onclick="aToast('${r.name}')">👁 View</button>
+      <button class="abtn feature" onclick="featureVendor('${r.id}')">⭐ Feature</button>
+      <button class="abtn delete" onclick="confirmAction('Delete ${r.name}?',()=>removeRestaurant('${r.id}'))">🗑</button>
+    </div></td>
+  </tr>`).join('');
+}
+async function removeRestaurant(id) {
+  const { restaurants } = await S.restaurants.list();
+  const r = restaurants.find(x=>x.id===id);
+  await S.admin.removeRestaurant(id);
+  renderRestaurants();
+  S.auditLog.log('Restaurant deleted', r?.name || id);
+  aToast('Deleted');
+}
+function searchRestaurants(val) { renderRestaurants(); } // filtering handled server-side once backend exists
+function filterRests(type, btn) { document.querySelectorAll('#pg-restaurants .fchip').forEach(c=>c.classList.remove('active')); if(btn) btn.classList.add('active'); renderRestaurants(); }
+
+// ── Categories  (static taxonomy, not user data) ──
+function renderCategories() {
+  const cuisines=['Nigerian','Ghanaian','Kenyan','West African','East African','South African','Continental','Italian','Asian','Middle Eastern','Fast Food','Bakery'];
+  const meals=['Breakfast','Lunch','Dinner','Snacks','Drinks','Desserts','Street Food','Grills'];
+  const tags=['Vegan','Vegetarian','Gluten-Free','Dairy-Free','Halal','High Protein','Low Calorie','Spicy','Mild'];
+  const catItem=(name)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--bd);font-size:13px"><span style="color:var(--t1)">${name}</span><div class="act"><button class="abtn view" onclick="aToast('Edit: ${name}')">✏️</button><button class="abtn delete" onclick="aToast('Delete: ${name}')">🗑</button></div></div>`;
+  el('cat-cuisines').innerHTML=cuisines.map(catItem).join('');
+  el('cat-meals').innerHTML=meals.map(catItem).join('');
+  el('cat-tags').innerHTML=tags.map(catItem).join('');
+}
+
+// ── Reports  (empty until real report submissions exist) ──
+let allReports = [];
+async function loadReports() {
+  allReports = await S.admin.listReports();
+  renderReports(allReports);
+  const rb = el('reports-badge'); const open = allReports.filter(r=>r.status!=='resolved').length;
+  if (rb) { rb.textContent = open; rb.style.display = open ? '' : 'none'; }
+}
+function renderReports(reports) {
+  const list = el('reports-list'); if(!list)return;
+  if (!reports.length) { list.innerHTML = `<div style="text-align:center;padding:40px 20px;color:var(--t3)"><div style="font-size:40px;margin-bottom:10px">🚩</div>No reports yet.</div>`; return; }
+  list.innerHTML=reports.map(r=>`
+    <div style="background:var(--sf);border:1px solid ${r.type==='business'?'#E0525230':'var(--bd)'};border-radius:14px;padding:16px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="badge ${r.type==='business'?'red':'orange'}">${r.type==='business'?'🏪 Business':'📝 Review'}</span>
+          <span style="font-size:11px;color:var(--t3)">${r.date}</span>
+        </div>
+        <span class="badge orange">${r.status}</span>
+      </div>
+      <div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:4px">${r.target}</div>
+      <div style="font-size:13px;color:var(--t2);margin-bottom:12px">Reported by: ${r.reporter} · Reason: ${r.reason}</div>
+      <div class="act">
+        <button class="abtn approve" onclick="resolveReport('${r.id}')">✅ Resolve</button>
+      </div>
+    </div>`).join('');
+}
+function filterReports(type,btn){document.querySelectorAll('#pg-reports .fchip').forEach(c=>c.classList.remove('active'));if(btn)btn.classList.add('active');renderReports(type==='all'?allReports:allReports.filter(r=>r.type===type));}
+async function resolveReport(id) {
+  await S.admin.resolveReport(id);
+  S.auditLog.log('Report resolved', 'Report #'+id);
+  aToast('Report resolved ✅'); loadReports();
+}
+
+// ── Reviews  (real reviews aggregated from the shared directory) ──
+let allReviewsCache = [];
+async function loadAllReviews() { allReviewsCache = await S.admin.listAllReviews(); renderAllReviews(allReviewsCache); }
+function renderAllReviews(reviews) {
+  const tbody=el('reviews-tbody'); if(!tbody)return;
+  if (!reviews.length) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--t3);padding:40px">No reviews yet.</td></tr>`; return; }
+  tbody.innerHTML=reviews.map(r=>`<tr>
+    <td><strong>${r.author}</strong></td>
+    <td style="color:var(--t2)">${r.restaurant}</td>
+    <td>${'⭐'.repeat(r.stars)}</td>
+    <td style="color:var(--t2);max-width:200px">${r.text}</td>
+    <td style="color:var(--t3)">${r.date}</td>
+    <td><div class="act"><button class="abtn delete" onclick="removeReview('${r.restaurantId}','${r.id}')">🗑 Remove</button></div></td>
+  </tr>`).join('');
+}
+function filterAllReviews(type,btn){document.querySelectorAll('#pg-reviews .fchip').forEach(c=>c.classList.remove('active'));if(btn)btn.classList.add('active');renderAllReviews(type==='all'?allReviewsCache:allReviewsCache.filter(r=>String(r.stars)===type));}
+async function removeReview(restaurantId, reviewId) {
+  await S.admin.removeReview(restaurantId, reviewId);
+  loadAllReviews();
+  S.auditLog.log('Review removed', 'Restaurant '+restaurantId+', review '+reviewId);
+  aToast('Review removed');
+}
+
+// ── Notifications ─────────────────────────────────────
+async function renderSentNotifs() {
+  const all = await S.admin.listNotifications();
+  const list = el('sent-notifs'); if(!list)return;
+  list.innerHTML = all.length ? all.map(n=>`<div style="padding:12px 16px;border-bottom:1px solid var(--bd)"><div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:2px">${n.title}</div><div style="font-size:11px;color:var(--t2)">${n.audienceLabel||n.audience} · ${n.date}</div></div>`).join('') : '<div style="padding:16px;color:var(--t3);font-size:13px">No notifications sent yet</div>';
+}
+function onAudienceTypeChange() {
+  const type = el('notif-audience-type')?.value;
+  const valInput = el('notif-audience-value');
+  if (!valInput) return;
+  const needsValue = type === 'country' || type === 'cuisine';
+  valInput.style.display = needsValue ? 'block' : 'none';
+  valInput.placeholder = type === 'country' ? 'e.g. Nigeria' : type === 'cuisine' ? 'e.g. Jollof Rice' : '';
+}
+async function sendAdminNotif() {
+  const title=el('notif-title')?.value.trim();
+  const msg  =el('notif-msg')?.value.trim();
+  if(!title){aToast('Enter a title');return;}
+  if(!msg)  {aToast('Enter a message');return;}
+  const type = el('notif-audience-type')?.value || 'everyone';
+  const value = el('notif-audience-value')?.value.trim();
+  if ((type==='country'||type==='cuisine') && !value) { aToast('Enter a value for targeted audience'); return; }
+  const audience = { type, value: value || undefined };
+  const { audienceLabel } = await S.admin.broadcastNotification({ title, message: msg, audience });
+  el('notif-title').value=''; el('notif-msg').value=''; el('notif-audience-value').value='';
+  renderSentNotifs();
+  S.auditLog.log('Notification broadcast', title+' → '+audienceLabel);
+  aToast('Notification sent to '+audienceLabel+' 📢');
+}
+
+// ── Analytics charts  (honest — needs backend for cross-device data) ──
+let analyticsInit=false;
+async function renderAnalyticsCharts(){
+  analyticsInit=true;
+  const { live, dau, searchTerms, geo, aiUsage } = await S.admin.trends();
+  const map = [['ch-dau','line',dau],['ch-terms','doughnut',searchTerms],['ch-geo','doughnut',geo],['ch-ai','bar',aiUsage]];
+  map.forEach(([id,type,data]) => {
+    const canvas = el(id); if (!canvas) return;
+    if (live && data) renderAChart(id, type, data.labels, data.values, '#E8943A');
+    else chartEmptyNotice(canvas, 'Platform-wide analytics need a connected backend to aggregate across all users.');
+  });
+}
+
+// ── Charts ────────────────────────────────────────────
+const aCharts={};
+function renderAChart(id,type,labels,data,color){
+  const canvas=el(id); if(!canvas)return;
+  canvas.style.display='';
+  const notice = canvas.parentElement.querySelector('.chart-empty-notice'); if (notice) notice.remove();
+  if(aCharts[id])aCharts[id].destroy();
+  const isDough=type==='doughnut';
+  aCharts[id]=new Chart(canvas,{type,data:{labels,datasets:[{data,backgroundColor:isDough?data.map((_,i)=>(Array.isArray(color)?color[i]:color)+'99'):color+'33',borderColor:isDough?data.map((_,i)=>Array.isArray(color)?color[i]:color):color,borderWidth:2,fill:!isDough,tension:.4,pointBackgroundColor:isDough?undefined:color,pointRadius:isDough?0:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:isDough,labels:{color:'#8A7D6A',font:{size:10}}}},scales:isDough?{}:{x:{grid:{color:'#221A14'},ticks:{color:'#8A7D6A',font:{size:10}}},y:{grid:{color:'#221A14'},ticks:{color:'#8A7D6A',font:{size:10}}}}}});
+}
+
+// ── Advertising (real CRUD, real serving on consumer app) ──
+async function loadAds() { renderAds(await S.ads.list()); }
+function renderAds(ads) {
+  const tbody = el('ads-tbody'); if (!tbody) return;
+  if (!ads.length) { tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--t3);padding:40px">No campaigns yet — create one above.</td></tr>`; return; }
+  const statusBadge = { Running:'green', Scheduled:'orange', Paused:'gray', Expired:'red' };
+  tbody.innerHTML = ads.slice().reverse().map(ad=>`<tr>
+    <td><span style="font-size:16px;margin-right:6px">${ad.image||'📣'}</span><strong>${ad.title}</strong></td>
+    <td style="color:var(--t2)">${(ad.placement||'').replace('_',' ')}</td>
+    <td style="color:var(--t2)">${ad.audience}</td>
+    <td style="color:var(--t2);font-size:12px">${ad.startDate||'—'} → ${ad.endDate||'—'}</td>
+    <td>${ad.impressions||0}</td>
+    <td>${ad.clicks||0}</td>
+    <td><span class="badge ${statusBadge[ad.status]||'gray'}">${ad.status}</span></td>
+    <td><div class="act">
+      <button class="abtn view" onclick="toggleAdPause('${ad.id}')">${ad.paused?'▶ Resume':'⏸ Pause'}</button>
+      <button class="abtn delete" onclick="confirmAction('Delete ad ${ad.title.replace(/'/g,"\\'")}?',()=>deleteAd('${ad.id}'))">🗑</button>
+    </div></td>
+  </tr>`).join('');
+}
+async function createAd() {
+  const title = el('ad-title')?.value.trim();
+  const link  = el('ad-link')?.value.trim();
+  if (!title) { aToast('Enter a title'); return; }
+  const ad = {
+    title, image: el('ad-image')?.value.trim() || '📣', cta: el('ad-cta')?.value.trim() || 'Learn More',
+    desc: el('ad-desc')?.value.trim(), link,
+    startDate: el('ad-start')?.value || new Date().toISOString().slice(0,10),
+    endDate: el('ad-end')?.value || '',
+    budget: Number(el('ad-budget')?.value) || 0,
+    audience: el('ad-audience')?.value || 'everyone',
+    placement: el('ad-placement')?.value || 'home_banner',
+  };
+  await S.ads.create(ad);
+  ['ad-title','ad-image','ad-cta','ad-desc','ad-link','ad-start','ad-end','ad-budget'].forEach(id=>{ if(el(id)) el(id).value=''; });
+  loadAds();
+  S.auditLog.log('Ad campaign created', title);
+  aToast('Campaign created 📣');
+}
+async function toggleAdPause(id) {
+  const { paused } = await S.ads.togglePause(id);
+  loadAds();
+  S.auditLog.log(paused?'Ad paused':'Ad resumed', id);
+  aToast(paused?'Campaign paused':'Campaign resumed');
+}
+async function deleteAd(id) {
+  await S.ads.remove(id);
+  loadAds();
+  S.auditLog.log('Ad campaign deleted', id);
+  aToast('Campaign deleted');
+}
+
+// ── Challenges (admin creates/schedules — never users) ──
+async function loadChallenges() {
+  const tbody = el('challenges-tbody'); if (!tbody) return;
+  tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px"><div class="spinner" style="margin:0 auto"></div></td></tr>`;
+  const res = await S.challengesAdmin.list();
+  if (!res.ok) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--er);padding:30px">Could not load — is the admin-challenges function deployed?</td></tr>`; return; }
+  renderChallengesTable(res.data || []);
+}
+function renderChallengesTable(challenges) {
+  const tbody = el('challenges-tbody'); if (!tbody) return;
+  if (!challenges.length) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--t3);padding:40px">No challenges scheduled yet — create one above.</td></tr>`; return; }
+  const today = new Date().toISOString().slice(0,10);
+  tbody.innerHTML = challenges.map(c => {
+    const status = !c.active ? 'Paused' : c.end_date && c.end_date < today ? 'Ended' : c.start_date > today ? 'Scheduled' : 'Live';
+    const statusColor = { Live:'green', Scheduled:'orange', Paused:'gray', Ended:'red' }[status];
+    return `<tr>
+      <td><span style="font-size:16px;margin-right:6px">${c.icon}</span><strong>${c.title}</strong></td>
+      <td style="color:var(--t2)">${c.metric} (${c.target})</td>
+      <td style="color:var(--t2);font-size:12px">${c.start_date} → ${c.end_date||'—'}</td>
+      <td>${c.email_sent ? '✅ Sent' : '—'}</td>
+      <td><span class="badge ${statusColor}">${status}</span></td>
+      <td><div class="act">
+        <button class="abtn view" onclick="toggleChallenge('${c.id}',${!c.active})">${c.active?'⏸ Pause':'▶ Resume'}</button>
+        <button class="abtn delete" onclick="confirmAction('Delete ${c.title.replace(/'/g,"\\'")}?',()=>deleteChallenge('${c.id}'))">🗑</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+async function createChallenge() {
+  const title = el('ch-title')?.value.trim();
+  if (!title) { aToast('Enter a title'); return; }
+  const payload = {
+    icon: el('ch-icon')?.value.trim() || '🏆',
+    title,
+    description: el('ch-desc')?.value.trim(),
+    metric: el('ch-metric')?.value,
+    target: Number(el('ch-target')?.value) || 1,
+    start_date: el('ch-start')?.value || new Date().toISOString().slice(0,10),
+    end_date: el('ch-end')?.value || null,
+    sendEmail: el('ch-email')?.checked || false,
+  };
+  const res = await S.challengesAdmin.create(payload);
+  if (!res.ok) { aToast('Failed: ' + (res.error || 'unknown error')); return; }
+  ['ch-icon','ch-title','ch-desc','ch-target','ch-start','ch-end'].forEach(id=>{ if(el(id)) el(id).value=''; });
+  if (el('ch-email')) el('ch-email').checked = false;
+  loadChallenges();
+  S.auditLog.log('Challenge created', title + (payload.sendEmail ? ' (emailed)' : ''));
+  aToast(payload.sendEmail ? 'Challenge created — emailing users 📧' : 'Challenge created 🏆');
+}
+async function toggleChallenge(id, active) {
+  await S.challengesAdmin.toggle(id, active);
+  loadChallenges();
+  S.auditLog.log(active?'Challenge resumed':'Challenge paused', id);
+}
+async function deleteChallenge(id) {
+  await S.challengesAdmin.remove(id);
+  loadChallenges();
+  S.auditLog.log('Challenge deleted', id);
+  aToast('Challenge deleted');
+}
+
+// ── Meal Moderation (real menu items across all restaurants) ──
+let allMeals = [];
+async function loadMeals() { allMeals = await S.admin.listAllMeals(); renderMeals(allMeals); }
+function renderMeals(meals) {
+  const tbody = el('meals-tbody'); if (!tbody) return;
+  if (!meals.length) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--t3);padding:40px">No meals listed yet.</td></tr>`; return; }
+  tbody.innerHTML = meals.map(m=>`<tr>
+    <td><span style="font-size:16px;margin-right:6px">${m.emoji||'🍽️'}</span><strong>${m.name}</strong></td>
+    <td style="color:var(--t2)">${m.restaurant}</td>
+    <td>${m.cat||'—'}</td>
+    <td style="color:var(--ac);font-weight:600">${m.price||'—'}</td>
+    <td><span class="badge ${m.available?'green':'gray'}">${m.available?'Available':'Hidden'}</span></td>
+    <td><div class="act">
+      <button class="abtn delete" onclick="confirmAction('Remove ${(m.name||'').replace(/'/g,"\\'")}?',()=>removeMealAdmin('${m.restaurantId}','${m.id}'))">🗑 Remove</button>
+    </div></td>
+  </tr>`).join('');
+}
+function searchMeals(val) {
+  const v=val.toLowerCase();
+  renderMeals(val ? allMeals.filter(m=>m.name?.toLowerCase().includes(v)||m.restaurant?.toLowerCase().includes(v)) : allMeals);
+}
+async function removeMealAdmin(restaurantId, itemId) {
+  await S.admin.removeMeal(restaurantId, itemId);
+  S.auditLog.log('Meal removed', 'Restaurant '+restaurantId+', item '+itemId);
+  loadMeals(); aToast('Meal removed');
+}
+
+// ── AI Monitoring (real per-device stats) ──────────────
+async function renderAIMonitoring() {
+  const stats = S.ai.getStats();
+  if (el('ai-today')) el('ai-today').textContent = stats.today;
+  if (el('ai-total')) el('ai-total').textContent = stats.total;
+  if (el('ai-avgtime')) el('ai-avgtime').textContent = stats.avgMs ? stats.avgMs+'ms' : '—';
+  const health = await S.ai.checkHealth();
+  if (el('ai-health')) el('ai-health').textContent = health.ok ? '🟢 Healthy' : health.status==='not_configured' ? '⚪ Not configured' : '🔴 Unreachable';
+  const errList = el('ai-errors-list');
+  if (errList) {
+    errList.innerHTML = stats.errors.length
+      ? stats.errors.map(e=>`<div style="padding:10px 12px;border-bottom:1px solid var(--bd);font-size:12px"><span style="color:var(--er)">●</span> ${e.error||'Unknown error'} <span style="color:var(--t3);float:right">${new Date(e.at).toLocaleString()}</span></div>`).join('')
+      : `<div style="padding:16px;color:var(--t3);font-size:13px">No errors recorded on this device 🎉</div>`;
+  }
+}
+
+// ── Admin Roles (reference — real enforcement needs backend) ──
+function renderRoles() {
+  const roles = [
+    { icon:'👑', name:'Super Admin', desc:'Full access to every page and action, including platform settings, roles, and destructive actions.' },
+    { icon:'🛡️', name:'Moderator', desc:'Manages reports, reviews, and meal/content moderation. Cannot change platform settings or roles.' },
+    { icon:'📊', name:'Analyst', desc:'Read-only access to Dashboard, Analytics, and AI Monitoring. Cannot take moderation actions.' },
+    { icon:'🤝', name:'Vendor Support', desc:'Manages vendor approvals, vendor details, and vendor-facing communication. No user management access.' },
+    { icon:'📞', name:'Customer Support', desc:'Manages user accounts (suspend/restore/reset password) and views reports. No vendor or platform access.' },
+  ];
+  const grid = el('roles-grid'); if (!grid) return;
+  grid.innerHTML = roles.map(r=>`<div class="card" style="margin-bottom:0"><div style="display:flex;gap:14px;align-items:flex-start;padding:4px"><div style="font-size:28px">${r.icon}</div><div><div style="font-weight:700;color:var(--t1);font-size:14px;margin-bottom:4px">${r.name}</div><div style="font-size:13px;color:var(--t2);line-height:1.5">${r.desc}</div></div></div></div>`).join('');
+}
+
+// ── Audit Log (real — every action above logs here) ────
+function renderAuditLog() {
+  const entries = S.auditLog.list();
+  const tbody = el('audit-tbody'); if (!tbody) return;
+  if (!entries.length) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:40px">No admin actions recorded yet on this device.</td></tr>`; return; }
+  tbody.innerHTML = entries.map(e=>`<tr>
+    <td><strong>${e.action}</strong></td>
+    <td style="color:var(--t2)">${e.details}</td>
+    <td style="color:var(--t2)">${e.admin}</td>
+    <td style="color:var(--t3)">${new Date(e.time).toLocaleString()}</td>
+  </tr>`).join('');
+}
+function clearAuditLog() {
+  confirmAction('Clear the entire audit log? This cannot be undone.', () => { S.auditLog.clear(); renderAuditLog(); aToast('Audit log cleared'); });
+}
+
+// ── Platform Settings (real toggles — maintenance mode actually gates the apps) ──
+function loadPlatformSettings() {
+  const flags = S.platform.getFeatureFlags();
+  el('flag-vendorReg')?.classList.toggle('on', flags.vendorRegistrations !== false);
+  el('flag-userReg')?.classList.toggle('on', flags.userRegistrations !== false);
+  el('flag-maintenance')?.classList.toggle('on', S.platform.isMaintenanceMode());
+}
+function toggleFeatureFlag(key, toggleEl) {
+  const flags = S.platform.getFeatureFlags();
+  const next = !(flags[key] !== false);
+  S.platform.setFeatureFlag(key, next);
+  toggleEl.classList.toggle('on', next);
+  S.auditLog.log('Feature flag changed', key + ' → ' + (next?'on':'off'));
+  aToast('Setting updated');
+}
+function toggleMaintenanceMode(toggleEl) {
+  const next = !S.platform.isMaintenanceMode();
+  S.platform.setMaintenanceMode(next);
+  toggleEl.classList.toggle('on', next);
+  S.auditLog.log('Maintenance mode', next ? 'Enabled' : 'Disabled');
+  aToast(next ? '🛠️ Maintenance mode ON — consumer app & vendor portal are now blocked' : '✅ Maintenance mode OFF');
+}
+
+// ── Modals ────────────────────────────────────────────
+function confirmAction(msg, onConfirm) {
+  el('confirm-body').textContent=msg;
+  el('confirm-ok').onclick=()=>{onConfirm();closeAMod('mod-confirm');};
+  el('mod-confirm').classList.add('on');
+}
+function closeAMod(id){el(id)?.classList.remove('on');}
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.a-modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('on');}));
+});
+
+// ── Toast ─────────────────────────────────────────────
+let atTimer;
+function aToast(msg){ const t=el('a-toast'); if(!t)return; t.textContent=msg;t.classList.add('on');clearTimeout(atTimer);atTimer=setTimeout(()=>t.classList.remove('on'),2800); }
+
+// Always show login screen — never auto-login for an admin panel.
+
+</script>
+</body>
+</html>
