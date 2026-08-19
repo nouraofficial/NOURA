@@ -16,21 +16,30 @@
   --ok:#4CAF50;--er:#E05252;--warn:#F5A623;
   --r:12px;--rf:999px;
 }
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;min-height:100vh}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 button{cursor:pointer;font-family:inherit;border:none;background:none}
-.wrap{max-width:560px;margin:0 auto;min-height:100vh;background:var(--bg);position:relative}
+.wrap{max-width:560px;margin:0 auto;height:100%;background:var(--bg);position:relative;display:flex;flex-direction:column}
 
-/* ── LOADING / NOT FOUND ── */
 #store-loading,#store-notfound{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center}
 .spinner{width:32px;height:32px;border:3px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:14px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ── HERO ── */
-.hero-cover{height:180px;background:linear-gradient(135deg,var(--sfu),var(--sf));display:flex;align-items:center;justify-content:center;font-size:64px;position:relative}
-.hero-logo{width:76px;height:76px;border-radius:22px;background:var(--sf);border:3px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:34px;position:absolute;left:20px;bottom:-38px;box-shadow:0 4px 16px rgba(0,0,0,.3)}
-.hero-body{padding:48px 20px 20px}
-.hero-name{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.topbar{display:flex;align-items:center;gap:10px;padding:14px 16px;flex-shrink:0;border-bottom:1px solid var(--bd);background:var(--bg);position:sticky;top:0;z-index:50}
+.topbar-logo{width:30px;height:30px;border-radius:9px;background:var(--acs);border:1px solid #E8943A40;display:flex;align-items:center;justify-content:center;font-size:15px;overflow:hidden;background-size:cover;background-position:center}
+.topbar-name{font-family:'Sora',sans-serif;font-size:14px;font-weight:700;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-btn{width:34px;height:34px;border-radius:50%;background:var(--sfu);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+
+.tscreens{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.tscreen{display:none}
+.tscreen.active{display:block;animation:tfade .25s ease}
+@keyframes tfade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.hero-cover{height:170px;background:linear-gradient(135deg,var(--sfu),var(--sf));display:flex;align-items:center;justify-content:center;font-size:60px;position:relative;background-size:cover;background-position:center}
+.hero-logo{width:72px;height:72px;border-radius:20px;background:var(--sf);border:3px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:32px;position:absolute;left:20px;bottom:-36px;box-shadow:0 4px 16px rgba(0,0,0,.35);overflow:hidden;background-size:cover;background-position:center}
+.hero-body{padding:46px 20px 20px}
+.hero-name{font-family:'Sora',sans-serif;font-size:21px;font-weight:800;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .hero-meta{display:flex;align-items:center;gap:10px;margin-top:6px;flex-wrap:wrap;font-size:13px;color:var(--t2)}
 .pill{padding:3px 10px;border-radius:var(--rf);font-size:11px;font-weight:600}
 .pill.open{background:#4CAF5018;color:var(--ok)}
@@ -40,14 +49,14 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .hero-btn{flex:1;min-width:90px;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:var(--r);background:var(--sfu);border:1px solid var(--bd);font-size:13px;font-weight:600;color:var(--t1)}
 .hero-btn.primary{background:var(--ac);color:var(--bg);border-color:var(--ac)}
 
-/* ── SECTIONS ── */
-.section{padding:20px}
-.section-title{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.section{padding:18px 20px}
+.section-title{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.section-title .see-all{font-size:12px;font-weight:600;color:var(--ac)}
 .about-text{font-size:13px;color:var(--t2);line-height:1.7}
 .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .tag{background:var(--sfu);border:1px solid var(--bd);color:var(--t2);font-size:11px;padding:4px 10px;border-radius:var(--rf)}
+.divider{height:1px;background:var(--bd);margin:4px 20px}
 
-/* ── MENU ── */
 .menu-search{width:100%;padding:11px 14px;border-radius:var(--r);background:var(--sfu);border:1px solid var(--bd);color:var(--t1);font-size:13px;margin-bottom:14px}
 .menu-search::placeholder{color:var(--t3)}
 .menu-cat{font-size:11px;font-weight:700;color:var(--ac);text-transform:uppercase;letter-spacing:.6px;margin:16px 0 8px}
@@ -57,42 +66,46 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 .menu-item-desc{font-size:12px;color:var(--t2);margin-top:2px}
 .menu-item-price{font-size:14px;font-weight:700;color:var(--ac);flex-shrink:0}
 .menu-item.unavailable{opacity:.5}
+.home-menu-preview{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.home-menu-preview::-webkit-scrollbar{display:none}
+.hmp-card{flex-shrink:0;width:120px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:10px;text-align:center}
+.hmp-card .e{font-size:28px;margin-bottom:6px}
+.hmp-card .n{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hmp-card .p{font-size:12px;color:var(--ac);font-weight:700;margin-top:2px}
 
-/* ── GALLERY ── */
 .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.gallery-ph{aspect-ratio:1;background:var(--sfu);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--t3)}
+.gallery-ph{aspect-ratio:1;background:var(--sfu);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--t3);overflow:hidden;background-size:cover;background-position:center}
 
-/* ── REVIEWS ── */
 .review{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:14px;margin-bottom:10px}
 .review-top{display:flex;justify-content:space-between;margin-bottom:6px}
 .review-author{font-size:13px;font-weight:600}
 .review-stars{font-size:11px;color:var(--ac)}
 .review-date{font-size:11px;color:var(--t3)}
 .review-text{font-size:13px;color:var(--t2);line-height:1.6}
-.rating-summary{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.rating-num{font-family:'Sora',sans-serif;font-size:32px;font-weight:800;color:var(--ac)}
+.rating-summary{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding:16px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r)}
+.rating-num{font-family:'Sora',sans-serif;font-size:36px;font-weight:800;color:var(--ac)}
 
-/* ── CONTACT ── */
 .contact-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--bd);font-size:13px}
 .contact-row:last-child{border-bottom:none}
 .contact-icon{font-size:18px;width:24px}
 
-/* ── SHARE ── */
 .share-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:16px;text-align:center}
 .share-link{background:var(--sfu);border:1px solid var(--bd);border-radius:var(--r);padding:10px 14px;font-size:12px;color:var(--t2);word-break:break-all;margin-bottom:12px}
 .share-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .share-btn{display:flex;align-items:center;gap:6px;padding:10px 16px;border-radius:var(--rf);background:var(--sfu);border:1px solid var(--bd);font-size:12px;font-weight:600}
-#qr-img{width:140px;height:140px;border-radius:var(--r);margin:14px auto 0;display:block;background:#fff;padding:8px}
+#qr-img{width:130px;height:130px;border-radius:var(--r);margin:14px auto 0;display:block;background:#fff;padding:8px}
 
-/* ── FOOTER ── */
-.store-footer{text-align:center;padding:28px 20px 40px;font-size:12px;color:var(--t3)}
+.store-footer{text-align:center;padding:24px 20px 30px;font-size:12px;color:var(--t3)}
 .store-footer a{color:var(--ac);font-weight:600}
 
-/* ── EMPTY ── */
 .empty{text-align:center;padding:24px;color:var(--t3);font-size:13px;background:var(--sf);border:1px dashed var(--bd);border-radius:var(--r)}
 
-/* ── TOAST ── */
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--t1);color:var(--bg);font-size:13px;font-weight:600;padding:11px 22px;border-radius:var(--rf);opacity:0;transition:all .3s;z-index:999;pointer-events:none;white-space:nowrap}
+.bnav{position:sticky;bottom:0;left:0;right:0;height:64px;background:var(--sf);border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-around;flex-shrink:0;z-index:50}
+.nb{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--t3);font-size:10px;font-weight:600;flex:1;padding:6px 0}
+.nb .ico{font-size:19px}
+.nb.active{color:var(--ac)}
+
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--t1);color:var(--bg);font-size:13px;font-weight:600;padding:11px 22px;border-radius:var(--rf);opacity:0;transition:all .3s;z-index:999;pointer-events:none;white-space:nowrap;max-width:88vw}
 #toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
@@ -111,63 +124,97 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
     <a href="index.html" style="background:var(--ac);color:var(--bg);padding:12px 24px;border-radius:var(--rf);font-size:13px;font-weight:700">Discover food on Noura →</a>
   </div>
 
-  <div id="store-content" style="display:none">
-    <div class="hero-cover" id="hero-cover">
-      <div class="hero-logo" id="hero-logo">🍽️</div>
-    </div>
-    <div class="hero-body">
-      <div class="hero-name" id="hero-name"></div>
-      <div class="hero-meta" id="hero-meta"></div>
-      <div class="hero-actions" id="hero-actions"></div>
+  <div id="store-app" style="display:none;flex:1;min-height:0;flex-direction:column">
+    <div class="topbar">
+      <div class="topbar-logo" id="tb-logo">🍽️</div>
+      <div class="topbar-name" id="tb-name">Loading…</div>
+      <button class="topbar-btn" onclick="switchTab('share')">📤</button>
     </div>
 
-    <div class="section" id="section-about">
-      <div class="section-title">📖 About</div>
-      <div class="about-text" id="about-text"></div>
-      <div class="tag-row" id="about-tags"></div>
-    </div>
+    <div class="tscreens">
 
-    <div class="section" id="section-menu">
-      <div class="section-title">🍽️ Menu</div>
-      <input class="menu-search" id="menu-search" placeholder="🔍 Search the menu..." oninput="renderMenu(this.value)">
-      <div id="menu-list"></div>
-    </div>
-
-    <div class="section" id="section-gallery">
-      <div class="section-title">📸 Gallery</div>
-      <div id="gallery-content"></div>
-    </div>
-
-    <div class="section" id="section-reviews">
-      <div class="section-title">⭐ Reviews</div>
-      <div id="reviews-content"></div>
-    </div>
-
-    <div class="section" id="section-hours">
-      <div class="section-title">🕐 Hours</div>
-      <div class="about-text" id="hours-text"></div>
-    </div>
-
-    <div class="section" id="section-contact">
-      <div class="section-title">📞 Contact</div>
-      <div id="contact-content"></div>
-    </div>
-
-    <div class="section">
-      <div class="section-title">📤 Share this page</div>
-      <div class="share-card">
-        <div class="share-link" id="share-link"></div>
-        <div class="share-btns">
-          <button class="share-btn" onclick="copyLink()">🔗 Copy Link</button>
-          <button class="share-btn" onclick="shareWhatsApp()">💬 WhatsApp</button>
+      <div class="tscreen active" id="tab-home">
+        <div class="hero-cover" id="hero-cover">
+          <div class="hero-logo" id="hero-logo">🍽️</div>
         </div>
-        <img id="qr-img" alt="QR code to this page">
-        <div style="font-size:11px;color:var(--t3);margin-top:8px">Scan to view this page</div>
+        <div class="hero-body">
+          <div class="hero-name" id="hero-name"></div>
+          <div class="hero-meta" id="hero-meta"></div>
+          <div class="hero-actions" id="hero-actions"></div>
+        </div>
+
+        <div class="section" id="section-about">
+          <div class="section-title">📖 About</div>
+          <div class="about-text" id="about-text"></div>
+          <div class="tag-row" id="about-tags"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section">
+          <div class="section-title">🍽️ Popular on the menu <span class="see-all" onclick="switchTab('menu')">See full menu →</span></div>
+          <div class="home-menu-preview" id="home-menu-preview"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section" id="section-gallery">
+          <div class="section-title">📸 Gallery</div>
+          <div id="gallery-content"></div>
+        </div>
+
+        <div class="store-footer">
+          🍽️ Powered by <a href="landing.html">Noura</a> — food discovery for Africa
+        </div>
       </div>
+
+      <div class="tscreen" id="tab-menu">
+        <div class="section">
+          <input class="menu-search" id="menu-search" placeholder="🔍 Search the menu..." oninput="renderMenu(this.value)">
+          <div id="menu-list"></div>
+        </div>
+      </div>
+
+      <div class="tscreen" id="tab-reviews">
+        <div class="section">
+          <div id="reviews-content"></div>
+        </div>
+      </div>
+
+      <div class="tscreen" id="tab-info">
+        <div class="section" id="section-hours">
+          <div class="section-title">🕐 Hours</div>
+          <div class="about-text" id="hours-text"></div>
+        </div>
+        <div class="divider"></div>
+        <div class="section" id="section-contact">
+          <div class="section-title">📞 Contact</div>
+          <div id="contact-content"></div>
+        </div>
+      </div>
+
+      <div class="tscreen" id="tab-share">
+        <div class="section">
+          <div class="section-title">📤 Share this page</div>
+          <div class="share-card">
+            <div class="share-link" id="share-link"></div>
+            <div class="share-btns">
+              <button class="share-btn" onclick="copyLink()">🔗 Copy Link</button>
+              <button class="share-btn" onclick="shareWhatsApp()">💬 WhatsApp</button>
+            </div>
+            <img id="qr-img" alt="QR code to this page">
+            <div style="font-size:11px;color:var(--t3);margin-top:8px">Scan to view this page</div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="store-footer">
-      🍽️ Powered by <a href="landing.html">Noura</a> — food discovery for Africa
+    <div class="bnav">
+      <div class="nb active" id="nb-home" onclick="switchTab('home')"><div class="ico">🏠</div>Home</div>
+      <div class="nb" id="nb-menu" onclick="switchTab('menu')"><div class="ico">🍽️</div>Menu</div>
+      <div class="nb" id="nb-reviews" onclick="switchTab('reviews')"><div class="ico">⭐</div>Reviews</div>
+      <div class="nb" id="nb-info" onclick="switchTab('info')"><div class="ico">ℹ️</div>Info</div>
     </div>
   </div>
 </div>
@@ -175,7 +222,7 @@ button{cursor:pointer;font-family:inherit;border:none;background:none}
 <div id="toast"></div>
 
 <script>
-/* ===== config ===== */
+/* config */
 /**
  * ══════════════════════════════════════════════════════════════
  *  NOURA — ENVIRONMENT CONFIG
@@ -233,6 +280,14 @@ window.NOURA_ENV = {
   // you don't publicly link/index, not just this key as protection.
   ADMIN_API_KEY: 'Jhsrolnfd3866hnspos93b3blkwhs',
 
+  // ⚠️ Gates the admin.html login screen itself. Same caveat as
+  // above — this is a client-side string check, not real auth.
+  // It stops someone from casually stumbling into the dashboard,
+  // it does not stop someone who inspects the page source. Real
+  // protection is a) not linking admin.html publicly, and b)
+  // eventually moving to real per-account Supabase admin roles.
+  ADMIN_PASSWORD: 'Kkl2Y1PICOJJEhgX',
+
   // ── Google OAuth ─────────────────────────────────────────────
   // PUBLIC — OAuth client IDs are meant to be public.
   GOOGLE_CLIENT_ID: '',
@@ -265,7 +320,7 @@ window.NOURA_ENV = {
 
 </script>
 <script>
-/* ===== services ===== */
+/* services */
 /**
  * ══════════════════════════════════════════════════════════════
  *  NOURA — SERVICE LAYER  (services.js)
@@ -511,7 +566,7 @@ window.NOURA_ENV = {
     async loginWithGoogle() {
       const sb = getSupabase();
       if (sb) {
-        const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href } });
+        const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin } });
         return { ok: !error, reason: error?.message };
       }
       return { ok: false, reason: 'not_configured' };
@@ -574,7 +629,7 @@ window.NOURA_ENV = {
         const user = {
           id: data.id, name: data.name || '', username: data.username || '', email: data.email || '',
           bio: data.bio || '', country: data.country || '', cuisines: data.cuisines || [],
-          diet: data.diet || '', allergies: data.allergies || [],
+          diet: data.diet || '', allergies: data.allergies || [], avatarUrl: data.avatar_url || '',
         };
         this._cacheUser(user);
         return { ok: true, user };
@@ -682,6 +737,7 @@ window.NOURA_ENV = {
       emoji: row.emoji || '🍽️', rating: row.rating, reviews: row.review_count ?? (row.reviews?.length || 0),
       verified: row.verified, open: row.open, priceRange: row.price_range,
       tags: row.tags || [], phone: row.phone, whatsapp: row.whatsapp, website: row.website, hours: row.hours,
+      logoUrl: row.logo_url, coverUrl: row.cover_url,
       menu: (row.menu_items || []).map((m) => ({ id: m.id, name: m.name, price: m.price, cat: m.category, desc: m.description, emoji: m.emoji || '🍽️', time: m.prep_time, available: m.available })),
       reviews_data: (row.reviews || []).map((r) => ({ id: r.id, author: r.author, stars: r.stars, text: r.text, date: r.created_at ? new Date(r.created_at).toLocaleDateString() : '', reply: r.reply, replied: r.replied })),
     };
@@ -900,19 +956,37 @@ window.NOURA_ENV = {
    *  inbox is a real, valid state until the backend sends one.
    * ════════════════════════════════════════════════════════════ */
   const notificationService = {
+    async _uid() {
+      const sb = getSupabase(); if (!sb) return null;
+      const { data } = await sb.auth.getSession();
+      return data?.session?.user?.id || null;
+    },
     async list() {
+      const sb = getSupabase(); const uid = await this._uid();
+      if (sb && uid) {
+        const { data, error } = await sb.from('notifications').select('*').eq('user_id', uid).order('created_at', { ascending: false });
+        if (!error) {
+          const notifications = (data || []).map((n) => ({ id: n.id, type: n.type, icon: n.icon, color: n.color, title: n.title, msg: n.message, time: n.created_at ? new Date(n.created_at).toLocaleString() : '', unread: n.unread }));
+          lsSet('noura_notifications', notifications);
+          return { ok: true, notifications };
+        }
+      }
       const res = await apiRequest('/notifications', { method: 'GET' });
       if (res.ok) { lsSet('noura_notifications', res.data); return { ok: true, notifications: res.data }; }
       return { ok: true, notifications: lsGet('noura_notifications', []) };
     },
     async markRead(id) {
-      await apiRequest(`/notifications/${id}/read`, { method: 'POST' });
+      const sb = getSupabase();
+      if (sb) await sb.from('notifications').update({ unread: false }).eq('id', id);
+      else await apiRequest(`/notifications/${id}/read`, { method: 'POST' });
       const ns = lsGet('noura_notifications', []);
       const n = ns.find((x) => x.id === id);
       if (n) { n.unread = false; lsSet('noura_notifications', ns); }
     },
     async markAllRead() {
-      await apiRequest('/notifications/read-all', { method: 'POST' });
+      const sb = getSupabase(); const uid = await this._uid();
+      if (sb && uid) await sb.from('notifications').update({ unread: false }).eq('user_id', uid);
+      else await apiRequest('/notifications/read-all', { method: 'POST' });
       lsSet('noura_notifications', lsGet('noura_notifications', []).map((n) => ({ ...n, unread: false })));
     },
     async hasUnread() { const { notifications } = await this.list(); return notifications.some((n) => n.unread); },
@@ -997,13 +1071,37 @@ window.NOURA_ENV = {
    * ════════════════════════════════════════════════════════════ */
   const settingsService = {
     _defaults: () => ({ darkMode: true, pushNotifications: true, emailNotifications: true }),
+    async _uid() {
+      const sb = getSupabase(); if (!sb) return null;
+      const { data } = await sb.auth.getSession();
+      return data?.session?.user?.id || null;
+    },
     async load() {
+      const sb = getSupabase(); const uid = await this._uid();
+      if (sb && uid) {
+        const { data, error } = await sb.from('user_settings').select('*').eq('user_id', uid).maybeSingle();
+        if (!error) {
+          const settings = data
+            ? { darkMode: data.dark_mode, pushNotifications: data.push_notifications, emailNotifications: data.email_notifications }
+            : this._defaults();
+          lsSet('noura_settings', settings);
+          return settings;
+        }
+      }
       const res = await apiRequest('/user/settings', { method: 'GET' });
       if (res.ok) { lsSet('noura_settings', res.data); return res.data; }
       return lsGet('noura_settings', this._defaults());
     },
     async update(patch) {
       const merged = { ...lsGet('noura_settings', this._defaults()), ...patch };
+      const sb = getSupabase(); const uid = await this._uid();
+      if (sb && uid) {
+        await sb.from('user_settings').upsert({
+          user_id: uid, dark_mode: merged.darkMode, push_notifications: merged.pushNotifications, email_notifications: merged.emailNotifications,
+        });
+        lsSet('noura_settings', merged);
+        return { ok: true, settings: merged };
+      }
       lsSet('noura_settings', merged);
       const res = await apiRequest('/user/settings', { method: 'PATCH', body: merged });
       return { ok: true, settings: merged, reason: res.ok ? null : res.reason };
@@ -1289,18 +1387,42 @@ window.NOURA_ENV = {
    * ════════════════════════════════════════════════════════════ */
   const vendorPromoService = {
     async list() {
+      const sb = getSupabase(); const v = vendorService.getVendor();
+      if (sb && v?.restaurantId) {
+        const { data, error } = await sb.from('promotions').select('*').eq('restaurant_id', v.restaurantId).order('created_at', { ascending: false });
+        if (!error) {
+          const promos = (data || []).map((p) => ({ id: p.id, type: p.type, val: p.value, desc: p.description, exp: p.expires_on }));
+          lsSet('noura_vendor_promos', promos);
+          return promos;
+        }
+      }
       const res = await apiRequest('/vendor/promotions', { method: 'GET' });
       if (res.ok) { lsSet('noura_vendor_promos', res.data); return res.data; }
       return lsGet('noura_vendor_promos', []);
     },
     async create(promo) {
+      const sb = getSupabase();
+      const restaurantId = sb ? await vendorMenuService._ensureRestaurant() : null;
+      if (sb && restaurantId) {
+        const { error } = await sb.from('promotions').insert({
+          restaurant_id: restaurantId, type: promo.type, value: promo.val, description: promo.desc, expires_on: promo.exp || null,
+        });
+        if (!error) return { ok: true, promos: await this.list() };
+      }
       const promos = await this.list(); promos.push({ id: uid(), ...promo });
       lsSet('noura_vendor_promos', promos);
       await apiRequest('/vendor/promotions', { method: 'POST', body: promo });
       return { ok: true, promos };
     },
     async remove(idx) {
-      const promos = await this.list(); promos.splice(idx, 1);
+      const sb = getSupabase();
+      const promos = await this.list();
+      const target = promos[idx];
+      if (sb && target?.id) {
+        await sb.from('promotions').delete().eq('id', target.id);
+        return { ok: true, promos: await this.list() };
+      }
+      promos.splice(idx, 1);
       lsSet('noura_vendor_promos', promos);
       return { ok: true, promos };
     },
@@ -1399,6 +1521,43 @@ window.NOURA_ENV = {
       if (!uid) return 0;
       const { count } = await sb.from('meal_photos').select('id', { count: 'exact', head: true }).eq('user_id', uid);
       return count || 0;
+    },
+
+    /** Vendor logo/cover upload — real Storage, saved straight onto
+     *  the restaurant record so it shows up on the storefront immediately. */
+    async uploadVendorPhoto(file, kind) {
+      const sb = getSupabase();
+      if (!sb) return { ok: false, reason: 'no_backend' };
+      const { data: sess } = await sb.auth.getSession();
+      const uid = sess?.session?.user?.id;
+      if (!uid) return { ok: false, reason: 'not_logged_in' };
+      const restaurantId = await vendorMenuService._ensureRestaurant();
+      if (!restaurantId) return { ok: false, reason: 'no_restaurant_yet' };
+      const path = `${uid}/${kind}_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '')}`;
+      const { error: upErr } = await sb.storage.from('vendor-photos').upload(path, file, { upsert: true });
+      if (upErr) return { ok: false, reason: upErr.message };
+      const { data: pub } = sb.storage.from('vendor-photos').getPublicUrl(path);
+      const column = kind === 'logo' ? 'logo_url' : 'cover_url';
+      const { error: updErr } = await sb.from('restaurants').update({ [column]: pub.publicUrl }).eq('id', restaurantId);
+      if (updErr) return { ok: false, reason: updErr.message };
+      return { ok: true, url: pub.publicUrl };
+    },
+
+    /** Consumer profile photo — same bucket (already public-read,
+     *  authenticated-write), just a different path prefix. */
+    async uploadProfilePhoto(file) {
+      const sb = getSupabase();
+      if (!sb) return { ok: false, reason: 'no_backend' };
+      const { data: sess } = await sb.auth.getSession();
+      const uid = sess?.session?.user?.id;
+      if (!uid) return { ok: false, reason: 'not_logged_in' };
+      const path = `profile/${uid}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '')}`;
+      const { error: upErr } = await sb.storage.from('vendor-photos').upload(path, file, { upsert: true });
+      if (upErr) return { ok: false, reason: upErr.message };
+      const { data: pub } = sb.storage.from('vendor-photos').getPublicUrl(path);
+      const { error: updErr } = await sb.from('profiles').update({ avatar_url: pub.publicUrl }).eq('id', uid);
+      if (updErr) return { ok: false, reason: updErr.message };
+      return { ok: true, url: pub.publicUrl };
     },
   };
 
@@ -1729,40 +1888,52 @@ window.NOURA_ENV = {
         : audience.type === 'country' ? `Users in ${audience.value}`
         : audience.type === 'cuisine' ? `Fans of ${audience.value}`
         : 'Everyone';
-      const res = await apiRequest('/admin/notifications', { method: 'POST', body: { title, message, audience } });
-      const entry = { id: uid(), title, message, audience, audienceLabel, date: 'Just now', createdAt: new Date().toISOString() };
+      const real = await adminActionsService._call('createBroadcast', { title, message, audienceType: audience.type, audienceValue: audience.value });
+      // Local sent-log is just for the admin's own "Sent Notifications" view — not the delivery mechanism.
+      const entry = { id: real.data?.id || uid(), title, message, audience, audienceLabel, date: 'Just now', createdAt: new Date().toISOString() };
       const sent = lsGet('noura_admin_notifs', []); sent.unshift(entry); lsSet('noura_admin_notifs', sent);
-      // Also queue it for real delivery — consumer/vendor apps pull matching broadcasts on load.
-      const queue = lsGet('noura_broadcast_queue', []); queue.push(entry); lsSet('noura_broadcast_queue', queue.slice(-100));
-      return { ok: true, reason: res.ok ? null : res.reason, audienceLabel };
+      return { ok: real.ok, reason: real.ok ? null : real.error, audienceLabel };
     },
 
     /** Called by the consumer app on load — delivers any broadcasts
      *  targeted at this user into their real notification inbox. */
     async pullBroadcastsForUser(user, prefs) {
-      const queue = lsGet('noura_broadcast_queue', []);
+      const sb = getSupabase();
+      const uidVal = user?.id;
+      if (!sb) return;
+      const { data: broadcasts, error } = await sb.from('broadcasts').select('*').order('created_at', { ascending: false }).limit(50);
+      if (error || !broadcasts?.length) return;
       const seen = new Set(lsGet('noura_broadcasts_seen_user', []));
-      const matches = queue.filter((b) => !seen.has(b.id) && (
-        b.audience.type === 'everyone' || b.audience.type === 'users' ||
-        (b.audience.type === 'country' && user?.country === b.audience.value) ||
-        (b.audience.type === 'cuisine' && (prefs?.favFoods || []).includes(b.audience.value))
+      const matches = broadcasts.filter((b) => !seen.has(b.id) && (
+        b.audience_type === 'everyone' || b.audience_type === 'users' ||
+        (b.audience_type === 'country' && user?.country === b.audience_value) ||
+        (b.audience_type === 'cuisine' && (prefs?.favFoods || []).includes(b.audience_value))
       ));
-      if (!matches.length) return;
-      const inbox = lsGet('noura_notifications', []);
-      matches.forEach((b) => inbox.unshift({ id: uid(), type: 'announcement', icon: '📢', color: '#E8943A22', title: b.title, msg: b.message, time: 'Just now', unread: true }));
-      lsSet('noura_notifications', inbox);
-      lsSet('noura_broadcasts_seen_user', [...seen, ...matches.map((b) => b.id)]);
+      if (!matches.length) { lsSet('noura_broadcasts_seen_user', [...seen, ...broadcasts.map((b) => b.id)]); return; }
+      if (uidVal) {
+        await sb.from('notifications').insert(matches.map((b) => ({
+          user_id: uidVal, type: 'announcement', icon: '📢', color: '#E8943A22', title: b.title, message: b.message, unread: true,
+        })));
+      }
+      lsSet('noura_broadcasts_seen_user', [...seen, ...broadcasts.map((b) => b.id)]);
     },
-    /** Same idea, for the vendor portal. */
+    /** Same idea, for the vendor portal — vendors get real notification
+     *  rows too, keyed by their own auth uid (same notifications table). */
     async pullBroadcastsForVendor() {
-      const queue = lsGet('noura_broadcast_queue', []);
+      const sb = getSupabase();
+      if (!sb) return;
+      const { data: sess } = await sb.auth.getSession();
+      const vendorUid = sess?.session?.user?.id;
+      const { data: broadcasts, error } = await sb.from('broadcasts').select('*').order('created_at', { ascending: false }).limit(50);
+      if (error || !broadcasts?.length) return;
       const seen = new Set(lsGet('noura_broadcasts_seen_vendor', []));
-      const matches = queue.filter((b) => !seen.has(b.id) && (b.audience.type === 'everyone' || b.audience.type === 'vendors'));
-      if (!matches.length) return;
-      const inbox = lsGet('noura_vendor_notifications', []);
-      matches.forEach((b) => inbox.unshift({ id: uid(), title: b.title, msg: b.message, time: 'Just now', unread: true }));
-      lsSet('noura_vendor_notifications', inbox);
-      lsSet('noura_broadcasts_seen_vendor', [...seen, ...matches.map((b) => b.id)]);
+      const matches = broadcasts.filter((b) => !seen.has(b.id) && (b.audience_type === 'everyone' || b.audience_type === 'vendors'));
+      if (matches.length && vendorUid) {
+        await sb.from('notifications').insert(matches.map((b) => ({
+          user_id: vendorUid, type: 'announcement', icon: '📢', color: '#E8943A22', title: b.title, message: b.message, unread: true,
+        })));
+      }
+      lsSet('noura_broadcasts_seen_vendor', [...seen, ...broadcasts.map((b) => b.id)]);
     },
 
     /** Platform-wide analytics need a backend to aggregate across
@@ -1852,7 +2023,7 @@ Be concise (max 4-6 lines unless a full recipe is requested), warm, and practica
         } else {
           // Fallback: direct call, only used if no Supabase project is linked yet.
           const url = `https://generativelanguage.googleapis.com/v1beta/models/${ENV.GEMINI_MODEL || 'gemini-flash-latest'}:generateContent?key=${ENV.GEMINI_API_KEY}`;
-          const body = { system_instruction: { parts: [{ text: GEMINI_SYSTEM + localContext }] }, contents: this._history.slice(-20), generationConfig: { temperature: 0.85, maxOutputTokens: 400 } };
+          const body = { system_instruction: { parts: [{ text: GEMINI_SYSTEM + localContext }] }, contents: this._history.slice(-20), generationConfig: { temperature: 0.85, maxOutputTokens: 1400 } };
           const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: AbortSignal.timeout(12000) });
           if (!res.ok) throw new Error('HTTP ' + res.status);
           const data = await res.json();
@@ -1941,9 +2112,10 @@ Be concise (max 4-6 lines unless a full recipe is requested), warm, and practica
 
 </script>
 <script>
-/* ===== store app ===== */
+/* store app */
 // ══════════════════════════════════════════════════════
 //  NOURA — VENDOR STOREFRONT (public page)
+//  Multi-tab modern layout: Home / Menu / Reviews / Info / Share
 // ══════════════════════════════════════════════════════
 if (!window.Services) {
   document.getElementById('store-loading').innerHTML = '<div style="color:#F2EDE4">⚠️ This page failed to load. Please refresh.</div>';
@@ -1953,13 +2125,34 @@ const S = window.Services;
 function el(id){ return document.getElementById(id); }
 
 let STORE = null;
+let currentTab = 'home';
 
 function getParam(name) {
   return new URLSearchParams(location.search).get(name);
 }
 
+/** The vendor slug can arrive three ways depending on how far your
+ *  domain setup has progressed:
+ *    1. ?v=slug              — works everywhere, no domain needed (default)
+ *    2. /store/slug          — clean path, needs the vercel.json rewrite
+ *    3. slug.noura.app       — subdomain, needs a real custom domain connected
+ *  Browsers never see the rewritten destination URL, only what's in
+ *  the address bar — so this checks all three instead of assuming one. */
+function resolveVendorSlug() {
+  const fromQuery = getParam('v');
+  if (fromQuery) return fromQuery;
+
+  const pathMatch = location.pathname.match(/\/store\/([^/?#]+)/);
+  if (pathMatch) return pathMatch[1];
+
+  const hostParts = location.hostname.split('.');
+  if (hostParts.length > 2 && hostParts[0] !== 'www') return hostParts[0]; // slug.noura.app
+
+  return null;
+}
+
 async function loadStore() {
-  const key = getParam('v');
+  const key = resolveVendorSlug();
   if (!key) { showNotFound(); return; }
 
   let res = await S.restaurants.getBySlug(key);
@@ -1970,7 +2163,7 @@ async function loadStore() {
   document.title = STORE.name + ' | Noura';
   renderStore(STORE);
   el('store-loading').style.display = 'none';
-  el('store-content').style.display = 'block';
+  const app = el('store-app'); app.style.display = 'flex';
 }
 
 function showNotFound() {
@@ -1978,14 +2171,28 @@ function showNotFound() {
   el('store-notfound').style.display = 'flex';
 }
 
+// ── Tab navigation ──────────────────────────────────
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tscreen').forEach(s => s.classList.remove('active'));
+  el('tab-' + tab)?.classList.add('active');
+  document.querySelectorAll('.nb').forEach(n => n.classList.remove('active'));
+  el('nb-' + tab)?.classList.add('active'); // no-op for 'share' — intentionally not a bottom-nav tab
+  el('.tscreens')?.scrollTo?.(0, 0);
+  const scroller = document.querySelector('.tscreens');
+  if (scroller) scroller.scrollTop = 0;
+}
+
 function renderStore(r) {
+  // Top bar
+  if (r.logoUrl) { el('tb-logo').style.backgroundImage = `url('${r.logoUrl}')`; el('tb-logo').textContent = ''; }
+  else { el('tb-logo').textContent = r.emoji || '🍽️'; }
+  el('tb-name').textContent = r.name;
+
   // Hero
-  el('hero-cover').textContent = '';
-  const logo = document.createElement('div');
-  logo.className = 'hero-logo';
-  logo.textContent = r.emoji || '🍽️';
-  el('hero-cover').appendChild(logo);
-  el('hero-cover').style.fontSize = '0';
+  if (r.coverUrl) el('hero-cover').style.backgroundImage = `url('${r.coverUrl}')`;
+  if (r.logoUrl) { el('hero-logo').style.backgroundImage = `url('${r.logoUrl}')`; el('hero-logo').textContent = ''; }
+  else { el('hero-logo').textContent = r.emoji || '🍽️'; }
 
   el('hero-name').innerHTML = `${r.name} ${r.verified ? '<span class="pill verified">✓ Verified</span>' : ''}`;
   el('hero-meta').innerHTML = `
@@ -1997,18 +2204,28 @@ function renderStore(r) {
   const actions = [];
   if (r.phone) actions.push(`<a class="hero-btn primary" href="tel:${r.phone}">📞 Call</a>`);
   if (r.whatsapp) actions.push(`<a class="hero-btn" href="https://wa.me/${r.whatsapp.replace(/[^0-9]/g,'')}" target="_blank">💬 WhatsApp</a>`);
-  actions.push(`<button class="hero-btn" onclick="scrollToShare()">📤 Share</button>`);
+  actions.push(`<button class="hero-btn" onclick="switchTab('share')">📤 Share</button>`);
   el('hero-actions').innerHTML = actions.join('');
 
   // About
   el('about-text').textContent = r.desc || `${r.name} is on Noura — discover their menu, hours, and how to reach them below.`;
   el('about-tags').innerHTML = (r.tags || []).map(t => `<span class="tag">${t}</span>`).join('') + (r.area ? `<span class="tag">📍 ${r.area}</span>` : '');
 
-  // Menu
+  // Home menu preview (first 6 available items)
+  const menu = r.menu || [];
+  const preview = menu.filter(m => m.available !== false).slice(0, 6);
+  el('home-menu-preview').innerHTML = preview.length
+    ? preview.map(m => `<div class="hmp-card" onclick="switchTab('menu')"><div class="e">${m.emoji || '🍽️'}</div><div class="n">${m.name}</div><div class="p">${m.price || ''}</div></div>`).join('')
+    : `<div class="empty" style="width:100%">Menu coming soon — this vendor hasn't added items yet.</div>`;
+
+  // Full menu tab
   renderMenu('');
 
-  // Gallery — honest empty state, no fake photos
-  el('gallery-content').innerHTML = `<div class="empty">📷 Photo gallery coming soon — needs image upload support on the backend.</div>`;
+  // Gallery — real logo/cover if uploaded, honest empty state otherwise
+  const galleryImgs = [r.coverUrl, r.logoUrl].filter(Boolean);
+  el('gallery-content').innerHTML = galleryImgs.length
+    ? `<div class="gallery-grid">${galleryImgs.map(u => `<div class="gallery-ph" style="background-image:url('${u}')"></div>`).join('')}</div>`
+    : `<div class="empty">📷 No photos uploaded yet.</div>`;
 
   // Reviews
   const reviews = r.reviews_data || [];
@@ -2036,7 +2253,7 @@ function renderStore(r) {
   el('contact-content').innerHTML = contactRows.length ? contactRows.join('') : `<div class="empty">No contact details added yet.</div>`;
 
   // Share
-  const shareUrl = location.origin + location.pathname + '?v=' + (r.slug || r.id);
+  const shareUrl = location.origin + '/store/' + (r.slug || r.id);
   el('share-link').textContent = shareUrl;
   el('qr-img').src = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' + encodeURIComponent(shareUrl);
 }
@@ -2067,8 +2284,6 @@ function renderMenu(query) {
     `).join('')}
   `).join('');
 }
-
-function scrollToShare() { el('share-link')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
 
 function copyLink() {
   const url = el('share-link').textContent;

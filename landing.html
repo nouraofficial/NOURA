@@ -2,652 +2,604 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0A0805">
-<title>Admin Dashboard | Noura</title>
-<meta name="description" content="Internal admin dashboard for the Noura platform — manage users, vendors, restaurants, reviews and reports.">
-<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Noura — AI-powered food discovery. Discover restaurants, generate recipes, and plan meals smarter. Join the waitlist.">
+<meta name="keywords" content="Noura, Nigerian food app, African food discovery, food waitlist, Noura AI, local food app Nigeria, restaurant discovery app">
 <meta name="author" content="Fluxiq Labs">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://noura.fluxiqlabs.com/landing">
+<meta property="og:title" content="Noura — The Future of Food Starts Here">
+<meta property="og:description" content="Discover restaurants. Generate recipes with AI. Plan meals smarter.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://noura.fluxiqlabs.com/landing">
+<meta property="og:image" content="https://noura.fluxiqlabs.com/og-image.jpg">
+<meta property="og:site_name" content="Noura">
+<meta property="og:locale" content="en_NG">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Noura — The Future of Food Starts Here">
+<meta name="twitter:description" content="Discover restaurants. Generate recipes with AI. Plan meals smarter.">
+<meta name="twitter:image" content="https://noura.fluxiqlabs.com/og-image.jpg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Noura",
+  "url": "https://noura.fluxiqlabs.com",
+  "description": "AI-powered food discovery platform helping people find great local food across Nigeria and Africa.",
+  "sameAs": ["https://github.com/Flexi-spec"],
+  "publisher": { "@type": "Organization", "name": "Fluxiq Labs" }
+}
+</script>
+<meta name="theme-color" content="#0A0805">
+<title>Noura — The Future of Food Starts Here</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.page-enter{animation:pageIn .28s cubic-bezier(.16,1,.3,1)}
-.nav-item{transition:all .18s cubic-bezier(.16,1,.3,1) !important}
-.nav-item.active{transform:translateX(2px)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#060405;--sf:#100C0A;--sfu:#181210;--bd:#221A14;--ac:#E8943A;--acs:#E8943A14;--t1:#F2EDE4;--t2:#8A7D6A;--t3:#4A4236;--ok:#4CAF50;--er:#E05252;--warn:#F5A623;--info:#2196F3;--rf:999px;--r:12px}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;min-height:100vh}
-button{cursor:pointer;font-family:inherit}
+:root{
+  --bg:    #0A0805;
+  --sf:    #131009;
+  --sfu:   #1C1710;
+  --bd:    #2A2318;
+  --ac:    #E8943A;
+  --ac2:   #F5B56A;
+  --acs:   #E8943A14;
+  --t1:    #F2EDE4;
+  --t2:    #8A7D6A;
+  --t3:    #4A4236;
+  --ok:    #4CAF50;
+  --r:     16px;
+  --rf:    999px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.6}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
 
-/* ── AUTH ── */
-.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(ellipse at top,#1C1210 0%,var(--bg) 70%)}
-.auth-card{width:100%;max-width:380px;background:var(--sf);border:1px solid var(--bd);border-radius:20px;padding:32px}
-.auth-logo{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:var(--t1);text-align:center;margin-bottom:4px}
-.auth-logo span{color:var(--ac)}
-.auth-badge{text-align:center;margin-bottom:24px}
-.auth-badge span{background:#E0525218;color:var(--er);font-size:11px;font-weight:600;padding:3px 12px;border-radius:var(--rf);border:1px solid #E0525230}
-.auth-title{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:var(--t1);margin-bottom:20px;text-align:center}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
-.field input{width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;color:var(--t1);font-size:15px;font-family:inherit;outline:none;transition:border-color .2s}
-.field input:focus{border-color:var(--ac)}
-.field input::placeholder{color:var(--t3)}
-.btn-primary{width:100%;background:var(--ac);color:#0A0805;font-family:'Sora',sans-serif;font-size:15px;font-weight:700;padding:14px;border-radius:10px;border:none;margin-top:4px;transition:opacity .2s}
-.btn-primary:active{opacity:.85}
-.tfa-wrap{display:flex;gap:10px;justify-content:center;margin:20px 0}
-.tfa-input{width:48px;height:56px;background:var(--sfu);border:1px solid var(--bd);border-radius:12px;color:var(--t1);font-size:22px;font-weight:700;text-align:center;outline:none;font-family:inherit;transition:border-color .2s}
-.tfa-input:focus{border-color:var(--ac)}
+/* ── NAV ─────────────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,8,5,.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.04)}
+.nav-logo{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.5px}
+.nav-logo span{color:var(--ac)}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{font-size:14px;font-weight:500;color:var(--t2);transition:color .2s}
+.nav-links a:hover{color:var(--t1)}
+.nav-cta{background:var(--ac);color:#0A0805!important;padding:8px 20px;border-radius:var(--rf);font-weight:700!important;font-size:14px;transition:opacity .2s!important}
+.nav-cta:hover{opacity:.9}
+@media(max-width:640px){.nav-links a:not(.nav-cta){display:none}}
 
-/* ── APP LAYOUT ── */
-.ascreen{display:none;min-height:100vh}
-.ascreen.active{display:flex;flex-direction:column}
-.sidebar{width:220px;min-height:100vh;background:var(--sf);border-right:1px solid var(--bd);display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:61}
-.sidebar-header{padding:18px 20px 14px;border-bottom:1px solid var(--bd)}
-.sidebar-logo{font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:var(--t1)}
-.sidebar-logo span{color:var(--ac)}
-.admin-badge{display:inline-block;background:#E0525218;color:var(--er);font-size:9px;font-weight:700;padding:2px 8px;border-radius:var(--rf);border:1px solid #E0525230;letter-spacing:.5px;text-transform:uppercase;margin-top:4px}
-.nav{flex:1;overflow-y:auto;padding:10px 0}
-.nav::-webkit-scrollbar{display:none}
-.nav-section{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;padding:14px 20px 5px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;font-size:13px;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;border-left:2px solid transparent}
-.nav-item:hover{background:var(--sfu);color:var(--t1)}
-.nav-item.active{background:var(--acs);color:var(--ac);border-left-color:var(--ac);font-weight:600}
-.nav-item .ni{font-size:16px;width:18px;text-align:center}
-.nav-item .badge{background:var(--er);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:var(--rf);margin-left:auto}
-.sidebar-footer{padding:14px 20px;border-top:1px solid var(--bd);display:flex;align-items:center;gap:10px}
-.admin-av{width:32px;height:32px;border-radius:50%;background:var(--er);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
-.main{margin-left:220px;flex:1;min-height:100vh;display:flex;flex-direction:column}
-.topbar{height:56px;background:var(--sf);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:40}
-.topbar-title{font-family:'Sora',sans-serif;font-size:17px;font-weight:700;color:var(--t1)}
-.topbar-right{display:flex;gap:8px;align-items:center}
-.icon-btn{width:36px;height:36px;border-radius:8px;background:var(--sfu);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer}
-.body{flex:1;padding:24px}
+/* ── HERO ────────────────────────────────────── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 80px;position:relative;overflow:hidden}
+.hero-glow{position:absolute;width:600px;height:600px;background:radial-gradient(circle,#E8943A18 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-60%);pointer-events:none}
+.hero-grain{position:absolute;inset:0;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");background-size:200px;pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--acs);border:1px solid #E8943A22;color:var(--ac);font-size:12px;font-weight:600;padding:6px 14px;border-radius:var(--rf);letter-spacing:.8px;text-transform:uppercase;margin-bottom:28px;animation:fadeUp .6s ease both}
+.hero h1{font-family:'Sora',sans-serif;font-size:clamp(40px,7vw,80px);font-weight:900;line-height:1.05;letter-spacing:-2px;color:var(--t1);margin-bottom:24px;animation:fadeUp .6s .1s ease both}
+.hero h1 em{font-style:normal;color:var(--ac)}
+.hero-sub{font-size:clamp(16px,2.5vw,20px);color:var(--t2);max-width:520px;line-height:1.7;margin-bottom:40px;animation:fadeUp .6s .2s ease both}
+.hero-sub strong{color:var(--t1);font-weight:500}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fadeUp .6s .3s ease both}
+.btn-primary{background:var(--ac);color:#0A0805;font-family:'Sora',sans-serif;font-size:16px;font-weight:700;padding:14px 32px;border-radius:var(--rf);border:none;cursor:pointer;transition:transform .15s,opacity .15s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{opacity:.92;transform:translateY(-1px)}
+.btn-primary:active{transform:scale(.97)}
+.btn-ghost{background:transparent;color:var(--t1);font-size:15px;font-weight:500;padding:14px 24px;border-radius:var(--rf);border:1px solid var(--bd);cursor:pointer;transition:border-color .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-ghost:hover{border-color:var(--t2)}
+.hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--t3);font-size:11px;letter-spacing:1px;text-transform:uppercase;animation:fadeUp .6s .8s ease both}
+.scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,var(--t3),transparent)}
 
-/* ── STATS ── */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:24px}
-.stat{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:18px}
-.stat .icon{font-size:24px;margin-bottom:8px}
-.stat .val{font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:var(--t1);line-height:1}
-.stat .lbl{font-size:11px;color:var(--t2);margin-top:4px}
-.stat .delta{font-size:11px;font-weight:600;margin-top:6px}
-.delta.up{color:var(--ok)}
-.delta.down{color:var(--er)}
+/* ── FEATURE MARQUEE ─────────────────────────── */
+.marquee-wrap{overflow:hidden;padding:20px 0;border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);background:var(--sf)}
+.marquee-track{display:flex;gap:0;animation:marquee 30s linear infinite;width:max-content}
+.marquee-item{padding:0 32px;font-size:14px;font-weight:500;color:var(--t2);white-space:nowrap;display:flex;align-items:center;gap:10px}
+.marquee-dot{width:4px;height:4px;border-radius:50%;background:var(--ac)}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* ── TABLES ── */
-.card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;overflow:hidden;margin-bottom:16px}
-.card-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--bd)}
-.card-title{font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:var(--t1)}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse}
-th{background:var(--sfu);padding:10px 16px;font-size:10px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;text-align:left;border-bottom:1px solid var(--bd);white-space:nowrap}
-td{padding:12px 16px;font-size:13px;color:var(--t1);border-bottom:1px solid var(--bd)}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:var(--sfu)}
-.badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:var(--rf)}
-.badge.green{background:#4CAF5018;color:var(--ok);border:1px solid #4CAF5030}
-.badge.red{background:#E0525218;color:var(--er);border:1px solid #E0525230}
-.badge.orange{background:var(--acs);color:var(--ac);border:1px solid #E8943A30}
-.badge.blue{background:#2196F318;color:var(--info);border:1px solid #2196F330}
-.badge.gray{background:var(--sfu);color:var(--t2);border:1px solid var(--bd)}
-.act{display:flex;gap:6px;flex-wrap:wrap}
-.abtn{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;border:none;cursor:pointer}
-.abtn.approve{background:#4CAF5018;color:var(--ok)}
-.abtn.reject{background:#E0525218;color:var(--er)}
-.abtn.view{background:var(--acs);color:var(--ac)}
-.abtn.suspend{background:#F5A62318;color:var(--warn)}
-.abtn.delete{background:#E0525218;color:var(--er)}
-.abtn.feature{background:#9C27B018;color:#CE93D8}
+/* ── SECTIONS ────────────────────────────────── */
+section{padding:96px 24px;max-width:1080px;margin:0 auto}
+.section-eyebrow{font-size:11px;font-weight:600;color:var(--ac);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.section-title{font-family:'Sora',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:800;color:var(--t1);line-height:1.15;letter-spacing:-1px;margin-bottom:16px}
+.section-body{font-size:17px;color:var(--t2);line-height:1.8;max-width:560px}
 
-/* ── SEARCH ── */
-.search-bar{display:flex;gap:10px;align-items:center;padding:14px 20px;border-bottom:1px solid var(--bd)}
-.search-input{flex:1;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:8px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none}
-.search-input:focus{border-color:var(--ac)}
-.search-input::placeholder{color:var(--t3)}
-.filter-chips{display:flex;gap:6px;flex-wrap:wrap;padding:10px 20px;border-bottom:1px solid var(--bd)}
-.fchip{padding:5px 12px;border-radius:var(--rf);font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--bd);background:var(--sfu);color:var(--t2);transition:all .15s}
-.fchip.active{background:var(--acs);border-color:var(--ac);color:var(--ac)}
+/* ── WHY NOURA ───────────────────────────────── */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--bd);border-radius:20px;overflow:hidden;margin-top:56px}
+.why-card{background:var(--sf);padding:32px;transition:background .2s}
+.why-card:hover{background:var(--sfu)}
+.why-icon{font-size:32px;margin-bottom:16px}
+.why-title{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--t1);margin-bottom:8px}
+.why-text{font-size:14px;color:var(--t2);line-height:1.7}
 
-/* ── CHARTS ── */
-.chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:24px}
-.chart-card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:18px}
-.chart-card h4{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--t1);margin-bottom:14px}
-.chart-wrap{position:relative;height:160px}
+/* ── PHONE MOCKUPS ───────────────────────────── */
+.preview-wrap{display:flex;gap:20px;justify-content:center;align-items:flex-end;padding:60px 0;overflow-x:auto;scrollbar-width:none}
+.preview-wrap::-webkit-scrollbar{display:none}
+.phone{width:200px;flex-shrink:0;background:var(--sf);border:1px solid var(--bd);border-radius:28px;overflow:hidden;transition:transform .3s}
+.phone:hover{transform:translateY(-8px)}
+.phone.center{width:220px;transform:translateY(-12px);border-color:var(--ac);box-shadow:0 0 40px #E8943A20}
+.phone.center:hover{transform:translateY(-20px)}
+.phone-bar{height:20px;background:var(--sfu);display:flex;align-items:center;justify-content:center}
+.phone-notch{width:60px;height:6px;border-radius:3px;background:var(--bd)}
+.phone-screen{height:360px;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:48px;position:relative;overflow:hidden}
+.phone-label{font-family:'Sora',sans-serif;font-size:11px;font-weight:600;color:var(--t2);text-align:center;padding:10px;border-top:1px solid var(--bd)}
+.screen-home{background:linear-gradient(160deg,#131009 0%,#0A0805 100%)}
+.screen-ai{background:linear-gradient(160deg,#13100A 0%,#0A0805 100%)}
+.screen-rest{background:linear-gradient(160deg,#10100A 0%,#0A0805 100%)}
 
-/* ── SYSTEM STATUS ── */
-.status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:24px}
-.status-item{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px}
-.status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.status-dot.ok{background:var(--ok);box-shadow:0 0 0 3px #4CAF5020}
-.status-dot.warn{background:var(--warn)}
-.status-dot.err{background:var(--er)}
-.status-info .s-name{font-size:13px;font-weight:600;color:var(--t1)}
-.status-info .s-val{font-size:11px;color:var(--t2)}
+/* Phone screen content */
+.ps-header{width:100%;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bd)}
+.ps-logo{font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:var(--t1)}
+.ps-logo span{color:var(--ac)}
+.ps-greeting{padding:14px;font-size:9px;color:var(--t2)}
+.ps-greeting strong{display:block;font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--t1);line-height:1.2}
+.ps-search{margin:0 14px 12px;background:var(--sfu);border:1px solid var(--bd);border-radius:var(--rf);padding:7px 10px;font-size:9px;color:var(--t3);display:flex;align-items:center;gap:6px}
+.ps-card{margin:0 14px 8px;background:var(--sfu);border:1px solid var(--bd);border-radius:10px;padding:10px;display:flex;gap:8px;align-items:center}
+.ps-card-img{width:36px;height:36px;border-radius:6px;background:var(--ac);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ps-card-txt{flex:1;min-width:0}
+.ps-card-name{font-family:'Sora',sans-serif;font-size:9px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ps-card-sub{font-size:8px;color:var(--t2)}
+.ps-chat-msg{margin:0 14px 6px;padding:8px 10px;border-radius:10px;font-size:9px;line-height:1.5}
+.ps-chat-msg.ai{background:var(--sfu);border:1px solid var(--bd);color:var(--t1);border-bottom-left-radius:2px}
+.ps-chat-msg.user{background:var(--ac);color:#0A0805;font-weight:600;border-bottom-right-radius:2px;align-self:flex-end;margin-left:30px}
+.ps-chat-wrap{display:flex;flex-direction:column;width:100%}
+.ps-rest-card{margin:0 14px 8px;background:var(--sfu);border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+.ps-rest-hero{height:60px;background:var(--acs);display:flex;align-items:center;justify-content:center;font-size:28px}
+.ps-rest-info{padding:8px 10px}
+.ps-rest-name{font-family:'Sora',sans-serif;font-size:10px;font-weight:700;color:var(--t1);margin-bottom:2px}
+.ps-rest-meta{font-size:8px;color:var(--t2)}
+.ps-tag{display:inline-block;background:var(--acs);color:var(--ac);font-size:7px;font-weight:600;padding:2px 6px;border-radius:var(--rf);margin-top:4px}
 
-/* ── NOTIF COMPOSER ── */
-.notif-form{padding:20px;display:flex;flex-direction:column;gap:12px}
-.chip-row{display:flex;gap:8px;flex-wrap:wrap}
-.aud-chip{padding:7px 14px;border-radius:var(--rf);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--bd);background:var(--sfu);color:var(--t2)}
-.aud-chip.sel{background:var(--acs);border-color:var(--ac);color:var(--ac)}
+/* ── TIMELINE ────────────────────────────────── */
+.timeline{position:relative;padding:56px 0;margin-top:0}
+.timeline::before{content:'';position:absolute;left:20px;top:0;bottom:0;width:1px;background:var(--bd)}
+.tl-item{display:flex;gap:28px;margin-bottom:40px;position:relative}
+.tl-dot{width:40px;height:40px;min-width:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;position:relative;z-index:1;flex-shrink:0}
+.tl-dot.done{background:var(--acs);border:1px solid var(--ac)}
+.tl-dot.active{background:var(--ac);box-shadow:0 0 0 4px #E8943A20}
+.tl-dot.upcoming{background:var(--sfu);border:1px solid var(--bd)}
+.tl-content{padding-top:8px}
+.tl-label{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.tl-title{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--t1);margin-bottom:4px}
+.tl-desc{font-size:14px;color:var(--t2);line-height:1.6}
+.tl-done-tag{display:inline-block;background:#4CAF5018;color:#4CAF50;font-size:10px;font-weight:600;padding:3px 10px;border-radius:var(--rf);margin-top:8px}
+.tl-active-tag{display:inline-block;background:var(--acs);color:var(--ac);font-size:10px;font-weight:600;padding:3px 10px;border-radius:var(--rf);margin-top:8px}
 
-/* ── MODAL ── */
-.a-modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
-.a-modal.on{display:flex}
-.a-modal-box{background:var(--sf);border:1px solid var(--bd);border-radius:20px;padding:28px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto}
-.a-modal-title{font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:var(--t1);margin-bottom:16px}
-.a-modal-actions{display:flex;gap:10px;margin-top:20px}
-.a-modal-actions button{flex:1;padding:11px;border-radius:10px;font-size:14px;font-weight:600;border:none}
-.a-modal-actions .confirm{background:var(--er);color:#fff}
-.a-modal-actions .cancel{background:var(--sfu);color:var(--t2)}
+/* ── DEV LOG ─────────────────────────────────── */
+.log-grid{display:grid;gap:1px;background:var(--bd);border-radius:20px;overflow:hidden;margin-top:40px}
+.log-item{background:var(--sf);padding:20px 24px;display:flex;gap:16px;align-items:flex-start;transition:background .2s}
+.log-item:hover{background:var(--sfu)}
+.log-week{font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--ac);text-transform:uppercase;letter-spacing:1px;min-width:64px;padding-top:2px}
+.log-title{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:3px}
+.log-desc{font-size:13px;color:var(--t2);line-height:1.6}
+.log-check{width:20px;height:20px;min-width:20px;border-radius:50%;background:#4CAF5018;border:1px solid #4CAF5030;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:2px}
 
-/* ── TOAST ── */
-#a-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--t1);color:var(--bg);font-size:14px;font-weight:600;padding:12px 24px;border-radius:var(--rf);opacity:0;transition:all .3s;z-index:999;pointer-events:none;white-space:nowrap}
-#a-toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+/* ── FOUNDER ─────────────────────────────────── */
+.founder-card{background:var(--sf);border:1px solid var(--bd);border-radius:24px;padding:40px;display:flex;gap:32px;align-items:center;max-width:680px;margin:0 auto}
+.founder-avatar{width:80px;height:80px;min-width:80px;border-radius:50%;background:var(--ac);display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:#0A0805}
+.founder-name{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:var(--t1);margin-bottom:4px}
+.founder-handle{font-size:13px;color:var(--ac);font-weight:500;margin-bottom:12px}
+.founder-bio{font-size:15px;color:var(--t2);line-height:1.75}
+@media(max-width:560px){.founder-card{flex-direction:column;text-align:center}}
 
-.mobile-bar{display:none;height:56px;background:var(--sf);border-bottom:1px solid var(--bd);align-items:center;padding:0 18px;gap:14px;position:sticky;top:0;z-index:60}
-.tog{width:36px;height:20px;border-radius:10px;background:var(--bd);position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
-.tog::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s}
-.tog.on{background:var(--ac)}
-.tog.on::after{transform:translateX(16px)}
-.burger{background:none;border:none;color:var(--t1);font-size:20px;padding:4px;cursor:pointer}
-.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:59}
+/* ── WAITLIST ────────────────────────────────── */
+.waitlist-wrap{background:var(--sf);border:1px solid var(--bd);border-radius:24px;padding:48px 40px;max-width:580px;margin:0 auto}
+.waitlist-wrap .section-title{font-size:32px;margin-bottom:8px}
+.waitlist-sub{font-size:15px;color:var(--t2);margin-bottom:32px;line-height:1.6}
+.wl-badge{display:inline-flex;align-items:center;gap:6px;background:var(--acs);border:1px solid #E8943A22;color:var(--ac);font-size:11px;font-weight:600;padding:5px 12px;border-radius:var(--rf);margin-bottom:20px}
+.wl-field{width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:12px;padding:13px 16px;color:var(--t1);font-size:15px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;margin-bottom:12px}
+.wl-field:focus{border-color:var(--ac)}
+.wl-field::placeholder{color:var(--t3)}
+select.wl-field option{background:var(--sf)}
+.wl-submit{width:100%;background:var(--ac);color:#0A0805;font-family:'Sora',sans-serif;font-size:16px;font-weight:700;padding:15px;border-radius:12px;border:none;cursor:pointer;transition:opacity .2s,transform .15s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px}
+.wl-submit:hover{opacity:.92}
+.wl-submit:active{transform:scale(.98)}
+.wl-success{display:none;text-align:center;padding:20px 0}
+.wl-success-icon{font-size:48px;margin-bottom:16px}
+.wl-success-title{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:var(--t1);margin-bottom:8px}
+.wl-success-sub{font-size:15px;color:var(--t2);line-height:1.6}
+.wl-count{text-align:center;margin-top:16px;font-size:13px;color:var(--t3)}
+.wl-count strong{color:var(--ac)}
+
+/* ── FOUNDING BADGE ──────────────────────────── */
+.founding-strip{background:linear-gradient(135deg,var(--ac) 0%,#B86E22 100%);padding:32px 24px;text-align:center;margin:0 -24px}
+.founding-strip h3{font-family:'Sora',sans-serif;font-size:22px;font-weight:800;color:#0A0805;margin-bottom:8px}
+.founding-strip p{font-size:14px;color:rgba(0,0,0,.65);max-width:480px;margin:0 auto;line-height:1.6}
+.perks{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+.perk{background:rgba(0,0,0,.15);color:#0A0805;font-size:12px;font-weight:600;padding:5px 14px;border-radius:var(--rf)}
+
+/* ── SOCIALS ─────────────────────────────────── */
+.social-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:40px}
+.social-btn{display:flex;align-items:center;gap:8px;background:var(--sfu);border:1px solid var(--bd);color:var(--t2);font-size:14px;font-weight:500;padding:11px 20px;border-radius:var(--rf);transition:all .2s;cursor:pointer}
+.social-btn:hover{border-color:var(--ac);color:var(--ac)}
+
+/* ── FOOTER ──────────────────────────────────── */
+footer{border-top:1px solid var(--bd);padding:40px 24px;text-align:center}
+.footer-logo{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:var(--t1);margin-bottom:16px}
+.footer-logo span{color:var(--ac)}
+.footer-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.footer-links a{font-size:13px;color:var(--t2);transition:color .2s}
+.footer-links a:hover{color:var(--t1)}
+.footer-copy{font-size:12px;color:var(--t3)}
+
+/* ── ANIMATIONS ──────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* ── RESPONSIVE ──────────────────────────────── */
 @media(max-width:768px){
-  .sidebar{transform:translateX(-100%);transition:transform .3s cubic-bezier(.16,1,.3,1)}
-  .sidebar.open{transform:translateX(0)}
-  .main{margin-left:0}
-  .mobile-bar{display:flex}
-  .topbar{display:none}
-  .sidebar-overlay.on{display:block}
-  .body{padding:16px}
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .chart-grid{grid-template-columns:1fr}
-  .table-wrap{overflow-x:auto}
+  section{padding:64px 20px}
+  .waitlist-wrap{padding:32px 24px}
+  .phone.center{width:200px;transform:translateY(-6px)}
+  .phone{width:160px}
+  .phone-screen{height:280px}
 }
 </style>
 </head>
 <body>
 
-<!-- ══ LOGIN ══════════════════════════════════════════ -->
-<div id="as-login" style="display:flex;min-height:100vh">
-  <div class="auth-wrap" style="width:100%">
-    <div class="auth-card">
-      <div class="auth-logo">noura<span>.</span></div>
-      <div class="auth-badge"><span>👑 Admin Access</span></div>
-      <div class="auth-title">Admin Login</div>
-      <div class="field"><label>Email</label><input type="email" id="al-email" placeholder="admin@noura.app" value="admin@noura.app"></div>
-      <div class="field"><label>Password</label><input type="password" id="al-pass" placeholder="••••••••" value="admin123" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
-      <button class="btn-primary" onclick="doAdminLogin()">Log In to Admin Panel</button>
-      <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--t3)">Secured area — authorised personnel only</div>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">noura<span>.</span></div>
+  <div class="nav-links">
+    <a href="#why">Why Noura</a>
+    <a href="#timeline">Roadmap</a>
+    <a href="#founder">Founder</a>
+    <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-eyebrow">🍽️ &nbsp; Coming Soon</div>
+  <h1>The Future of<br>Food Starts <em>Here.</em></h1>
+  <p class="hero-sub">Discover restaurants. Generate recipes with <strong>AI</strong>. Plan meals smarter. One intelligent platform for every part of your food journey.</p>
+  <div class="hero-btns">
+    <a href="#waitlist"><button class="btn-primary">🚀 Join the Waitlist</button></a>
+    <a href="index.html" target="_blank"><button class="btn-ghost">📱 Try the App</button></a>
+    <a href="#preview"><button class="btn-ghost">📱 See the App</button></a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item"><div class="marquee-dot"></div>AI Meal Planner</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Recipe Generator</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Restaurant Discovery</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Nigerian Cuisine</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Ghanaian Dishes</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Kenyan Food</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Digital Menus</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Smart Search</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Vendor Dashboard</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>AI Meal Planner</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Recipe Generator</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Restaurant Discovery</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Nigerian Cuisine</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Ghanaian Dishes</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Kenyan Food</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Digital Menus</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Smart Search</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Vendor Dashboard</div>
+  </div>
+</div>
+
+<!-- WHY NOURA -->
+<section id="why">
+  <div class="reveal">
+    <div class="section-eyebrow">Why Noura</div>
+    <div class="section-title">One platform.<br>Every food experience.</div>
+    <p class="section-body">Noura is building the next generation of food experiences by combining AI, restaurant discovery, recipe generation, and local food businesses into one seamless platform.</p>
+  </div>
+  <div class="why-grid reveal" style="transition-delay:.1s">
+    <div class="why-card">
+      <div class="why-icon">🤖</div>
+      <div class="why-title">AI That Knows Food</div>
+      <div class="why-text">Tell Noura your budget, diet, and goals. Get a full meal plan built around you — breakfast, lunch, dinner, snacks, and a shopping list.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🍳</div>
+      <div class="why-title">Cook What You Have</div>
+      <div class="why-text">Type the ingredients in your kitchen. Noura generates a real recipe with step-by-step instructions, cooking time, and nutrition info.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">📍</div>
+      <div class="why-title">Discover Locally</div>
+      <div class="why-text">Find Nigerian, Ghanaian, Kenyan, and global restaurants near you. Browse menus, read reviews, and connect directly with vendors.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🌍</div>
+      <div class="why-title">Built for Africa</div>
+      <div class="why-text">Jollof rice, egusi soup, fufu, nyama choma — Noura celebrates African cuisine and the local food businesses that serve it.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🏪</div>
+      <div class="why-title">Empower Vendors</div>
+      <div class="why-text">Every food business gets a digital menu, vendor profile, and direct customer connection — no delivery cut required.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">❤️</div>
+      <div class="why-title">People Before Profit</div>
+      <div class="why-text">Noura is built on one principle: technology should genuinely help people. Every feature must earn its place by solving a real problem.</div>
+    </div>
+  </div>
+</section>
+
+<!-- APP PREVIEW -->
+<section id="preview" style="overflow:hidden">
+  <div class="reveal" style="text-align:center">
+    <div class="section-eyebrow">Sneak Peek</div>
+    <div class="section-title">Watch it being built.</div>
+    <p class="section-body" style="margin:0 auto">These are real screenshots from the prototype — built in public, updated every week.</p>
+  </div>
+  <div class="preview-wrap reveal" style="transition-delay:.15s">
+
+    <!-- Home Screen -->
+    <div class="phone">
+      <div class="phone-bar"><div class="phone-notch"></div></div>
+      <div class="phone-screen screen-home" style="font-size:unset;justify-content:flex-start;padding-top:0">
+        <div class="ps-header">
+          <div class="ps-logo">noura<span>.</span></div>
+          <div style="font-size:16px">🔔</div>
+        </div>
+        <div class="ps-greeting">Good morning 👋<strong>Discover<br>great food today</strong></div>
+        <div class="ps-search">🔍 &nbsp; Search meals, restaurants…</div>
+        <div class="ps-card"><div class="ps-card-img">🍗</div><div class="ps-card-txt"><div class="ps-card-name">Grilled Chicken & Rice</div><div class="ps-card-sub">🌍 African · Lunch</div></div></div>
+        <div class="ps-card"><div class="ps-card-img">🥗</div><div class="ps-card-txt"><div class="ps-card-name">Quinoa Grain Bowl</div><div class="ps-card-sub">🌍 Continental · Dinner</div></div></div>
+        <div class="ps-card"><div class="ps-card-img">🍜</div><div class="ps-card-txt"><div class="ps-card-name">Spicy Noodle Soup</div><div class="ps-card-sub">🌍 Asian · Snack</div></div></div>
+      </div>
+      <div class="phone-label">🏠 Home</div>
+    </div>
+
+    <!-- AI Chat -->
+    <div class="phone center">
+      <div class="phone-bar"><div class="phone-notch"></div></div>
+      <div class="phone-screen screen-ai" style="font-size:unset;justify-content:flex-start;padding-top:0">
+        <div class="ps-header">
+          <div style="font-size:14px">←</div>
+          <div class="ps-logo" style="flex:1;text-align:center">Noura <span>AI</span></div>
+          <div style="font-size:16px">🤖</div>
+        </div>
+        <div style="padding:12px 0 4px;display:flex;flex-direction:column;gap:8px;width:100%">
+          <div class="ps-chat-msg ai">👋 Hi! I'm Noura AI. What would you like to eat today?</div>
+          <div class="ps-chat-msg user" style="margin:0 14px 0 40px">I only have rice and eggs</div>
+          <div class="ps-chat-msg ai">Perfect! Here's what you can make:<br><br>🍳 <strong>Egg Fried Rice</strong><br>🫕 <strong>Tomato Rice</strong><br>🥚 <strong>Rice Omelette</strong><br><br>Want the full recipe?</div>
+        </div>
+      </div>
+      <div class="phone-label">🤖 Noura AI</div>
+    </div>
+
+    <!-- Restaurant -->
+    <div class="phone">
+      <div class="phone-bar"><div class="phone-notch"></div></div>
+      <div class="phone-screen screen-rest" style="font-size:unset;justify-content:flex-start;padding-top:0">
+        <div class="ps-header">
+          <div style="font-size:14px">←</div>
+          <div class="ps-logo" style="flex:1;text-align:center">Restaurants</div>
+          <div style="font-size:14px">🔍</div>
+        </div>
+        <div style="padding:8px 0">
+          <div class="ps-rest-card">
+            <div class="ps-rest-hero">👩‍🍳</div>
+            <div class="ps-rest-info">
+              <div class="ps-rest-name">Local Kitchen</div>
+              <div class="ps-rest-meta">Nigerian · ⭐ 4.8 · Open now</div>
+              <div class="ps-tag">✓ Verified</div>
+            </div>
+          </div>
+          <div class="ps-rest-card">
+            <div class="ps-rest-hero">🔥</div>
+            <div class="ps-rest-info">
+              <div class="ps-rest-name">Suya & Grills</div>
+              <div class="ps-rest-meta">Suya · ⭐ 4.9 · Open now</div>
+              <div class="ps-tag">✓ Verified</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-label">📍 Restaurants</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOUNDING SUPPORTER -->
+<div style="padding:0 24px;max-width:1080px;margin:0 auto">
+  <div class="founding-strip reveal" style="border-radius:24px;margin:0">
+    <h3>🏅 Become a Founding Supporter</h3>
+    <p>Join before launch and get recognised as one of the people who believed in Noura from day one.</p>
+    <div class="perks">
+      <div class="perk">Early access</div>
+      <div class="perk">Beta testing</div>
+      <div class="perk">Vote on features</div>
+      <div class="perk">Exclusive updates</div>
+      <div class="perk">Founding badge</div>
     </div>
   </div>
 </div>
 
-<!-- ══ 2FA ════════════════════════════════════════════ -->
-<div id="as-2fa" style="display:none;min-height:100vh">
-  <div class="auth-wrap" style="width:100%">
-    <div class="auth-card">
-      <div class="auth-logo">noura<span>.</span></div>
-      <div class="auth-title" style="margin-top:16px">Two-Factor Auth</div>
-      <div style="font-size:14px;color:var(--t2);text-align:center;margin-bottom:20px;line-height:1.6">Enter the 6-digit code sent to your email</div>
-      <div class="tfa-wrap">
-        <input class="tfa-input" maxlength="1" oninput="tfaNext(this,0)">
-        <input class="tfa-input" maxlength="1" oninput="tfaNext(this,1)">
-        <input class="tfa-input" maxlength="1" oninput="tfaNext(this,2)">
-        <input class="tfa-input" maxlength="1" oninput="tfaNext(this,3)">
-        <input class="tfa-input" maxlength="1" oninput="tfaNext(this,4)">
-        <input class="tfa-input" maxlength="1" oninput="tfaNext(this,5)">
+<!-- WAITLIST -->
+<section id="waitlist">
+  <div class="reveal">
+    <div class="waitlist-wrap">
+      <div class="wl-badge">🏅 Founding Supporter</div>
+      <div class="section-title">Reserve your spot.</div>
+      <p class="waitlist-sub">Be among the first to use Noura. No spam — just real updates as we build, and early access when we launch.</p>
+
+      <div id="wl-form">
+        <input class="wl-field" id="wl-name" type="text" placeholder="Your full name" required>
+        <input class="wl-field" id="wl-email" type="email" placeholder="Your email address" required>
+        <select class="wl-field" id="wl-country">
+          <option value="" disabled selected>Your country</option>
+          <option>Nigeria</option><option>Ghana</option><option>Kenya</option>
+          <option>South Africa</option><option>United Kingdom</option>
+          <option>United States</option><option>Canada</option><option>Other</option>
+        </select>
+        <select class="wl-field" id="wl-feature">
+          <option value="" disabled selected>What excites you most?</option>
+          <option>AI Meal Planner</option>
+          <option>Recipe Generator</option>
+          <option>Restaurant Discovery</option>
+          <option>Local African Food</option>
+          <option>Vendor Features</option>
+          <option>Everything!</option>
+        </select>
+        <button class="wl-submit" onclick="joinWaitlist()">🚀 &nbsp; Reserve My Spot</button>
+        <div class="wl-count">Already <strong id="wl-counter">—</strong> people on the waitlist</div>
       </div>
-      <button class="btn-primary" onclick="verify2FA()">Verify Code</button>
-      <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--t2)">Didn't receive it? <span style="color:var(--ac);cursor:pointer" onclick="aToast('Code resent!')">Resend</span></div>
-    </div>
-  </div>
-</div>
 
-<!-- ══ MAIN APP ═══════════════════════════════════════ -->
-<div id="as-app" class="ascreen">
-  <div class="mobile-bar">
-    <button class="burger" onclick="toggleAdminSidebar()">☰</button>
-    <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--t1)" id="a-mob-title">Dashboard</div>
-  </div>
-  <div class="sidebar-overlay" id="a-sb-overlay" onclick="toggleAdminSidebar()"></div>
-
-  <div class="aapp" style="display:flex;flex:1;min-height:0">
-  <div class="sidebar" id="a-sidebar">
-    <div class="sidebar-header">
-      <div class="sidebar-logo">noura<span>.</span></div>
-      <div class="admin-badge">Admin</div>
-    </div>
-    <nav class="nav">
-      <div class="nav-section">Overview</div>
-      <div class="nav-item active" onclick="aShowPage('pg-dashboard',this,'Dashboard')"><span class="ni">📊</span>Dashboard</div>
-      <div class="nav-item" id="nav-analytics" onclick="aShowPage('pg-analytics',this,'Analytics')"><span class="ni">📈</span>Analytics</div>
-
-      <div class="nav-section">Management</div>
-      <div class="nav-item" onclick="aShowPage('pg-users',this,'Users')"><span class="ni">👥</span>Users</div>
-      <div class="nav-item" onclick="aShowPage('pg-vendors',this,'Vendors')"><span class="ni">🏪</span>Vendors <span class="badge" id="pending-badge" style="display:none">0</span></div>
-      <div class="nav-item" onclick="aShowPage('pg-restaurants',this,'Restaurants')"><span class="ni">🍽️</span>Restaurants</div>
-      <div class="nav-item" onclick="aShowPage('pg-meals',this,'Meal Moderation')"><span class="ni">🍲</span>Meal Moderation</div>
-      <div class="nav-item" onclick="aShowPage('pg-categories',this,'Categories')"><span class="ni">📂</span>Categories</div>
-
-      <div class="nav-section">Moderation</div>
-      <div class="nav-item" onclick="aShowPage('pg-reports',this,'Reports')"><span class="ni">🚨</span>Reports <span class="badge" id="reports-badge" style="display:none">0</span></div>
-      <div class="nav-item" onclick="aShowPage('pg-reviews',this,'Reviews')"><span class="ni">⭐</span>Reviews</div>
-
-      <div class="nav-section">Platform</div>
-      <div class="nav-item" onclick="aShowPage('pg-ai',this,'AI Monitoring')"><span class="ni">🤖</span>AI Monitoring</div>
-      <div class="nav-item" onclick="aShowPage('pg-ads',this,'Advertising')"><span class="ni">📣</span>Advertising</div>
-      <div class="nav-item" onclick="aShowPage('pg-challenges',this,'Challenges')"><span class="ni">🏆</span>Challenges</div>
-      <div class="nav-item" onclick="aShowPage('pg-notifications',this,'Notifications')"><span class="ni">📢</span>Notifications</div>
-      <div class="nav-item" onclick="aShowPage('pg-settings',this,'Settings')"><span class="ni">⚙️</span>Settings</div>
-      <div class="nav-item" onclick="aShowPage('pg-roles',this,'Admin Roles')"><span class="ni">👑</span>Admin Roles</div>
-      <div class="nav-item" onclick="aShowPage('pg-audit',this,'Audit Log')"><span class="ni">📜</span>Audit Log</div>
-
-      <div class="nav-section">Links</div>
-      <div class="nav-item" onclick="window.open('index.html','_blank')"><span class="ni">📱</span>Open App</div>
-      <div class="nav-item" onclick="window.open('vendor.html','_blank')"><span class="ni">🏪</span>Vendor Portal</div>
-      <div class="nav-section">Account</div>
-      <div class="nav-item" onclick="doAdminLogout()"><span class="ni">🚪</span>Log Out</div>
-    </nav>
-    <div class="sidebar-footer">
-      <div class="admin-av">A</div>
-      <div>
-        <div style="font-size:12px;font-weight:600;color:var(--t1)">Admin</div>
-        <div style="font-size:10px;color:var(--t2)">admin@noura.app</div>
+      <div class="wl-success" id="wl-success">
+        <div class="wl-success-icon">🎉</div>
+        <div class="wl-success-title">You're officially a Founding Supporter.</div>
+        <p class="wl-success-sub">We'll keep you updated as Noura grows. You'll be among the very first to get access when we launch.<br><br>Thank you for believing in this from the beginning. 💛</p>
       </div>
     </div>
   </div>
+</section>
 
-  <div class="main">
-    <div class="topbar">
-      <div class="topbar-title" id="a-page-title">Dashboard</div>
-      <div class="topbar-right">
-        <div class="icon-btn">🔔</div>
-        <div class="icon-btn" onclick="window.open('index.html','_blank')" title="View App">👁️</div>
-        <div style="width:32px;height:32px;border-radius:50%;background:var(--er);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">A</div>
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="reveal">
+    <div class="section-eyebrow">Roadmap</div>
+    <div class="section-title">Building in public.</div>
+    <p class="section-body">Every week, real progress. No hype — just honest updates on what's been built and what's coming next.</p>
+  </div>
+  <div class="timeline reveal" style="transition-delay:.1s">
+    <div class="tl-item">
+      <div class="tl-dot done">✓</div>
+      <div class="tl-content">
+        <div class="tl-label">Month 1 · Week 1–2</div>
+        <div class="tl-title">UI & User Accounts</div>
+        <div class="tl-desc">Splash screen, onboarding, login, registration, user profiles, edit profile, food preferences, saved recipes, notifications, settings.</div>
+        <div class="tl-done-tag">✅ Complete</div>
       </div>
     </div>
-
-    <div class="body">
-
-      <!-- DASHBOARD -->
-      <div id="pg-dashboard">
-        <div class="stats">
-          <div class="stat"><div class="icon">👥</div><div class="val" id="as-users">0</div><div class="lbl">Total Users</div></div>
-          <div class="stat"><div class="icon">🏪</div><div class="val" id="as-vendors-total">0</div><div class="lbl">Total Vendors</div></div>
-          <div class="stat"><div class="icon">✅</div><div class="val" id="as-vendors">0</div><div class="lbl">Verified Vendors</div></div>
-          <div class="stat"><div class="icon">⏳</div><div class="val" id="as-pending-vendors">0</div><div class="lbl">Pending Requests</div></div>
-        </div>
-        <div class="stats">
-          <div class="stat"><div class="icon">🍽️</div><div class="val" id="as-rests">0</div><div class="lbl">Restaurants</div></div>
-          <div class="stat"><div class="icon">🍲</div><div class="val" id="as-meals">0</div><div class="lbl">Meals Listed</div></div>
-          <div class="stat"><div class="icon">⭐</div><div class="val" id="as-reviews">0</div><div class="lbl">Reviews</div></div>
-          <div class="stat"><div class="icon">🚩</div><div class="val" id="as-reports-pending">0</div><div class="lbl">Reports Pending</div></div>
-        </div>
-        <div class="stats">
-          <div class="stat"><div class="icon">🤖</div><div class="val" id="as-ai-today">0</div><div class="lbl">AI Requests Today<br><span style="font-size:9px;opacity:.7">this device</span></div></div>
-          <div class="stat"><div class="icon">🟢</div><div class="val" id="as-active-today">—</div><div class="lbl">Active Users Today<br><span style="font-size:9px;opacity:.7">needs backend</span></div></div>
-          <div class="stat"><div class="icon">🆕</div><div class="val" id="as-new-today">0</div><div class="lbl">New Signups Today<br><span style="font-size:9px;opacity:.7">this device</span></div></div>
-          <div class="stat"><div class="icon">💰</div><div class="val" id="as-revenue">—</div><div class="lbl">Platform Revenue<br><span style="font-size:9px;opacity:.7">coming with payments</span></div></div>
-        </div>
-
-        <div class="card" id="dash-attention" style="border-color:var(--er)33">
-          <div class="card-header"><div class="card-title">🚨 Needs Attention</div></div>
-          <div id="dash-attention-body" style="padding:4px 4px 12px;display:flex;flex-direction:column;gap:8px"></div>
-        </div>
-
-        <div class="card">
-          <div class="card-header"><div class="card-title">Recent Signups</div><button class="abtn view" onclick="aShowPage('pg-users',null,'Users')">See all</button></div>
-          <div class="table-wrap"><table><thead><tr><th>User</th><th>Email</th><th>Country</th><th>Joined</th><th>Status</th></tr></thead><tbody id="dash-users-tbody"></tbody></table></div>
-        </div>
-
-        <div style="text-align:center;padding:8px 0">
-          <button class="abtn view" onclick="aShowPage('pg-analytics',document.getElementById('nav-analytics'),'Analytics')">📊 View full analytics & charts →</button>
-        </div>
+    <div class="tl-item">
+      <div class="tl-dot active">🔥</div>
+      <div class="tl-content">
+        <div class="tl-label">Month 1 · Week 3–4</div>
+        <div class="tl-title">AI & Restaurant Discovery</div>
+        <div class="tl-desc">Noura AI chat (Gemini), AI Recipe Generator, Restaurant discovery, digital menus, reviews, smart search, favourites, meal planner.</div>
+        <div class="tl-active-tag">🔥 Building now</div>
       </div>
-
-      <!-- USERS -->
-      <div id="pg-users" style="display:none">
-        <div class="card">
-          <div class="search-bar">
-            <input class="search-input" placeholder="Search users by name or email…" oninput="searchUsers(this.value)">
-            <button class="abtn view" onclick="aToast('Export feature coming with backend!')">📥 Export</button>
-          </div>
-          <div class="filter-chips">
-            <div class="fchip active" onclick="filterUsers('all',this)">All</div>
-            <div class="fchip" onclick="filterUsers('active',this)">Active</div>
-            <div class="fchip" onclick="filterUsers('suspended',this)">Suspended</div>
-          </div>
-          <div class="table-wrap"><table><thead><tr><th>User</th><th>Email</th><th>Country</th><th>Saved</th><th>Streak</th><th>Status</th><th>Actions</th></tr></thead><tbody id="users-tbody"></tbody></table></div>
-        </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot upcoming">2</div>
+      <div class="tl-content">
+        <div class="tl-label">Month 2</div>
+        <div class="tl-title">Backend & Real Data</div>
+        <div class="tl-desc">Supabase backend, real vendor registration, persistent accounts, restaurant photos, cross-device sync, Google Maps integration.</div>
       </div>
-
-      <!-- VENDORS -->
-      <div id="pg-vendors" style="display:none">
-        <div class="card">
-          <div class="search-bar">
-            <input class="search-input" placeholder="Search vendors…" oninput="searchVendors(this.value)">
-          </div>
-          <div class="filter-chips">
-            <div class="fchip active" onclick="filterVendors('all',this)">All</div>
-            <div class="fchip" onclick="filterVendors('pending',this)">⏳ Pending <span style="background:var(--er);color:#fff;font-size:9px;padding:0 5px;border-radius:var(--rf);margin-left:4px">3</span></div>
-            <div class="fchip" onclick="filterVendors('approved',this)">✅ Approved</div>
-            <div class="fchip" onclick="filterVendors('suspended',this)">🚫 Suspended</div>
-          </div>
-          <div class="table-wrap"><table><thead><tr><th>Business</th><th>Owner</th><th>Category</th><th>Menu Items</th><th>Rating</th><th>Status</th><th>Actions</th></tr></thead><tbody id="vendors-tbody"></tbody></table></div>
-        </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot upcoming">3</div>
+      <div class="tl-content">
+        <div class="tl-label">Month 3</div>
+        <div class="tl-title">Monetisation & Launch</div>
+        <div class="tl-desc">Vendor Pro subscriptions, analytics dashboard, AI marketing tools, Paystack integration, beta testing, public launch.</div>
       </div>
-
-      <!-- RESTAURANTS -->
-      <div id="pg-restaurants" style="display:none">
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">All Restaurants</div>
-            <button class="abtn view" onclick="aToast('Restaurants added by vendors via their portal')">ℹ️ Info</button>
-          </div>
-          <div class="search-bar"><input class="search-input" placeholder="Search restaurants…" oninput="searchRestaurants(this.value)"></div>
-          <div class="filter-chips">
-            <div class="fchip active" onclick="filterRests('all',this)">All</div>
-            <div class="fchip" onclick="filterRests('open',this)">🟢 Open</div>
-            <div class="fchip" onclick="filterRests('closed',this)">🔴 Closed</div>
-            <div class="fchip" onclick="filterRests('featured',this)">⭐ Featured</div>
-          </div>
-          <div class="table-wrap"><table><thead><tr><th>Restaurant</th><th>Cuisine</th><th>Area</th><th>Rating</th><th>Status</th><th>Actions</th></tr></thead><tbody id="rests-tbody"></tbody></table></div>
-        </div>
+    </div>
+    <div class="tl-item" style="margin-bottom:0">
+      <div class="tl-dot upcoming">🚀</div>
+      <div class="tl-content">
+        <div class="tl-label">Launch</div>
+        <div class="tl-title">Noura Goes Live</div>
+        <div class="tl-desc">Public launch across Nigeria, Ghana, and Kenya — with founding supporters getting first access.</div>
       </div>
-
-      <!-- CATEGORIES -->
-      <div id="pg-categories" style="display:none">
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
-          <div class="card">
-            <div class="card-header"><div class="card-title">Cuisine Types</div><button class="abtn view" onclick="aToast('Add category')">+ Add</button></div>
-            <div id="cat-cuisines" style="padding:0 4px 4px"></div>
-          </div>
-          <div class="card">
-            <div class="card-header"><div class="card-title">Meal Categories</div><button class="abtn view" onclick="aToast('Add category')">+ Add</button></div>
-            <div id="cat-meals" style="padding:0 4px 4px"></div>
-          </div>
-          <div class="card">
-            <div class="card-header"><div class="card-title">Dietary Tags</div><button class="abtn view" onclick="aToast('Add tag')">+ Add</button></div>
-            <div id="cat-tags" style="padding:0 4px 4px"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- REPORTS -->
-      <div id="pg-reports" style="display:none">
-        <div class="filter-chips" style="padding:0;margin-bottom:16px">
-          <div class="fchip active" onclick="filterReports('all',this)">All</div>
-          <div class="fchip" onclick="filterReports('review',this)">Reviews</div>
-          <div class="fchip" onclick="filterReports('business',this)">Businesses</div>
-          <div class="fchip" onclick="filterReports('user',this)">Users</div>
-          <div class="fchip" onclick="filterReports('spam',this)">Spam</div>
-        </div>
-        <div id="reports-list" style="display:flex;flex-direction:column;gap:12px"></div>
-      </div>
-
-      <!-- REVIEWS -->
-      <div id="pg-reviews" style="display:none">
-        <div class="card">
-          <div class="card-header"><div class="card-title">All Reviews</div></div>
-          <div class="filter-chips">
-            <div class="fchip active" onclick="filterAllReviews('all',this)">All</div>
-            <div class="fchip" onclick="filterAllReviews('5',this)">⭐⭐⭐⭐⭐</div>
-            <div class="fchip" onclick="filterAllReviews('1',this)">⭐ Low</div>
-            <div class="fchip" onclick="filterAllReviews('reported',this)">🚨 Reported</div>
-          </div>
-          <div class="table-wrap"><table><thead><tr><th>Customer</th><th>Restaurant</th><th>Stars</th><th>Review</th><th>Date</th><th>Actions</th></tr></thead><tbody id="reviews-tbody"></tbody></table></div>
-        </div>
-      </div>
-
-      <!-- NOTIFICATIONS -->
-      <div id="pg-notifications" style="display:none">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-          <div class="card">
-            <div class="card-header"><div class="card-title">📢 Send Notification</div></div>
-            <div class="notif-form">
-              <div>
-                <div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Audience</div>
-                <select style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" id="notif-audience-type" onchange="onAudienceTypeChange()">
-                  <option value="everyone">🌍 Everyone (users + vendors)</option>
-                  <option value="users">👥 Users only</option>
-                  <option value="vendors">🏪 Vendors only</option>
-                  <option value="country">📍 Users in a specific country</option>
-                  <option value="cuisine">🍽️ Fans of a specific cuisine</option>
-                </select>
-                <input id="notif-audience-value" style="display:none;width:100%;margin-top:8px;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="e.g. Nigeria, or Jollof Rice">
-              </div>
-              <div>
-                <div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Type</div>
-                <select style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" id="notif-type">
-                  <option>🧠 AI Update</option><option>🍽️ New Feature</option><option>🏷️ Promotion</option><option>📢 Announcement</option>
-                </select>
-              </div>
-              <div>
-                <div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Title</div>
-                <input id="notif-title" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="Notification title…">
-              </div>
-              <div>
-                <div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Message</div>
-                <textarea id="notif-msg" rows="3" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none;resize:none" placeholder="Your message…"></textarea>
-              </div>
-              <button class="btn-primary" onclick="sendAdminNotif()">📢 Send Notification</button>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header"><div class="card-title">📋 Sent Notifications</div></div>
-            <div id="sent-notifs" style="padding:4px"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ANALYTICS -->
-      <div id="pg-analytics" style="display:none">
-        <div class="stats">
-          <div class="stat"><div class="icon">👁️</div><div class="val">4,821</div><div class="lbl">Total Page Views</div><div class="delta up">↑ 23% this month</div></div>
-          <div class="stat"><div class="icon">🔍</div><div class="val">1,204</div><div class="lbl">Recipe Searches</div><div class="delta up">↑ 18%</div></div>
-          <div class="stat"><div class="icon">🤖</div><div class="val">389</div><div class="lbl">AI Conversations</div><div class="delta up">↑ 41%</div></div>
-          <div class="stat"><div class="icon">❤️</div><div class="val">672</div><div class="lbl">Recipes Saved</div><div class="delta up">↑ 15%</div></div>
-        </div>
-        <div class="chart-grid">
-          <div class="chart-card"><h4>📅 Daily Active Users</h4><div class="chart-wrap"><canvas id="ch-dau"></canvas></div></div>
-          <div class="chart-card"><h4>🔍 Top Search Terms</h4><div class="chart-wrap"><canvas id="ch-terms"></canvas></div></div>
-          <div class="chart-card"><h4>🌍 Traffic by Country</h4><div class="chart-wrap"><canvas id="ch-geo"></canvas></div></div>
-          <div class="chart-card"><h4>🤖 AI Usage</h4><div class="chart-wrap"><canvas id="ch-ai"></canvas></div></div>
-        </div>
-      </div>
-
-      <!-- SETTINGS -->
-      <div id="pg-settings" style="display:none">
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
-          <div class="card">
-            <div class="card-header"><div class="card-title">🎨 Platform Settings</div></div>
-            <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--sfu);border-radius:10px;border:1px solid var(--bd)">
-                <div><div style="font-size:13px;font-weight:500;color:var(--t1)">Vendor Registrations</div><div style="font-size:11px;color:var(--t2)">Allow new vendors to sign up</div></div>
-                <div class="tog" id="flag-vendorReg" onclick="toggleFeatureFlag('vendorRegistrations',this)"></div>
-              </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--sfu);border-radius:10px;border:1px solid var(--bd)">
-                <div><div style="font-size:13px;font-weight:500;color:var(--t1)">User Registrations</div><div style="font-size:11px;color:var(--t2)">Allow new users to sign up</div></div>
-                <div class="tog" id="flag-userReg" onclick="toggleFeatureFlag('userRegistrations',this)"></div>
-              </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--sfu);border-radius:10px;border:1px solid var(--er)40">
-                <div><div style="font-size:13px;font-weight:500;color:var(--t1)">🛠️ Maintenance Mode</div><div style="font-size:11px;color:var(--t2)">Actually blocks the consumer app + vendor portal</div></div>
-                <div class="tog" id="flag-maintenance" onclick="toggleMaintenanceMode(this)"></div>
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header"><div class="card-title">🔐 Security</div></div>
-            <div style="padding:16px;display:flex;flex-direction:column;gap:10px">
-              <div style="padding:12px;background:var(--sfu);border-radius:10px;border:1px solid var(--bd)"><div style="font-size:13px;font-weight:500;color:var(--t1);margin-bottom:2px">Two-Factor Auth</div><div style="font-size:11px;color:var(--ok)">✅ Enabled for all admins</div></div>
-              <div style="padding:12px;background:var(--sfu);border-radius:10px;border:1px solid var(--bd)"><div style="font-size:13px;font-weight:500;color:var(--t1);margin-bottom:2px">Session Timeout</div><div style="font-size:11px;color:var(--t2)">Auto-logout after 8 hours</div></div>
-              <div style="padding:12px;background:var(--sfu);border-radius:10px;border:1px solid var(--bd)"><div style="font-size:13px;font-weight:500;color:var(--t1);margin-bottom:2px">Login Attempts</div><div style="font-size:11px;color:var(--t2)">Lock after 5 failed attempts</div></div>
-              <button class="abtn view" style="padding:10px" onclick="aShowPage('pg-audit',document.querySelector('.nav-item[onclick*=pg-audit]'),'Audit Log')">📋 View Audit Log</button>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header"><div class="card-title">🩺 System Status</div></div>
-            <div class="status-grid" style="padding:12px">
-              <div class="status-item"><div class="status-dot ok"></div><div class="status-info"><div class="s-name">API Services</div><div class="s-val">All systems operational</div></div></div>
-              <div class="status-item"><div class="status-dot ok"></div><div class="status-info"><div class="s-name">Database</div><div class="s-val">localStorage (Month 1)</div></div></div>
-              <div class="status-item"><div class="status-dot warn"></div><div class="status-info"><div class="s-name">Supabase</div><div class="s-val">Pending — Month 2</div></div></div>
-              <div class="status-item"><div class="status-dot ok"></div><div class="status-info"><div class="s-name">Gemini AI</div><div class="s-val">Active</div></div></div>
-              <div class="status-item"><div class="status-dot ok"></div><div class="status-info"><div class="s-name">TheMealDB</div><div class="s-val">Connected</div></div></div>
-              <div class="status-item"><div class="status-dot warn"></div><div class="status-info"><div class="s-name">Paystack</div><div class="s-val">Pending — Month 3</div></div></div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header"><div class="card-title">📊 Platform Info</div></div>
-            <div style="padding:16px;display:flex;flex-direction:column;gap:8px">
-              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--t2)">Version</span><span style="color:var(--t1);font-weight:500">Noura v1.0 — Month 1</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--t2)">Storage</span><span style="color:var(--t1);font-weight:500">localStorage (pre-backend)</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--t2)">AI Model</span><span style="color:var(--t1);font-weight:500">Gemini 1.5 Flash</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--t2)">Recipe API</span><span style="color:var(--t1);font-weight:500">TheMealDB</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--t2)">Backend</span><span style="color:var(--warn);font-weight:500">Supabase (Month 2)</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--t2)">Payments</span><span style="color:var(--warn);font-weight:500">Paystack (Month 3)</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CHALLENGES -->
-      <div id="pg-challenges" style="display:none">
-        <div class="card" style="margin-bottom:16px">
-          <div class="card-header"><div class="card-title">🏆 Create & Schedule Challenge</div></div>
-          <div class="notif-form">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Icon (emoji)</div><input id="ch-icon" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="🏆" maxlength="4"></div>
-              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Title</div><input id="ch-title" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="Healthy Week"></div>
-            </div>
-            <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Description</div><textarea id="ch-desc" rows="2" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none;resize:none" placeholder="What should users do to complete it?"></textarea></div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Tracks</div>
-                <select id="ch-metric" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none">
-                  <option value="mealsOpened">Recipes opened</option>
-                  <option value="reviewsWritten">Reviews written</option>
-                  <option value="restaurantsViewed">Restaurants explored</option>
-                  <option value="streakDays">Login streak (days)</option>
-                  <option value="manual">Manual (e.g. photo upload)</option>
-                </select>
-              </div>
-              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Target</div><input type="number" id="ch-target" value="1" min="1" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none"></div>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Start Date</div><input type="date" id="ch-start" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none"></div>
-              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">End Date (optional)</div><input type="date" id="ch-end" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none"></div>
-            </div>
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t2);cursor:pointer"><input type="checkbox" id="ch-email" style="width:16px;height:16px"> 📧 Email all users when this launches</label>
-            <button class="abtn approve" style="padding:11px" onclick="createChallenge()">🏆 Create & Schedule</button>
-          </div>
-        </div>
-        <div class="card" style="margin-bottom:0">
-          <div class="card-header"><div class="card-title">Scheduled Challenges</div></div>
-          <div class="table-wrap"><table><thead><tr><th>Challenge</th><th>Tracks</th><th>Dates</th><th>Email</th><th>Status</th><th>Actions</th></tr></thead><tbody id="challenges-tbody"></tbody></table></div>
-        </div>
-      </div>
-
-      <!-- MEAL MODERATION (menu items) -->
-      <div id="pg-meals" style="display:none">
-        <div class="card" style="margin-bottom:0">
-          <div class="card-header"><div class="card-title">All Menu Items Across Noura</div><input type="text" placeholder="🔍 Search meals..." class="search-in" oninput="searchMeals(this.value)" style="max-width:220px"></div>
-          <div class="table-wrap"><table><thead><tr><th>Meal</th><th>Restaurant</th><th>Category</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead><tbody id="meals-tbody"></tbody></table></div>
-        </div>
-      </div>
-
-      <!-- ADVERTISING -->
-      <div id="pg-ads" style="display:none">
-        <div class="card" style="margin-bottom:16px">
-          <div class="card-header"><div class="card-title">📣 Create Advertisement</div></div>
-          <div class="notif-form">
-            <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Title</div><input id="ad-title" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="e.g. 20% off this weekend"></div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Image (emoji)</div><input id="ad-image" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="🍔" maxlength="4"></div>
-              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">CTA Text</div><input id="ad-cta" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="Order Now"></div>
-            </div>
-            <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Description</div><textarea id="ad-desc" rows="2" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none;resize:none" placeholder="Short ad copy…"></textarea></div>
-            <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Link (opens on click)</div><input id="ad-link" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="store.html?v=vendor-slug or https://..."></div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Start Date</div><input type="date" id="ad-start" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none"></div>
-              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">End Date</div><input type="date" id="ad-end" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none"></div>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Budget (₦, optional)</div><input type="number" id="ad-budget" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none" placeholder="0"></div>
-              <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Audience</div><select id="ad-audience" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none"><option value="everyone">Everyone</option><option value="users">Users only</option><option value="vendors">Vendors only</option></select></div>
-            </div>
-            <div><div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Placement</div>
-              <select id="ad-placement" style="width:100%;background:var(--sfu);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--t1);font-size:13px;font-family:inherit;outline:none">
-                <option value="home_banner">Home Banner</option>
-                <option value="feed_card">Feed Card</option>
-                <option value="search_results">Search Results</option>
-                <option value="restaurant_page">Restaurant Page</option>
-              </select>
-            </div>
-            <button class="abtn approve" style="padding:11px" onclick="createAd()">📣 Create Campaign</button>
-          </div>
-        </div>
-        <div class="card" style="margin-bottom:0">
-          <div class="card-header"><div class="card-title">Active & Past Campaigns</div></div>
-          <div class="table-wrap"><table><thead><tr><th>Ad</th><th>Placement</th><th>Audience</th><th>Dates</th><th>Impressions</th><th>Clicks</th><th>Status</th><th>Actions</th></tr></thead><tbody id="ads-tbody"></tbody></table></div>
-        </div>
-      </div>
-
-      <!-- AI MONITORING -->
-      <div id="pg-ai" style="display:none">
-        <div class="stats">
-          <div class="stat"><div class="icon">🤖</div><div class="val" id="ai-today">0</div><div class="lbl">AI Requests Today (this device)</div></div>
-          <div class="stat"><div class="icon">📈</div><div class="val" id="ai-total">0</div><div class="lbl">Total Requests (this device)</div></div>
-          <div class="stat"><div class="icon">⚡</div><div class="val" id="ai-avgtime">—</div><div class="lbl">Avg Response Time</div></div>
-          <div class="stat"><div class="icon">💚</div><div class="val" id="ai-health">Checking…</div><div class="lbl">Gemini API Health</div></div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">About These Numbers</div></div>
-          <div style="padding:4px 16px 16px;font-size:13px;color:var(--t2);line-height:1.7">
-            AI usage is currently tracked per-device (this browser only) since there's no backend yet to aggregate requests across every user. Platform-wide AI monitoring — popular prompts, failure rates, per-user cost — needs requests to route through a backend proxy (planned alongside the Gemini key migration). Once that exists, this page will show real cross-platform numbers instead of this device's local count.
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">Recent AI Errors (this device)</div></div>
-          <div id="ai-errors-list" style="padding:4px"></div>
-        </div>
-      </div>
-
-      <!-- ADMIN ROLES -->
-      <div id="pg-roles" style="display:none">
-        <div class="card">
-          <div class="card-header"><div class="card-title">Role-Based Access Control</div></div>
-          <div style="padding:4px 16px 16px;font-size:13px;color:var(--t2);line-height:1.7">
-            These are the roles Noura's admin system is designed around. Actual enforcement (limiting which admin can do what) requires backend authentication with per-account roles — this panel is single-login for now, so every admin currently has full access. Treat this as the spec to build against once accounts move to a real backend.
-          </div>
-        </div>
-        <div id="roles-grid" style="display:flex;flex-direction:column;gap:12px"></div>
-      </div>
-
-      <!-- AUDIT LOG -->
-      <div id="pg-audit" style="display:none">
-        <div class="card" style="margin-bottom:0">
-          <div class="card-header"><div class="card-title">Admin Action History</div><button class="abtn view" onclick="clearAuditLog()">Clear Log</button></div>
-          <div class="table-wrap"><table><thead><tr><th>Action</th><th>Details</th><th>Admin</th><th>When</th></tr></thead><tbody id="audit-tbody"></tbody></table></div>
-        </div>
-      </div>
-
-    </div><!-- /body -->
-  </div><!-- /main -->
-  </div><!-- /aapp -->
-</div><!-- /as-app -->
-
-<!-- MODALS -->
-<div class="a-modal" id="mod-confirm">
-  <div class="a-modal-box">
-    <div class="a-modal-title" id="confirm-title">Confirm Action</div>
-    <div style="font-size:14px;color:var(--t2);line-height:1.6" id="confirm-body"></div>
-    <div class="a-modal-actions">
-      <button class="cancel" onclick="closeAMod('mod-confirm')">Cancel</button>
-      <button class="confirm" id="confirm-ok">Confirm</button>
     </div>
   </div>
-</div>
+</section>
 
-<div id="a-toast"></div>
+<!-- DEV LOG -->
+<section>
+  <div class="reveal">
+    <div class="section-eyebrow">Dev Log</div>
+    <div class="section-title">Weekly updates.</div>
+    <p class="section-body">Every week, one honest update. What was built, what broke, what was learned.</p>
+  </div>
+  <div class="log-grid reveal" style="transition-delay:.1s">
+    <div class="log-item">
+      <div class="log-check">✓</div>
+      <div style="flex:1">
+        <div style="display:flex;gap:12px;align-items:baseline;margin-bottom:4px">
+          <div class="log-week">Week 1</div>
+          <div class="log-title">UI foundation complete</div>
+        </div>
+        <div class="log-desc">Built splash, onboarding, login/register/forgot password, bottom nav, and all core screen routing. App loads and navigates smoothly.</div>
+      </div>
+    </div>
+    <div class="log-item">
+      <div class="log-check">✓</div>
+      <div style="flex:1">
+        <div style="display:flex;gap:12px;align-items:baseline;margin-bottom:4px">
+          <div class="log-week">Week 2</div>
+          <div class="log-title">User accounts & data</div>
+        </div>
+        <div class="log-desc">Profile with all fields (name, bio, country, cuisines, diet, allergies), settings, saved recipes, notifications, food preferences — all persisted in localStorage.</div>
+      </div>
+    </div>
+    <div class="log-item" style="border-left:2px solid var(--ac)">
+      <div class="log-check" style="background:var(--acs);border-color:#E8943A30;color:var(--ac)">→</div>
+      <div style="flex:1">
+        <div style="display:flex;gap:12px;align-items:baseline;margin-bottom:4px">
+          <div class="log-week">Week 3</div>
+          <div class="log-title">AI & restaurants — in progress</div>
+        </div>
+        <div class="log-desc">Noura AI chat powered by Gemini 1.5 Flash. Restaurant discovery, digital menus, reviews, smart search. Live recipes from TheMealDB API.</div>
+      </div>
+    </div>
+    <div class="log-item" style="opacity:.5">
+      <div class="log-check" style="color:var(--t3)">○</div>
+      <div style="flex:1">
+        <div style="display:flex;gap:12px;align-items:baseline;margin-bottom:4px">
+          <div class="log-week">Week 4</div>
+          <div class="log-title">Polish & beta prep</div>
+        </div>
+        <div class="log-desc">UI polish, performance, error states, PWA manifest, first user testing. Getting ready for real people to use it.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section id="founder">
+  <div class="reveal" style="text-align:center;margin-bottom:40px">
+    <div class="section-eyebrow">The Builder</div>
+    <div class="section-title">Built by one person.<br>For everyone.</div>
+  </div>
+  <div class="founder-card reveal" style="transition-delay:.1s">
+    <div class="founder-avatar">F</div>
+    <div>
+      <div class="founder-name">Flexi</div>
+      <div class="founder-handle">@Flexi-spec · Fluxiq Labs</div>
+      <p class="founder-bio">I'm building Noura because I believe discovering food should be smarter, simpler, and more accessible — especially for African users who don't see their cuisine represented in mainstream apps.<br><br>I'm building this entirely in public. Every line of code, every mistake, every breakthrough. Thanks for joining me on this journey. 💛</p>
+    </div>
+  </div>
+  <div class="social-row reveal" style="transition-delay:.2s">
+    <a href="#" class="social-btn">📱 TikTok</a>
+    <a href="#" class="social-btn">📸 Instagram</a>
+    <a href="#" class="social-btn">💬 WhatsApp Channel</a>
+    <a href="https://github.com/Flexi-spec" target="_blank" class="social-btn">💻 GitHub</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">noura<span>.</span></div>
+  <div class="footer-links">
+    <a href="noura-legal.html#privacy">Privacy Policy</a>
+    <a href="noura-legal.html#terms">Terms of Service</a>
+    <a href="noura-legal.html#foundation">The Noura Foundation</a>
+    <a href="noura-legal.html#values">Core Values</a>
+    <a href="mailto:hello@noura.app">Contact</a>
+      <a href="vendor.html" target="_blank">Vendor Portal</a>
+      <a href="admin.html" target="_blank">Admin</a>
+  </div>
+  <div class="footer-copy">© 2026 Noura · Built with 💛 · Every meal matters.</div>
+</footer>
+
 
 <script>
 /* ===== config ===== */
@@ -2540,633 +2492,66 @@ Be concise (max 4-6 lines unless a full recipe is requested), warm, and practica
 
 </script>
 <script>
-/* ===== admin app ===== */
+/* ===== landing app ===== */
 // ══════════════════════════════════════════════════════
-//  NOURA — ADMIN DASHBOARD
-//  UI / screen logic only. All data through window.Services.
+//  NOURA — LANDING PAGE
 // ══════════════════════════════════════════════════════
 if (!window.Services) {
-  document.body.innerHTML = '<div style="padding:40px 24px;color:#F2EDE4;font-family:sans-serif;text-align:center"><h2 style="margin-bottom:12px">⚠️ Admin Dashboard couldn\'t start</h2><p style="color:#8A7D6A;line-height:1.6">The service layer failed to load.</p></div>';
+  document.body.innerHTML = '<div style="padding:40px 24px;color:#F0EDE6;font-family:sans-serif;text-align:center"><h2>⚠️ Page couldn\'t start</h2><p>The service layer failed to load.</p></div>';
   throw new Error('window.Services is missing.');
 }
 const S = window.Services;
-function el(id){ return document.getElementById(id); }
-let adminLoggedIn = false;
 
-// ── Auth ─────────────────────────────────────────────
-async function doAdminLogin() {
-  const email = el('al-email')?.value;
-  const pass  = el('al-pass')?.value;
-  if (!email || !pass) { aToast('Enter email and password'); return; }
-  if (pass !== S.env.ADMIN_PASSWORD) { aToast('Incorrect admin password'); return; }
-  const res = await S.admin.login(email, pass);
-  el('as-login').style.display = 'none';
-  el('as-2fa').style.display = 'flex';
-  aToast(res.demo ? 'Demo mode (no backend yet) — code sent to ' + email : 'Code sent to ' + email);
+// ── Scroll reveal ──────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Waitlist counter ────────────────────────────
+async function updateCounter() {
+  const el = document.getElementById('wl-counter');
+  const n  = await S.waitlist.getCount();
+  if (el) el.textContent = n > 0 ? n.toLocaleString() : '—';
 }
-function tfaNext(input, idx) {
-  if (input.value && idx < 5) { document.querySelectorAll('.tfa-input')[idx+1]?.focus(); }
-}
-function verify2FA() {
-  el('as-2fa').style.display = 'none';
-  el('as-app').classList.add('active');
-  adminLoggedIn = true;
-  history.replaceState({ adminPage: 'pg-dashboard' }, '', '#dashboard');
-  initAdmin();
-}
-function doAdminLogout() {
-  el('as-app').classList.remove('active');
-  el('as-login').style.display = 'flex';
-  adminLoggedIn = false;
-}
+updateCounter();
 
-// ── Page routing ─────────────────────────────────────
-function aShowPage(pageId, navEl, title, fromPop) {
-  document.querySelectorAll('.body > div').forEach(p => { p.style.display='none'; p.classList.remove('page-enter'); });
-  const page = el(pageId);
-  if (page) { page.style.display = ''; void page.offsetWidth; page.classList.add('page-enter'); }
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  if (navEl) navEl.classList.add('active');
-  if (el('a-page-title')) el('a-page-title').textContent = title;
-  if (el('a-mob-title'))  el('a-mob-title').textContent  = title;
-  el('a-sidebar')?.classList.remove('open');
-  el('a-sb-overlay')?.classList.remove('on');
+// ── Join waitlist ──────────────────────────────
+async function joinWaitlist() {
+  const name    = document.getElementById('wl-name').value.trim();
+  const email   = document.getElementById('wl-email').value.trim();
+  const country = document.getElementById('wl-country').value;
+  const feature = document.getElementById('wl-feature').value;
 
-  if (!fromPop) {
-    if (pageId === 'pg-dashboard') {
-      history.replaceState({ adminPage: 'pg-dashboard' }, '', '#dashboard');
-    } else if (history.state && history.state.adminPage && history.state.adminPage !== 'pg-dashboard') {
-      history.replaceState({ adminPage: pageId, title }, '', '#' + pageId.replace('pg-',''));
-    } else {
-      history.pushState({ adminPage: pageId, title }, '', '#' + pageId.replace('pg-',''));
-    }
-  }
+  if (!name)                { shake('wl-name');    return; }
+  if (!email.includes('@')) { shake('wl-email');  return; }
+  if (!country)              { shake('wl-country'); return; }
 
-  if (pageId === 'pg-users')         loadUsers();
-  if (pageId === 'pg-vendors')       loadVendors();
-  if (pageId === 'pg-restaurants')   renderRestaurants();
-  if (pageId === 'pg-meals')         loadMeals();
-  if (pageId === 'pg-challenges')    loadChallenges();
-  if (pageId === 'pg-ads')           loadAds();
-  if (pageId === 'pg-categories')    renderCategories();
-  if (pageId === 'pg-reports')       loadReports();
-  if (pageId === 'pg-reviews')       loadAllReviews();
-  if (pageId === 'pg-ai')            renderAIMonitoring();
-  if (pageId === 'pg-notifications') renderSentNotifs();
-  if (pageId === 'pg-analytics')     renderAnalyticsCharts();
-  if (pageId === 'pg-roles')         renderRoles();
-  if (pageId === 'pg-audit')         renderAuditLog();
-  if (pageId === 'pg-settings')      loadPlatformSettings();
-}
-function toggleAdminSidebar() {
-  el('a-sidebar')?.classList.toggle('open');
-  el('a-sb-overlay')?.classList.toggle('on');
-}
-window.addEventListener('popstate', (e) => {
-  if (!adminLoggedIn) return;
-  const state = e.state;
-  if (state && state.adminPage) {
-    const navEl = document.querySelector(`.nav-item[onclick*="'${state.adminPage}'"]`);
-    aShowPage(state.adminPage, navEl, state.title || 'Dashboard', true);
-  } else {
-    const navEl = document.querySelector(`.nav-item[onclick*="'pg-dashboard'"]`);
-    aShowPage('pg-dashboard', navEl, 'Dashboard', true);
-  }
-});
+  const btn = document.querySelector('#wl-form .wl-submit');
+  if (btn) { btn.disabled = true; btn.textContent = 'Joining…'; }
+  const res = await S.waitlist.join({ name, email, country, feature });
+  if (btn) { btn.disabled = false; btn.innerHTML = '🚀 &nbsp; Reserve My Spot'; }
 
+  if (!res.ok) { shake('wl-email'); return; }
 
-// ── Init / dashboard ──────────────────────────────────
-async function initAdmin() {
-  const [users, vendors, reviews, reports, meals] = await Promise.all([
-    S.admin.listUsers(), S.admin.listVendors(), S.admin.listAllReviews(), S.admin.listReports(), S.admin.listAllMeals()
-  ]);
-  const approved = vendors.filter(v=>v.status==='approved');
-  const pending  = vendors.filter(v=>v.status==='pending');
-  const today = new Date().toDateString();
-  const newToday = users.filter(u => u.joinedAt && new Date(u.joinedAt).toDateString() === today);
-  const aiStats = S.ai.getStats();
-
-  if (el('as-users'))            el('as-users').textContent            = users.length;
-  if (el('as-vendors-total'))    el('as-vendors-total').textContent    = vendors.length;
-  if (el('as-vendors'))          el('as-vendors').textContent          = approved.length;
-  if (el('as-pending-vendors'))  el('as-pending-vendors').textContent  = pending.length;
-  if (el('as-rests'))            el('as-rests').textContent            = approved.length;
-  if (el('as-meals'))            el('as-meals').textContent            = meals.length;
-  if (el('as-reviews'))          el('as-reviews').textContent          = reviews.length;
-  if (el('as-reports-pending'))  el('as-reports-pending').textContent  = reports.filter(r=>r.status!=='resolved').length;
-  if (el('as-ai-today'))         el('as-ai-today').textContent         = aiStats.today;
-  if (el('as-new-today'))        el('as-new-today').textContent        = newToday.length;
-
-  renderUsersTable('dash-users-tbody', users.slice(0,5), true);
-  renderAttentionCard(vendors, reports);
-  const rb = el('reports-badge'); const open = reports.filter(r=>r.status!=='resolved').length;
-  if (rb) { rb.textContent = open; rb.style.display = open ? '' : 'none'; }
+  document.getElementById('wl-form').style.display    = 'none';
+  document.getElementById('wl-success').style.display = 'block';
+  updateCounter();
 }
 
-function renderAttentionCard(vendors, reports) {
-  const pending = vendors.filter(v=>v.status==='pending');
-  const openReports = reports.filter(r=>r.status!=='resolved');
-  const body = el('dash-attention-body'); if (!body) return;
-  const rows = [];
-  if (pending.length) rows.push(`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--sfu);border-radius:10px"><span style="font-size:13px;color:var(--t1)">⏳ ${pending.length} vendor${pending.length===1?'':'s'} awaiting approval</span><button class="abtn view" onclick="aShowPage('pg-vendors',document.querySelector('.nav-item[onclick*=pg-vendors]'),'Vendors')">Review →</button></div>`);
-  if (openReports.length) rows.push(`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--sfu);border-radius:10px"><span style="font-size:13px;color:var(--t1)">🚩 ${openReports.length} open report${openReports.length===1?'':'s'}</span><button class="abtn view" onclick="aShowPage('pg-reports',document.querySelector('.nav-item[onclick*=pg-reports]'),'Reports')">Review →</button></div>`);
-  const attentionCard = el('dash-attention');
-  if (!rows.length) { if (attentionCard) attentionCard.style.display='none'; return; }
-  if (attentionCard) attentionCard.style.display='';
-  body.innerHTML = rows.join('');
+function shake(id) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.style.borderColor = '#E05252';
+  el.style.animation   = 'shake .4s ease';
+  setTimeout(() => { el.style.animation = ''; el.style.borderColor = ''; }, 400);
+  el.focus();
 }
 
-function chartEmptyNotice(canvas, msg) {
-  if (aCharts[canvas.id]) { aCharts[canvas.id].destroy(); delete aCharts[canvas.id]; }
-  canvas.style.display = 'none';
-  const parent = canvas.parentElement;
-  let n = parent.querySelector('.chart-empty-notice');
-  if (!n) { n = document.createElement('div'); n.className='chart-empty-notice'; n.style.cssText='padding:24px 12px;text-align:center;color:var(--t3);font-size:12px'; parent.appendChild(n); }
-  n.textContent = msg;
-}
-
-// ── Users  (no cross-device directory without a backend) ──
-let allUsers = [];
-async function loadUsers() { allUsers = await S.admin.listUsers(); renderUsers(allUsers); }
-function renderUsersTable(tbodyId, users, simple) {
-  const tbody = el(tbodyId); if (!tbody) return;
-  if (!users.length) { tbody.innerHTML = `<tr><td colspan="${simple?4:5}" style="text-align:center;color:var(--t3);padding:40px">No users yet — this list populates once a backend tracks accounts across devices.</td></tr>`; return; }
-  tbody.innerHTML = users.map(u => `<tr>
-    <td><strong>${u.name}</strong></td>
-    <td style="color:var(--t2)">${u.email}</td>
-    <td>${u.country}</td>
-    ${!simple ? `<td>${u.saved}</td><td>${u.streak} 🔥</td>` : ''}
-    <td><span class="badge ${u.status==='active'?'green':'red'}">${u.status}</span></td>
-    ${!simple ? `<td><div class="act">
-      <button class="abtn view" onclick="viewUser('${u.id}')">👁 View</button>
-      <button class="abtn suspend" onclick="toggleUserStatus('${u.id}')">${u.status==='active'?'Suspend':'Restore'}</button>
-      <button class="abtn view" onclick="resetUserPassword('${u.id}')">🔑 Reset PW</button>
-      <button class="abtn delete" onclick="confirmAction('Delete user ${u.name.replace(/'/g,"\\'")}?',()=>deleteUser('${u.id}'))">🗑</button>
-    </div></td>` : `<td><div class="act"><button class="abtn view" onclick="aShowPage('pg-users',null,'Users')">View all</button></div></td>`}
-  </tr>`).join('');
-}
-function renderUsers(users) { renderUsersTable('users-tbody', users, false); }
-function searchUsers(val) { renderUsers(val ? allUsers.filter(u=>u.name.toLowerCase().includes(val.toLowerCase())||u.email.toLowerCase().includes(val.toLowerCase())) : allUsers); }
-function filterUsers(type, btn) {
-  document.querySelectorAll('#pg-users .fchip').forEach(c=>c.classList.remove('active')); if(btn) btn.classList.add('active');
-  renderUsers(type==='all' ? allUsers : allUsers.filter(u=>u.status===type));
-}
-function viewUser(id) {
-  const u=allUsers.find(x=>x.id===id); if(!u) return;
-  aToast(`${u.name} · ${u.email} · ${u.country} · Joined ${u.joinedAt||'—'}`);
-}
-async function toggleUserStatus(id) {
-  const u=allUsers.find(x=>x.id===id); if(!u) return;
-  const next = u.status==='active'?'suspended':'active';
-  await S.admin.setUserStatus(id, next); u.status = next; renderUsers(allUsers);
-  S.auditLog.log(next==='suspended'?'User suspended':'User restored', u.name+' ('+u.email+')');
-  aToast('User status updated');
-}
-async function resetUserPassword(id) {
-  const u=allUsers.find(x=>x.id===id); if(!u) return;
-  S.auditLog.log('Password reset requested', u.name+' ('+u.email+')');
-  aToast('Reset link would be emailed to '+u.email+' — needs backend to actually send it');
-}
-async function deleteUser(id) {
-  const u=allUsers.find(x=>x.id===id); if(!u) return;
-  allUsers = allUsers.filter(x=>x.id!==id); renderUsers(allUsers);
-  S.auditLog.log('User deleted', u.name+' ('+u.email+')');
-  aToast('User deleted');
-}
-
-// ── Vendors  (derived from the real published restaurant directory) ──
-let allVendors = [];
-async function loadVendors() { allVendors = await S.admin.listVendors(); renderVendors(allVendors); }
-function renderVendors(vendors) {
-  const tbody = el('vendors-tbody'); if (!tbody) return;
-  if (!vendors.length) { tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--t3);padding:40px">No vendors yet — they'll appear here once vendors complete onboarding.</td></tr>`; return; }
-  tbody.innerHTML = vendors.map(v => {
-    const statusBadge = {approved:'<span class="badge green">✅ Approved</span>',pending:'<span class="badge orange">⏳ Pending</span>',suspended:'<span class="badge red">🚫 Suspended</span>'}[v.status]||'';
-    return `<tr>
-      <td><strong>${v.businessName}</strong></td>
-      <td style="color:var(--t2)">${v.owner}</td>
-      <td>${v.category}</td>
-      <td>${v.menuItems}</td>
-      <td>${v.rating||'—'}</td>
-      <td>${statusBadge}</td>
-      <td><div class="act">
-        ${v.status==='pending'?`<button class="abtn approve" onclick="vendorAction('${v.id}','approved')">✅ Approve</button><button class="abtn reject" onclick="vendorAction('${v.id}','suspended')">❌ Reject</button>`:''}
-        ${v.status==='approved'?`<button class="abtn feature" onclick="featureVendor('${v.id}')">⭐ Feature</button><button class="abtn suspend" onclick="vendorAction('${v.id}','suspended')">Suspend</button>`:''}
-        ${v.status==='suspended'?`<button class="abtn approve" onclick="vendorAction('${v.id}','approved')">Restore</button>`:''}
-        <button class="abtn view" onclick="viewVendorMenu('${v.id}')">🍽 Menu</button>
-        <button class="abtn delete" onclick="confirmAction('Permanently delete ${v.businessName.replace(/'/g,"\\'")}?',()=>deleteVendor('${v.id}'))">🗑</button>
-      </div></td>
-    </tr>`;
-  }).join('');
-  const pending = vendors.filter(v=>v.status==='pending').length;
-  const pb = el('pending-badge'); if (pb) { pb.textContent=pending; pb.style.display=pending?'':'none'; }}
-async function viewVendorMenu(id) {
-  const { restaurant } = await S.restaurants.get(id);
-  if (!restaurant || !(restaurant.menu||[]).length) { aToast('No menu items yet'); return; }
-  aToast(restaurant.menu.slice(0,3).map(m=>m.name).join(', ') + (restaurant.menu.length>3?` +${restaurant.menu.length-3} more`:''));
-}
-async function deleteVendor(id) {
-  const rests = S.utils.lsGet('noura_restaurants', []);
-  const v = rests.find(r=>r.id===id);
-  S.utils.lsSet('noura_restaurants', rests.filter(r=>r.id!==id));
-  loadVendors();
-  S.auditLog.log('Vendor deleted', v?.name || id);
-  aToast('Vendor deleted');
-}
-function searchVendors(val) { renderVendors(val ? allVendors.filter(v=>v.businessName.toLowerCase().includes(val.toLowerCase())) : allVendors); }
-function filterVendors(type, btn) {
-  document.querySelectorAll('#pg-vendors .fchip').forEach(c=>c.classList.remove('active')); if(btn) btn.classList.add('active');
-  renderVendors(type==='all' ? allVendors : allVendors.filter(v=>v.status===type));
-}
-async function vendorAction(id, status) {
-  const v = allVendors.find(x=>x.id===id);
-  await S.admin.setVendorStatus(id, status);
-  await loadVendors();
-  S.auditLog.log(status==='approved'?'Vendor approved':status==='suspended'?'Vendor suspended':'Vendor updated', v?.businessName || id);
-  aToast(status==='approved'?'Vendor approved ✅':status==='suspended'?'Vendor suspended':'Vendor updated');
-}
-async function featureVendor(id) {
-  const v = allVendors.find(x=>x.id===id);
-  await S.admin.featureVendor(id);
-  S.auditLog.log('Vendor featured', v?.businessName || id);
-  aToast('Featured! ⭐');
-}
-
-// ── Restaurants (reads the same shared directory) ──
-async function renderRestaurants() {
-  const { restaurants } = await S.restaurants.list();
-  const tbody = el('rests-tbody'); if (!tbody) return;
-  if (!restaurants.length) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--t3);padding:40px">No restaurants yet — vendors add them via the Vendor Portal</td></tr>`; return; }
-  tbody.innerHTML = restaurants.map(r=>`<tr>
-    <td><strong>${r.emoji||'🍽️'} ${r.name}</strong></td>
-    <td style="color:var(--t2)">${r.cuisine||'—'}</td>
-    <td style="color:var(--t2)">${r.area||'—'}</td>
-    <td>${r.rating?'⭐ '+r.rating:'—'}</td>
-    <td><span class="badge ${r.open?'green':'gray'}">${r.open?'Open':'Closed'}</span>${r.verified?'<span class="badge orange" style="margin-left:4px">✓ Verified</span>':''}</td>
-    <td><div class="act">
-      <button class="abtn view" onclick="aToast('${r.name}')">👁 View</button>
-      <button class="abtn feature" onclick="featureVendor('${r.id}')">⭐ Feature</button>
-      <button class="abtn delete" onclick="confirmAction('Delete ${r.name}?',()=>removeRestaurant('${r.id}'))">🗑</button>
-    </div></td>
-  </tr>`).join('');
-}
-async function removeRestaurant(id) {
-  const { restaurants } = await S.restaurants.list();
-  const r = restaurants.find(x=>x.id===id);
-  await S.admin.removeRestaurant(id);
-  renderRestaurants();
-  S.auditLog.log('Restaurant deleted', r?.name || id);
-  aToast('Deleted');
-}
-function searchRestaurants(val) { renderRestaurants(); } // filtering handled server-side once backend exists
-function filterRests(type, btn) { document.querySelectorAll('#pg-restaurants .fchip').forEach(c=>c.classList.remove('active')); if(btn) btn.classList.add('active'); renderRestaurants(); }
-
-// ── Categories  (static taxonomy, not user data) ──
-function renderCategories() {
-  const cuisines=['Nigerian','Ghanaian','Kenyan','West African','East African','South African','Continental','Italian','Asian','Middle Eastern','Fast Food','Bakery'];
-  const meals=['Breakfast','Lunch','Dinner','Snacks','Drinks','Desserts','Street Food','Grills'];
-  const tags=['Vegan','Vegetarian','Gluten-Free','Dairy-Free','Halal','High Protein','Low Calorie','Spicy','Mild'];
-  const catItem=(name)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--bd);font-size:13px"><span style="color:var(--t1)">${name}</span><div class="act"><button class="abtn view" onclick="aToast('Edit: ${name}')">✏️</button><button class="abtn delete" onclick="aToast('Delete: ${name}')">🗑</button></div></div>`;
-  el('cat-cuisines').innerHTML=cuisines.map(catItem).join('');
-  el('cat-meals').innerHTML=meals.map(catItem).join('');
-  el('cat-tags').innerHTML=tags.map(catItem).join('');
-}
-
-// ── Reports  (empty until real report submissions exist) ──
-let allReports = [];
-async function loadReports() {
-  allReports = await S.admin.listReports();
-  renderReports(allReports);
-  const rb = el('reports-badge'); const open = allReports.filter(r=>r.status!=='resolved').length;
-  if (rb) { rb.textContent = open; rb.style.display = open ? '' : 'none'; }
-}
-function renderReports(reports) {
-  const list = el('reports-list'); if(!list)return;
-  if (!reports.length) { list.innerHTML = `<div style="text-align:center;padding:40px 20px;color:var(--t3)"><div style="font-size:40px;margin-bottom:10px">🚩</div>No reports yet.</div>`; return; }
-  list.innerHTML=reports.map(r=>`
-    <div style="background:var(--sf);border:1px solid ${r.type==='business'?'#E0525230':'var(--bd)'};border-radius:14px;padding:16px">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-        <div style="display:flex;gap:8px;align-items:center">
-          <span class="badge ${r.type==='business'?'red':'orange'}">${r.type==='business'?'🏪 Business':'📝 Review'}</span>
-          <span style="font-size:11px;color:var(--t3)">${r.date}</span>
-        </div>
-        <span class="badge orange">${r.status}</span>
-      </div>
-      <div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:4px">${r.target}</div>
-      <div style="font-size:13px;color:var(--t2);margin-bottom:12px">Reported by: ${r.reporter} · Reason: ${r.reason}</div>
-      <div class="act">
-        <button class="abtn approve" onclick="resolveReport('${r.id}')">✅ Resolve</button>
-      </div>
-    </div>`).join('');
-}
-function filterReports(type,btn){document.querySelectorAll('#pg-reports .fchip').forEach(c=>c.classList.remove('active'));if(btn)btn.classList.add('active');renderReports(type==='all'?allReports:allReports.filter(r=>r.type===type));}
-async function resolveReport(id) {
-  await S.admin.resolveReport(id);
-  S.auditLog.log('Report resolved', 'Report #'+id);
-  aToast('Report resolved ✅'); loadReports();
-}
-
-// ── Reviews  (real reviews aggregated from the shared directory) ──
-let allReviewsCache = [];
-async function loadAllReviews() { allReviewsCache = await S.admin.listAllReviews(); renderAllReviews(allReviewsCache); }
-function renderAllReviews(reviews) {
-  const tbody=el('reviews-tbody'); if(!tbody)return;
-  if (!reviews.length) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--t3);padding:40px">No reviews yet.</td></tr>`; return; }
-  tbody.innerHTML=reviews.map(r=>`<tr>
-    <td><strong>${r.author}</strong></td>
-    <td style="color:var(--t2)">${r.restaurant}</td>
-    <td>${'⭐'.repeat(r.stars)}</td>
-    <td style="color:var(--t2);max-width:200px">${r.text}</td>
-    <td style="color:var(--t3)">${r.date}</td>
-    <td><div class="act"><button class="abtn delete" onclick="removeReview('${r.restaurantId}','${r.id}')">🗑 Remove</button></div></td>
-  </tr>`).join('');
-}
-function filterAllReviews(type,btn){document.querySelectorAll('#pg-reviews .fchip').forEach(c=>c.classList.remove('active'));if(btn)btn.classList.add('active');renderAllReviews(type==='all'?allReviewsCache:allReviewsCache.filter(r=>String(r.stars)===type));}
-async function removeReview(restaurantId, reviewId) {
-  await S.admin.removeReview(restaurantId, reviewId);
-  loadAllReviews();
-  S.auditLog.log('Review removed', 'Restaurant '+restaurantId+', review '+reviewId);
-  aToast('Review removed');
-}
-
-// ── Notifications ─────────────────────────────────────
-async function renderSentNotifs() {
-  const all = await S.admin.listNotifications();
-  const list = el('sent-notifs'); if(!list)return;
-  list.innerHTML = all.length ? all.map(n=>`<div style="padding:12px 16px;border-bottom:1px solid var(--bd)"><div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:2px">${n.title}</div><div style="font-size:11px;color:var(--t2)">${n.audienceLabel||n.audience} · ${n.date}</div></div>`).join('') : '<div style="padding:16px;color:var(--t3);font-size:13px">No notifications sent yet</div>';
-}
-function onAudienceTypeChange() {
-  const type = el('notif-audience-type')?.value;
-  const valInput = el('notif-audience-value');
-  if (!valInput) return;
-  const needsValue = type === 'country' || type === 'cuisine';
-  valInput.style.display = needsValue ? 'block' : 'none';
-  valInput.placeholder = type === 'country' ? 'e.g. Nigeria' : type === 'cuisine' ? 'e.g. Jollof Rice' : '';
-}
-async function sendAdminNotif() {
-  const title=el('notif-title')?.value.trim();
-  const msg  =el('notif-msg')?.value.trim();
-  if(!title){aToast('Enter a title');return;}
-  if(!msg)  {aToast('Enter a message');return;}
-  const type = el('notif-audience-type')?.value || 'everyone';
-  const value = el('notif-audience-value')?.value.trim();
-  if ((type==='country'||type==='cuisine') && !value) { aToast('Enter a value for targeted audience'); return; }
-  const audience = { type, value: value || undefined };
-  const { audienceLabel } = await S.admin.broadcastNotification({ title, message: msg, audience });
-  el('notif-title').value=''; el('notif-msg').value=''; el('notif-audience-value').value='';
-  renderSentNotifs();
-  S.auditLog.log('Notification broadcast', title+' → '+audienceLabel);
-  aToast('Notification sent to '+audienceLabel+' 📢');
-}
-
-// ── Analytics charts  (honest — needs backend for cross-device data) ──
-let analyticsInit=false;
-async function renderAnalyticsCharts(){
-  analyticsInit=true;
-  const { live, dau, searchTerms, geo, aiUsage } = await S.admin.trends();
-  const map = [['ch-dau','line',dau],['ch-terms','doughnut',searchTerms],['ch-geo','doughnut',geo],['ch-ai','bar',aiUsage]];
-  map.forEach(([id,type,data]) => {
-    const canvas = el(id); if (!canvas) return;
-    if (live && data) renderAChart(id, type, data.labels, data.values, '#E8943A');
-    else chartEmptyNotice(canvas, 'Platform-wide analytics need a connected backend to aggregate across all users.');
-  });
-}
-
-// ── Charts ────────────────────────────────────────────
-const aCharts={};
-function renderAChart(id,type,labels,data,color){
-  const canvas=el(id); if(!canvas)return;
-  canvas.style.display='';
-  const notice = canvas.parentElement.querySelector('.chart-empty-notice'); if (notice) notice.remove();
-  if(aCharts[id])aCharts[id].destroy();
-  const isDough=type==='doughnut';
-  aCharts[id]=new Chart(canvas,{type,data:{labels,datasets:[{data,backgroundColor:isDough?data.map((_,i)=>(Array.isArray(color)?color[i]:color)+'99'):color+'33',borderColor:isDough?data.map((_,i)=>Array.isArray(color)?color[i]:color):color,borderWidth:2,fill:!isDough,tension:.4,pointBackgroundColor:isDough?undefined:color,pointRadius:isDough?0:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:isDough,labels:{color:'#8A7D6A',font:{size:10}}}},scales:isDough?{}:{x:{grid:{color:'#221A14'},ticks:{color:'#8A7D6A',font:{size:10}}},y:{grid:{color:'#221A14'},ticks:{color:'#8A7D6A',font:{size:10}}}}}});
-}
-
-// ── Advertising (real CRUD, real serving on consumer app) ──
-async function loadAds() { renderAds(await S.ads.list()); }
-function renderAds(ads) {
-  const tbody = el('ads-tbody'); if (!tbody) return;
-  if (!ads.length) { tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--t3);padding:40px">No campaigns yet — create one above.</td></tr>`; return; }
-  const statusBadge = { Running:'green', Scheduled:'orange', Paused:'gray', Expired:'red' };
-  tbody.innerHTML = ads.slice().reverse().map(ad=>`<tr>
-    <td><span style="font-size:16px;margin-right:6px">${ad.image||'📣'}</span><strong>${ad.title}</strong></td>
-    <td style="color:var(--t2)">${(ad.placement||'').replace('_',' ')}</td>
-    <td style="color:var(--t2)">${ad.audience}</td>
-    <td style="color:var(--t2);font-size:12px">${ad.startDate||'—'} → ${ad.endDate||'—'}</td>
-    <td>${ad.impressions||0}</td>
-    <td>${ad.clicks||0}</td>
-    <td><span class="badge ${statusBadge[ad.status]||'gray'}">${ad.status}</span></td>
-    <td><div class="act">
-      <button class="abtn view" onclick="toggleAdPause('${ad.id}')">${ad.paused?'▶ Resume':'⏸ Pause'}</button>
-      <button class="abtn delete" onclick="confirmAction('Delete ad ${ad.title.replace(/'/g,"\\'")}?',()=>deleteAd('${ad.id}'))">🗑</button>
-    </div></td>
-  </tr>`).join('');
-}
-async function createAd() {
-  const title = el('ad-title')?.value.trim();
-  const link  = el('ad-link')?.value.trim();
-  if (!title) { aToast('Enter a title'); return; }
-  const ad = {
-    title, image: el('ad-image')?.value.trim() || '📣', cta: el('ad-cta')?.value.trim() || 'Learn More',
-    desc: el('ad-desc')?.value.trim(), link,
-    startDate: el('ad-start')?.value || new Date().toISOString().slice(0,10),
-    endDate: el('ad-end')?.value || '',
-    budget: Number(el('ad-budget')?.value) || 0,
-    audience: el('ad-audience')?.value || 'everyone',
-    placement: el('ad-placement')?.value || 'home_banner',
-  };
-  await S.ads.create(ad);
-  ['ad-title','ad-image','ad-cta','ad-desc','ad-link','ad-start','ad-end','ad-budget'].forEach(id=>{ if(el(id)) el(id).value=''; });
-  loadAds();
-  S.auditLog.log('Ad campaign created', title);
-  aToast('Campaign created 📣');
-}
-async function toggleAdPause(id) {
-  const { paused } = await S.ads.togglePause(id);
-  loadAds();
-  S.auditLog.log(paused?'Ad paused':'Ad resumed', id);
-  aToast(paused?'Campaign paused':'Campaign resumed');
-}
-async function deleteAd(id) {
-  await S.ads.remove(id);
-  loadAds();
-  S.auditLog.log('Ad campaign deleted', id);
-  aToast('Campaign deleted');
-}
-
-// ── Challenges (admin creates/schedules — never users) ──
-async function loadChallenges() {
-  const tbody = el('challenges-tbody'); if (!tbody) return;
-  tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px"><div class="spinner" style="margin:0 auto"></div></td></tr>`;
-  const res = await S.challengesAdmin.list();
-  if (!res.ok) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--er);padding:30px">Could not load — is the admin-challenges function deployed?</td></tr>`; return; }
-  renderChallengesTable(res.data || []);
-}
-function renderChallengesTable(challenges) {
-  const tbody = el('challenges-tbody'); if (!tbody) return;
-  if (!challenges.length) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--t3);padding:40px">No challenges scheduled yet — create one above.</td></tr>`; return; }
-  const today = new Date().toISOString().slice(0,10);
-  tbody.innerHTML = challenges.map(c => {
-    const status = !c.active ? 'Paused' : c.end_date && c.end_date < today ? 'Ended' : c.start_date > today ? 'Scheduled' : 'Live';
-    const statusColor = { Live:'green', Scheduled:'orange', Paused:'gray', Ended:'red' }[status];
-    return `<tr>
-      <td><span style="font-size:16px;margin-right:6px">${c.icon}</span><strong>${c.title}</strong></td>
-      <td style="color:var(--t2)">${c.metric} (${c.target})</td>
-      <td style="color:var(--t2);font-size:12px">${c.start_date} → ${c.end_date||'—'}</td>
-      <td>${c.email_sent ? '✅ Sent' : '—'}</td>
-      <td><span class="badge ${statusColor}">${status}</span></td>
-      <td><div class="act">
-        <button class="abtn view" onclick="toggleChallenge('${c.id}',${!c.active})">${c.active?'⏸ Pause':'▶ Resume'}</button>
-        <button class="abtn delete" onclick="confirmAction('Delete ${c.title.replace(/'/g,"\\'")}?',()=>deleteChallenge('${c.id}'))">🗑</button>
-      </div></td>
-    </tr>`;
-  }).join('');
-}
-async function createChallenge() {
-  const title = el('ch-title')?.value.trim();
-  if (!title) { aToast('Enter a title'); return; }
-  const payload = {
-    icon: el('ch-icon')?.value.trim() || '🏆',
-    title,
-    description: el('ch-desc')?.value.trim(),
-    metric: el('ch-metric')?.value,
-    target: Number(el('ch-target')?.value) || 1,
-    start_date: el('ch-start')?.value || new Date().toISOString().slice(0,10),
-    end_date: el('ch-end')?.value || null,
-    sendEmail: el('ch-email')?.checked || false,
-  };
-  const res = await S.challengesAdmin.create(payload);
-  if (!res.ok) { aToast('Failed: ' + (res.error || 'unknown error')); return; }
-  ['ch-icon','ch-title','ch-desc','ch-target','ch-start','ch-end'].forEach(id=>{ if(el(id)) el(id).value=''; });
-  if (el('ch-email')) el('ch-email').checked = false;
-  loadChallenges();
-  S.auditLog.log('Challenge created', title + (payload.sendEmail ? ' (emailed)' : ''));
-  aToast(payload.sendEmail ? 'Challenge created — emailing users 📧' : 'Challenge created 🏆');
-}
-async function toggleChallenge(id, active) {
-  await S.challengesAdmin.toggle(id, active);
-  loadChallenges();
-  S.auditLog.log(active?'Challenge resumed':'Challenge paused', id);
-}
-async function deleteChallenge(id) {
-  await S.challengesAdmin.remove(id);
-  loadChallenges();
-  S.auditLog.log('Challenge deleted', id);
-  aToast('Challenge deleted');
-}
-
-// ── Meal Moderation (real menu items across all restaurants) ──
-let allMeals = [];
-async function loadMeals() { allMeals = await S.admin.listAllMeals(); renderMeals(allMeals); }
-function renderMeals(meals) {
-  const tbody = el('meals-tbody'); if (!tbody) return;
-  if (!meals.length) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--t3);padding:40px">No meals listed yet.</td></tr>`; return; }
-  tbody.innerHTML = meals.map(m=>`<tr>
-    <td><span style="font-size:16px;margin-right:6px">${m.emoji||'🍽️'}</span><strong>${m.name}</strong></td>
-    <td style="color:var(--t2)">${m.restaurant}</td>
-    <td>${m.cat||'—'}</td>
-    <td style="color:var(--ac);font-weight:600">${m.price||'—'}</td>
-    <td><span class="badge ${m.available?'green':'gray'}">${m.available?'Available':'Hidden'}</span></td>
-    <td><div class="act">
-      <button class="abtn delete" onclick="confirmAction('Remove ${(m.name||'').replace(/'/g,"\\'")}?',()=>removeMealAdmin('${m.restaurantId}','${m.id}'))">🗑 Remove</button>
-    </div></td>
-  </tr>`).join('');
-}
-function searchMeals(val) {
-  const v=val.toLowerCase();
-  renderMeals(val ? allMeals.filter(m=>m.name?.toLowerCase().includes(v)||m.restaurant?.toLowerCase().includes(v)) : allMeals);
-}
-async function removeMealAdmin(restaurantId, itemId) {
-  await S.admin.removeMeal(restaurantId, itemId);
-  S.auditLog.log('Meal removed', 'Restaurant '+restaurantId+', item '+itemId);
-  loadMeals(); aToast('Meal removed');
-}
-
-// ── AI Monitoring (real per-device stats) ──────────────
-async function renderAIMonitoring() {
-  const stats = S.ai.getStats();
-  if (el('ai-today')) el('ai-today').textContent = stats.today;
-  if (el('ai-total')) el('ai-total').textContent = stats.total;
-  if (el('ai-avgtime')) el('ai-avgtime').textContent = stats.avgMs ? stats.avgMs+'ms' : '—';
-  const health = await S.ai.checkHealth();
-  if (el('ai-health')) el('ai-health').textContent = health.ok ? '🟢 Healthy' : health.status==='not_configured' ? '⚪ Not configured' : '🔴 Unreachable';
-  const errList = el('ai-errors-list');
-  if (errList) {
-    errList.innerHTML = stats.errors.length
-      ? stats.errors.map(e=>`<div style="padding:10px 12px;border-bottom:1px solid var(--bd);font-size:12px"><span style="color:var(--er)">●</span> ${e.error||'Unknown error'} <span style="color:var(--t3);float:right">${new Date(e.at).toLocaleString()}</span></div>`).join('')
-      : `<div style="padding:16px;color:var(--t3);font-size:13px">No errors recorded on this device 🎉</div>`;
-  }
-}
-
-// ── Admin Roles (reference — real enforcement needs backend) ──
-function renderRoles() {
-  const roles = [
-    { icon:'👑', name:'Super Admin', desc:'Full access to every page and action, including platform settings, roles, and destructive actions.' },
-    { icon:'🛡️', name:'Moderator', desc:'Manages reports, reviews, and meal/content moderation. Cannot change platform settings or roles.' },
-    { icon:'📊', name:'Analyst', desc:'Read-only access to Dashboard, Analytics, and AI Monitoring. Cannot take moderation actions.' },
-    { icon:'🤝', name:'Vendor Support', desc:'Manages vendor approvals, vendor details, and vendor-facing communication. No user management access.' },
-    { icon:'📞', name:'Customer Support', desc:'Manages user accounts (suspend/restore/reset password) and views reports. No vendor or platform access.' },
-  ];
-  const grid = el('roles-grid'); if (!grid) return;
-  grid.innerHTML = roles.map(r=>`<div class="card" style="margin-bottom:0"><div style="display:flex;gap:14px;align-items:flex-start;padding:4px"><div style="font-size:28px">${r.icon}</div><div><div style="font-weight:700;color:var(--t1);font-size:14px;margin-bottom:4px">${r.name}</div><div style="font-size:13px;color:var(--t2);line-height:1.5">${r.desc}</div></div></div></div>`).join('');
-}
-
-// ── Audit Log (real — every action above logs here) ────
-function renderAuditLog() {
-  const entries = S.auditLog.list();
-  const tbody = el('audit-tbody'); if (!tbody) return;
-  if (!entries.length) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:40px">No admin actions recorded yet on this device.</td></tr>`; return; }
-  tbody.innerHTML = entries.map(e=>`<tr>
-    <td><strong>${e.action}</strong></td>
-    <td style="color:var(--t2)">${e.details}</td>
-    <td style="color:var(--t2)">${e.admin}</td>
-    <td style="color:var(--t3)">${new Date(e.time).toLocaleString()}</td>
-  </tr>`).join('');
-}
-function clearAuditLog() {
-  confirmAction('Clear the entire audit log? This cannot be undone.', () => { S.auditLog.clear(); renderAuditLog(); aToast('Audit log cleared'); });
-}
-
-// ── Platform Settings (real toggles — maintenance mode actually gates the apps) ──
-function loadPlatformSettings() {
-  const flags = S.platform.getFeatureFlags();
-  el('flag-vendorReg')?.classList.toggle('on', flags.vendorRegistrations !== false);
-  el('flag-userReg')?.classList.toggle('on', flags.userRegistrations !== false);
-  el('flag-maintenance')?.classList.toggle('on', S.platform.isMaintenanceMode());
-}
-function toggleFeatureFlag(key, toggleEl) {
-  const flags = S.platform.getFeatureFlags();
-  const next = !(flags[key] !== false);
-  S.platform.setFeatureFlag(key, next);
-  toggleEl.classList.toggle('on', next);
-  S.auditLog.log('Feature flag changed', key + ' → ' + (next?'on':'off'));
-  aToast('Setting updated');
-}
-function toggleMaintenanceMode(toggleEl) {
-  const next = !S.platform.isMaintenanceMode();
-  S.platform.setMaintenanceMode(next);
-  toggleEl.classList.toggle('on', next);
-  S.auditLog.log('Maintenance mode', next ? 'Enabled' : 'Disabled');
-  aToast(next ? '🛠️ Maintenance mode ON — consumer app & vendor portal are now blocked' : '✅ Maintenance mode OFF');
-}
-
-// ── Modals ────────────────────────────────────────────
-function confirmAction(msg, onConfirm) {
-  el('confirm-body').textContent=msg;
-  el('confirm-ok').onclick=()=>{onConfirm();closeAMod('mod-confirm');};
-  el('mod-confirm').classList.add('on');
-}
-function closeAMod(id){el(id)?.classList.remove('on');}
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.a-modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('on');}));
-});
-
-// ── Toast ─────────────────────────────────────────────
-let atTimer;
-function aToast(msg){ const t=el('a-toast'); if(!t)return; t.textContent=msg;t.classList.add('on');clearTimeout(atTimer);atTimer=setTimeout(()=>t.classList.remove('on'),2800); }
-
-// Always show login screen — never auto-login for an admin panel.
+// ── Marquee pause on hover ─────────────────────
+const track = document.querySelector('.marquee-track');
+document.querySelector('.marquee-wrap')?.addEventListener('mouseenter', () => { if(track) track.style.animationPlayState = 'paused'; });
+document.querySelector('.marquee-wrap')?.addEventListener('mouseleave', () => { if(track) track.style.animationPlayState = 'running'; });
 
 </script>
 </body>

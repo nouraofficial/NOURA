@@ -4,29 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <meta name="theme-color" content="#0A0805">
-<title>Noura Vendor Portal — Grow Your Food Business Online</title>
+<title>Vendor Portal | Noura</title>
 <meta name="description" content="List your restaurant on Noura for free. Manage your digital menu, track orders, reply to reviews, and get discovered by local food lovers across Nigeria.">
 <meta name="keywords" content="Noura vendor, list restaurant Nigeria, food business online, digital menu Nigeria, restaurant management app, sell food online Nigeria">
 <meta name="author" content="Fluxiq Labs">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://noura.fluxiqlabs.com/vendor">
+<link rel="canonical" href="https://nourafood.vercel.app/vendor">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://noura.fluxiqlabs.com/vendor">
-<meta property="og:title" content="Noura Vendor Portal — Grow Your Food Business Online">
+<meta property="og:url" content="https://nourafood.vercel.app/vendor">
+<meta property="og:title" content="Vendor Portal | Noura">
 <meta property="og:description" content="Free digital storefront for local food vendors — menu, orders, reviews, and analytics in one place.">
 <meta property="og:image" content="https://noura.fluxiqlabs.com/og-vendor.jpg">
 <meta property="og:site_name" content="Noura">
 <meta property="og:locale" content="en_NG">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Noura Vendor Portal — Grow Your Food Business Online">
+<meta name="twitter:title" content="Vendor Portal | Noura">
 <meta name="twitter:description" content="List your restaurant for free and get discovered by local food lovers.">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<link rel="manifest" href="manifest-vendor.json">
+<link rel="manifest" href="/manifest-vendor.json">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="mobile-web-app-capable" content="yes">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 @keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .page-enter{animation:pageIn .28s cubic-bezier(.16,1,.3,1)}
@@ -221,6 +223,14 @@ button{cursor:pointer;font-family:inherit}
 
 /* ── TOAST ── */
 #v-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--t1);color:var(--bg);font-size:14px;font-weight:600;padding:12px 24px;border-radius:var(--rf);opacity:0;transition:all .3s;z-index:999;pointer-events:none;white-space:nowrap}
+#v-install-banner{position:fixed;left:12px;right:12px;bottom:-140px;max-width:400px;margin:0 auto;background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;z-index:998;box-shadow:0 8px 28px rgba(0,0,0,.4);transition:bottom .4s cubic-bezier(.16,1,.3,1)}
+#v-install-banner.on{bottom:20px}
+#v-install-banner .ib-icon{width:44px;height:44px;border-radius:12px;background:var(--acs);border:1px solid #E8943A40;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+#v-install-banner .ib-body{flex:1;min-width:0}
+#v-install-banner .ib-title{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--t1)}
+#v-install-banner .ib-sub{font-size:11px;color:var(--t2);margin-top:1px}
+#v-install-banner .ib-install{background:var(--ac);color:var(--bg);border:none;border-radius:999px;padding:9px 16px;font-size:12px;font-weight:700;flex-shrink:0}
+#v-install-banner .ib-close{background:none;border:none;color:var(--t3);font-size:18px;padding:4px;flex-shrink:0}
 #v-toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ── MOBILE SIDEBAR ── */
@@ -387,7 +397,7 @@ button{cursor:pointer;font-family:inherit}
         <div class="nav-item" onclick="showPage('pg-promotions',this,'Promotions')"><span class="ni">🎁</span>Promotions</div>
         <div class="nav-section-title">Account</div>
         <div class="nav-item" onclick="showPage('pg-settings',this,'Settings')"><span class="ni">⚙️</span>Settings</div>
-        <div class="nav-item" onclick="window.open('noura.html','_blank')"><span class="ni">📱</span>Open App</div>
+        <div class="nav-item" onclick="window.open('/','_blank')"><span class="ni">📱</span>Open App</div>
       <div class="nav-item" onclick="doVendorLogout()"><span class="ni">🚪</span>Log Out</div>
       </nav>
       <div class="sidebar-footer">
@@ -406,8 +416,8 @@ button{cursor:pointer;font-family:inherit}
       <div class="top-bar">
         <div class="top-bar-title" id="page-title">Dashboard</div>
         <div class="top-bar-actions">
-          <div class="icon-btn" onclick="vToast('Notifications coming soon!')">🔔</div>
-          <div class="icon-btn" onclick="window.open('noura.html','_blank')">👁️</div>
+          <div class="icon-btn" style="position:relative" onclick="openVendorNotifs()">🔔<span id="v-notif-dot" style="display:none;position:absolute;top:2px;right:2px;width:8px;height:8px;border-radius:50%;background:var(--er);border:1.5px solid var(--sf)"></span></div>
+          <div class="icon-btn" onclick="window.open('index.html','_blank')">👁️</div>
         </div>
       </div>
       <div class="page-body">
@@ -570,7 +580,7 @@ button{cursor:pointer;font-family:inherit}
               <!-- Generated by JS -->
             </div>
 
-            <div class="sec-title" style="margin:24px 0 16px">Notifications</div>
+            <div class="sec-title" style="margin:24px 0 16px">Brand Photos</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px"><label class="card" style="padding:14px;cursor:pointer;text-align:center"><div style="font-size:26px">🖼️</div><div style="font-size:12px;color:var(--t2)">Logo</div><input type="file" accept="image/*" style="display:none" onchange="uploadSettingsPhoto(this,'logo')"></label><label class="card" style="padding:14px;cursor:pointer;text-align:center"><div style="font-size:26px">🌄</div><div style="font-size:12px;color:var(--t2)">Cover</div><input type="file" accept="image/*" style="display:none" onchange="uploadSettingsPhoto(this,'cover')"></label></div><div class="sec-title" style="margin:24px 0 16px">Notifications</div>
             <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px">
               <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:var(--sfu);border-radius:10px;border:1px solid var(--bd)">
                 <div><div style="font-size:14px;font-weight:500;color:var(--t1)">New Reviews</div><div style="font-size:12px;color:var(--t2)">Get notified when someone reviews you</div></div>
@@ -625,6 +635,16 @@ button{cursor:pointer;font-family:inherit}
 </div>
 
 <!-- Promo Modal -->
+<div class="v-modal" id="mod-vendor-notifs">
+  <div class="v-modal-box">
+    <div class="v-modal-title">Notifications</div>
+    <div id="v-notifs-list" style="max-height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin:12px 0"></div>
+    <div class="v-modal-actions">
+      <button class="btn-sm ghost" onclick="closeVMod('mod-vendor-notifs')">Close</button>
+    </div>
+  </div>
+</div>
+
 <div class="v-modal" id="mod-promo">
   <div class="v-modal-box">
     <div class="v-modal-title">Create Promotion</div>
@@ -680,6 +700,7 @@ button{cursor:pointer;font-family:inherit}
  * ══════════════════════════════════════════════════════════════
  */
 window.NOURA_ENV = {
+  PUBLIC_APP_URL: 'https://nourafood.vercel.app',
   // ── Environment ────────────────────────────────────────────
   ENVIRONMENT: 'development', // 'development' | 'staging' | 'production'
   APP_VERSION: '1.0.0-month1',
@@ -704,6 +725,14 @@ window.NOURA_ENV = {
   // call admin actions, so treat admin.html itself as something
   // you don't publicly link/index, not just this key as protection.
   ADMIN_API_KEY: 'Jhsrolnfd3866hnspos93b3blkwhs',
+
+  // ⚠️ Gates the admin.html login screen itself. Same caveat as
+  // above — this is a client-side string check, not real auth.
+  // It stops someone from casually stumbling into the dashboard,
+  // it does not stop someone who inspects the page source. Real
+  // protection is a) not linking admin.html publicly, and b)
+  // eventually moving to real per-account Supabase admin roles.
+  ADMIN_PASSWORD: 'Kkl2Y1PICOJJEhgX',
 
   // ── Google OAuth ─────────────────────────────────────────────
   // PUBLIC — OAuth client IDs are meant to be public.
@@ -983,7 +1012,7 @@ window.NOURA_ENV = {
     async loginWithGoogle() {
       const sb = getSupabase();
       if (sb) {
-        const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href } });
+        const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin } });
         return { ok: !error, reason: error?.message };
       }
       return { ok: false, reason: 'not_configured' };
@@ -1046,7 +1075,7 @@ window.NOURA_ENV = {
         const user = {
           id: data.id, name: data.name || '', username: data.username || '', email: data.email || '',
           bio: data.bio || '', country: data.country || '', cuisines: data.cuisines || [],
-          diet: data.diet || '', allergies: data.allergies || [],
+          diet: data.diet || '', allergies: data.allergies || [], avatarUrl: data.avatar_url || '',
         };
         this._cacheUser(user);
         return { ok: true, user };
@@ -1154,6 +1183,7 @@ window.NOURA_ENV = {
       emoji: row.emoji || '🍽️', rating: row.rating, reviews: row.review_count ?? (row.reviews?.length || 0),
       verified: row.verified, open: row.open, priceRange: row.price_range,
       tags: row.tags || [], phone: row.phone, whatsapp: row.whatsapp, website: row.website, hours: row.hours,
+      logoUrl: row.logo_url, coverUrl: row.cover_url,
       menu: (row.menu_items || []).map((m) => ({ id: m.id, name: m.name, price: m.price, cat: m.category, desc: m.description, emoji: m.emoji || '🍽️', time: m.prep_time, available: m.available })),
       reviews_data: (row.reviews || []).map((r) => ({ id: r.id, author: r.author, stars: r.stars, text: r.text, date: r.created_at ? new Date(r.created_at).toLocaleDateString() : '', reply: r.reply, replied: r.replied })),
     };
@@ -1372,19 +1402,37 @@ window.NOURA_ENV = {
    *  inbox is a real, valid state until the backend sends one.
    * ════════════════════════════════════════════════════════════ */
   const notificationService = {
+    async _uid() {
+      const sb = getSupabase(); if (!sb) return null;
+      const { data } = await sb.auth.getSession();
+      return data?.session?.user?.id || null;
+    },
     async list() {
+      const sb = getSupabase(); const uid = await this._uid();
+      if (sb && uid) {
+        const { data, error } = await sb.from('notifications').select('*').eq('user_id', uid).order('created_at', { ascending: false });
+        if (!error) {
+          const notifications = (data || []).map((n) => ({ id: n.id, type: n.type, icon: n.icon, color: n.color, title: n.title, msg: n.message, time: n.created_at ? new Date(n.created_at).toLocaleString() : '', unread: n.unread }));
+          lsSet('noura_notifications', notifications);
+          return { ok: true, notifications };
+        }
+      }
       const res = await apiRequest('/notifications', { method: 'GET' });
       if (res.ok) { lsSet('noura_notifications', res.data); return { ok: true, notifications: res.data }; }
       return { ok: true, notifications: lsGet('noura_notifications', []) };
     },
     async markRead(id) {
-      await apiRequest(`/notifications/${id}/read`, { method: 'POST' });
+      const sb = getSupabase();
+      if (sb) await sb.from('notifications').update({ unread: false }).eq('id', id);
+      else await apiRequest(`/notifications/${id}/read`, { method: 'POST' });
       const ns = lsGet('noura_notifications', []);
       const n = ns.find((x) => x.id === id);
       if (n) { n.unread = false; lsSet('noura_notifications', ns); }
     },
     async markAllRead() {
-      await apiRequest('/notifications/read-all', { method: 'POST' });
+      const sb = getSupabase(); const uid = await this._uid();
+      if (sb && uid) await sb.from('notifications').update({ unread: false }).eq('user_id', uid);
+      else await apiRequest('/notifications/read-all', { method: 'POST' });
       lsSet('noura_notifications', lsGet('noura_notifications', []).map((n) => ({ ...n, unread: false })));
     },
     async hasUnread() { const { notifications } = await this.list(); return notifications.some((n) => n.unread); },
@@ -1469,13 +1517,37 @@ window.NOURA_ENV = {
    * ════════════════════════════════════════════════════════════ */
   const settingsService = {
     _defaults: () => ({ darkMode: true, pushNotifications: true, emailNotifications: true }),
+    async _uid() {
+      const sb = getSupabase(); if (!sb) return null;
+      const { data } = await sb.auth.getSession();
+      return data?.session?.user?.id || null;
+    },
     async load() {
+      const sb = getSupabase(); const uid = await this._uid();
+      if (sb && uid) {
+        const { data, error } = await sb.from('user_settings').select('*').eq('user_id', uid).maybeSingle();
+        if (!error) {
+          const settings = data
+            ? { darkMode: data.dark_mode, pushNotifications: data.push_notifications, emailNotifications: data.email_notifications }
+            : this._defaults();
+          lsSet('noura_settings', settings);
+          return settings;
+        }
+      }
       const res = await apiRequest('/user/settings', { method: 'GET' });
       if (res.ok) { lsSet('noura_settings', res.data); return res.data; }
       return lsGet('noura_settings', this._defaults());
     },
     async update(patch) {
       const merged = { ...lsGet('noura_settings', this._defaults()), ...patch };
+      const sb = getSupabase(); const uid = await this._uid();
+      if (sb && uid) {
+        await sb.from('user_settings').upsert({
+          user_id: uid, dark_mode: merged.darkMode, push_notifications: merged.pushNotifications, email_notifications: merged.emailNotifications,
+        });
+        lsSet('noura_settings', merged);
+        return { ok: true, settings: merged };
+      }
       lsSet('noura_settings', merged);
       const res = await apiRequest('/user/settings', { method: 'PATCH', body: merged });
       return { ok: true, settings: merged, reason: res.ok ? null : res.reason };
@@ -1509,11 +1581,46 @@ window.NOURA_ENV = {
         const { data, error } = await sb.auth.signInWithPassword({ email, password });
         if (error) return { ok: false, reason: error.message || 'auth_error' };
         AuthStore.setTokens(data.session.access_token, data.session.refresh_token);
-        const { data: row, error: vErr } = await sb.from('vendors').select('*').eq('auth_user_id', data.user.id).maybeSingle();
-        if (vErr || !row) return { ok: false, reason: 'not_a_vendor' };
+        let { data: row, error: vErr } = await sb.from('vendors').select('*').eq('auth_user_id', data.user.id).maybeSingle();
+        if (vErr) return { ok: false, reason: vErr.message || 'vendor_lookup_failed' };
+
+        // If the auth trigger did not create the vendor row, repair it now.
+        // This is safe because the row is always bound to the authenticated UID.
+        if (!row) {
+          const meta = data.user.user_metadata || {};
+          const businessName = meta.business_name || meta.businessName || '';
+          if (!businessName) {
+            await sb.auth.signOut();
+            AuthStore.clearTokens();
+            return { ok: false, reason: 'not_a_vendor' };
+          }
+
+          const repair = {
+            auth_user_id: data.user.id,
+            business_name: businessName,
+            owner_name: meta.owner_name || meta.ownerName || '',
+            email: data.user.email || email,
+            category: meta.category || '',
+            slug: slugify(businessName),
+            status: 'pending',
+            setup_done: false
+          };
+
+          const ins = await sb.from('vendors')
+            .upsert(repair, { onConflict: 'auth_user_id' })
+            .select()
+            .single();
+
+          if (ins.error || !ins.data) {
+            return { ok: false, reason: ins.error?.message || 'vendor_create_failed' };
+          }
+          row = ins.data;
+        }
+
         const vendor = mapVendorRow(row);
         this._set(vendor);
-        return { ok: true, vendor };
+        try { await vendorMenuService._ensureRestaurant(); } catch (_) {}
+        return { ok: true, vendor: this.getVendor() };
       }
       const res = await apiRequest('/vendor/auth/login', { method: 'POST', body: { email, password } });
       if (res.ok) { AuthStore.setTokens(res.data.accessToken, res.data.refreshToken); this._set(res.data.vendor); return { ok: true, vendor: res.data.vendor }; }
@@ -1525,10 +1632,57 @@ window.NOURA_ENV = {
       return { ok: false, reason: res.reason };
     },
 
+    /**
+     * Restore a real Supabase vendor session on page load.
+     * localStorage is only a UI cache; Supabase Auth + vendors is authoritative.
+     */
+    async restoreSession() {
+      const sb = getSupabase();
+      if (!sb) return null;
+
+      const { data: sessionData } = await sb.auth.getSession();
+      const session = sessionData?.session;
+      if (!session?.user) return null;
+
+      AuthStore.setTokens(session.access_token, session.refresh_token);
+
+      let { data: row, error } = await sb.from('vendors')
+        .select('*')
+        .eq('auth_user_id', session.user.id)
+        .maybeSingle();
+
+      if (error) return null;
+
+      if (!row) {
+        const meta = session.user.user_metadata || {};
+        const businessName = meta.business_name || meta.businessName || '';
+        if (!businessName) return null;
+
+        const ins = await sb.from('vendors').upsert({
+          auth_user_id: session.user.id,
+          business_name: businessName,
+          owner_name: meta.owner_name || meta.ownerName || '',
+          email: session.user.email || '',
+          category: meta.category || '',
+          slug: slugify(businessName),
+          status: 'pending',
+          setup_done: false
+        }, { onConflict: 'auth_user_id' }).select().single();
+
+        if (ins.error || !ins.data) return null;
+        row = ins.data;
+      }
+
+      const vendor = mapVendorRow(row);
+      this._set(vendor);
+      try { await vendorMenuService._ensureRestaurant(); } catch (_) {}
+      return this.getVendor();
+    },
+
     async register({ businessName, ownerName, email, password, category }) {
       const sb = getSupabase();
       if (sb) {
-        const { data, error } = await sb.auth.signUp({ email, password, options: { data: { business_name: businessName, owner_name: ownerName } } });
+        const { data, error } = await sb.auth.signUp({ email, password, options: { data: { business_name: businessName, owner_name: ownerName, category } } });
         if (error) return { ok: false, reason: error.message || 'auth_error' };
         const slug = makeUniqueSlug(businessName);
         const vendorRow = {
@@ -1537,11 +1691,12 @@ window.NOURA_ENV = {
         };
         if (data.session) {
           AuthStore.setTokens(data.session.access_token, data.session.refresh_token);
-          const { data: inserted, error: insErr } = await sb.from('vendors').insert(vendorRow).select().single();
+          const { data: inserted, error: insErr } = await sb.from('vendors').upsert(vendorRow, { onConflict:'auth_user_id' }).select().single();
           if (insErr) return { ok: false, reason: insErr.message };
           const vendor = mapVendorRow(inserted);
           this._set(vendor);
-          return { ok: true, vendor };
+          try { await vendorMenuService._ensureRestaurant(); } catch (_) {}
+          return { ok: true, vendor: this.getVendor() };
         }
         // Email confirmation required — the vendors row gets created on first login instead.
         return { ok: true, vendor: { businessName, ownerName, email, category, slug }, reason: 'confirm_email' };
@@ -1589,8 +1744,9 @@ window.NOURA_ENV = {
         if (error) return { ok: false, reason: error.message };
         const vendor = mapVendorRow(updated);
         this._set(vendor);
+        try { await vendorMenuService._ensureRestaurant(); } catch (_) {}
         await vendorMenuService.publishToDirectory();
-        return { ok: true, vendor };
+        return { ok: true, vendor: this.getVendor() };
       }
       const merged = { ...(this._get() || {}), ...patch };
       const res = await apiRequest('/vendor/profile', { method: 'PATCH', body: merged });
@@ -1611,21 +1767,15 @@ window.NOURA_ENV = {
     /** Creates the restaurants row for this vendor if it doesn't exist yet,
      *  and keeps vendor.restaurantId in sync both locally and in the DB. */
     async _ensureRestaurant() {
-      const sb = getSupabase(); if (!sb) return null;
-      const v = vendorService.getVendor(); if (!v) return null;
-      if (v.restaurantId) return v.restaurantId;
-      const slug = v.slug || makeUniqueSlug(v.businessName);
-      const { data, error } = await sb.from('restaurants').insert({
-        vendor_id: v.dbId, slug, name: v.businessName, cuisine: v.category || '',
-        area: v.city ? `${v.city}, ${v.state || ''}`.trim() : '', emoji: v.emoji || '🍽️',
-        verified: v.status === 'approved', open: true, price_range: v.priceRange || '',
-        tags: [v.category].filter(Boolean), phone: v.phone || '', whatsapp: v.whatsapp || '',
-        website: v.website || '', hours: v.hours || '',
-      }).select().single();
-      if (error) return null;
-      v.restaurantId = data.id; v.slug = data.slug; vendorService._set(v);
-      await sb.from('vendors').update({ restaurant_id: data.id }).eq('auth_user_id', v.id);
-      return data.id;
+      const sb=getSupabase(); if(!sb) return null;
+      const v=vendorService.getVendor(); if(!v || !v.dbId) return null;
+      if(v.restaurantId){ const q=await sb.from('restaurants').select('id,slug').eq('id',v.restaurantId).maybeSingle(); if(q.data){v.slug=q.data.slug||v.slug;vendorService._set(v);return q.data.id;} }
+      let q=await sb.from('restaurants').select('id,slug').eq('vendor_id',v.dbId).maybeSingle();
+      if(q.data){v.restaurantId=q.data.id;v.slug=q.data.slug||v.slug;vendorService._set(v);await sb.from('vendors').update({restaurant_id:q.data.id,slug:v.slug}).eq('id',v.dbId);return q.data.id;}
+      const payload={vendor_id:v.dbId,slug:v.slug||slugify(v.businessName),name:v.businessName,cuisine:v.category||'',area:v.city?`${v.city}, ${v.state||''}`.trim():'',emoji:v.emoji||'🍽️',verified:v.status==='approved',open:true,price_range:v.priceRange||'',tags:[v.category].filter(Boolean),phone:v.phone||'',whatsapp:v.whatsapp||'',website:v.website||'',hours:v.hours||'',description:v.desc||''};
+      q=await sb.from('restaurants').insert(payload).select().single();
+      if(q.error){const retry=await sb.from('restaurants').select('id,slug').eq('vendor_id',v.dbId).maybeSingle();if(!retry.data)return null;q=retry;}
+      v.restaurantId=q.data.id;v.slug=q.data.slug;vendorService._set(v);await sb.from('vendors').update({restaurant_id:q.data.id,slug:q.data.slug}).eq('id',v.dbId);return q.data.id;
     },
 
     async list() {
@@ -1761,18 +1911,42 @@ window.NOURA_ENV = {
    * ════════════════════════════════════════════════════════════ */
   const vendorPromoService = {
     async list() {
+      const sb = getSupabase(); const v = vendorService.getVendor();
+      if (sb && v?.restaurantId) {
+        const { data, error } = await sb.from('promotions').select('*').eq('restaurant_id', v.restaurantId).order('created_at', { ascending: false });
+        if (!error) {
+          const promos = (data || []).map((p) => ({ id: p.id, type: p.type, val: p.value, desc: p.description, exp: p.expires_on }));
+          lsSet('noura_vendor_promos', promos);
+          return promos;
+        }
+      }
       const res = await apiRequest('/vendor/promotions', { method: 'GET' });
       if (res.ok) { lsSet('noura_vendor_promos', res.data); return res.data; }
       return lsGet('noura_vendor_promos', []);
     },
     async create(promo) {
+      const sb = getSupabase();
+      const restaurantId = sb ? await vendorMenuService._ensureRestaurant() : null;
+      if (sb && restaurantId) {
+        const { error } = await sb.from('promotions').insert({
+          restaurant_id: restaurantId, type: promo.type, value: promo.val, description: promo.desc, expires_on: promo.exp || null,
+        });
+        if (!error) return { ok: true, promos: await this.list() };
+      }
       const promos = await this.list(); promos.push({ id: uid(), ...promo });
       lsSet('noura_vendor_promos', promos);
       await apiRequest('/vendor/promotions', { method: 'POST', body: promo });
       return { ok: true, promos };
     },
     async remove(idx) {
-      const promos = await this.list(); promos.splice(idx, 1);
+      const sb = getSupabase();
+      const promos = await this.list();
+      const target = promos[idx];
+      if (sb && target?.id) {
+        await sb.from('promotions').delete().eq('id', target.id);
+        return { ok: true, promos: await this.list() };
+      }
+      promos.splice(idx, 1);
       lsSet('noura_vendor_promos', promos);
       return { ok: true, promos };
     },
@@ -1871,6 +2045,43 @@ window.NOURA_ENV = {
       if (!uid) return 0;
       const { count } = await sb.from('meal_photos').select('id', { count: 'exact', head: true }).eq('user_id', uid);
       return count || 0;
+    },
+
+    /** Vendor logo/cover upload — real Storage, saved straight onto
+     *  the restaurant record so it shows up on the storefront immediately. */
+    async uploadVendorPhoto(file, kind) {
+      const sb = getSupabase();
+      if (!sb) return { ok: false, reason: 'no_backend' };
+      const { data: sess } = await sb.auth.getSession();
+      const uid = sess?.session?.user?.id;
+      if (!uid) return { ok: false, reason: 'not_logged_in' };
+      const restaurantId = await vendorMenuService._ensureRestaurant();
+      if (!restaurantId) return { ok: false, reason: 'no_restaurant_yet' };
+      const path = `${uid}/${kind}_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '')}`;
+      const { error: upErr } = await sb.storage.from('vendor-photos').upload(path, file, { upsert: true });
+      if (upErr) return { ok: false, reason: upErr.message };
+      const { data: pub } = sb.storage.from('vendor-photos').getPublicUrl(path);
+      const column = kind === 'logo' ? 'logo_url' : 'cover_url';
+      const { error: updErr } = await sb.from('restaurants').update({ [column]: pub.publicUrl }).eq('id', restaurantId);
+      if (updErr) return { ok: false, reason: updErr.message };
+      return { ok: true, url: pub.publicUrl };
+    },
+
+    /** Consumer profile photo — same bucket (already public-read,
+     *  authenticated-write), just a different path prefix. */
+    async uploadProfilePhoto(file) {
+      const sb = getSupabase();
+      if (!sb) return { ok: false, reason: 'no_backend' };
+      const { data: sess } = await sb.auth.getSession();
+      const uid = sess?.session?.user?.id;
+      if (!uid) return { ok: false, reason: 'not_logged_in' };
+      const path = `profile/${uid}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '')}`;
+      const { error: upErr } = await sb.storage.from('vendor-photos').upload(path, file, { upsert: true });
+      if (upErr) return { ok: false, reason: upErr.message };
+      const { data: pub } = sb.storage.from('vendor-photos').getPublicUrl(path);
+      const { error: updErr } = await sb.from('profiles').update({ avatar_url: pub.publicUrl }).eq('id', uid);
+      if (updErr) return { ok: false, reason: updErr.message };
+      return { ok: true, url: pub.publicUrl };
     },
   };
 
@@ -2201,40 +2412,52 @@ window.NOURA_ENV = {
         : audience.type === 'country' ? `Users in ${audience.value}`
         : audience.type === 'cuisine' ? `Fans of ${audience.value}`
         : 'Everyone';
-      const res = await apiRequest('/admin/notifications', { method: 'POST', body: { title, message, audience } });
-      const entry = { id: uid(), title, message, audience, audienceLabel, date: 'Just now', createdAt: new Date().toISOString() };
+      const real = await adminActionsService._call('createBroadcast', { title, message, audienceType: audience.type, audienceValue: audience.value });
+      // Local sent-log is just for the admin's own "Sent Notifications" view — not the delivery mechanism.
+      const entry = { id: real.data?.id || uid(), title, message, audience, audienceLabel, date: 'Just now', createdAt: new Date().toISOString() };
       const sent = lsGet('noura_admin_notifs', []); sent.unshift(entry); lsSet('noura_admin_notifs', sent);
-      // Also queue it for real delivery — consumer/vendor apps pull matching broadcasts on load.
-      const queue = lsGet('noura_broadcast_queue', []); queue.push(entry); lsSet('noura_broadcast_queue', queue.slice(-100));
-      return { ok: true, reason: res.ok ? null : res.reason, audienceLabel };
+      return { ok: real.ok, reason: real.ok ? null : real.error, audienceLabel };
     },
 
     /** Called by the consumer app on load — delivers any broadcasts
      *  targeted at this user into their real notification inbox. */
     async pullBroadcastsForUser(user, prefs) {
-      const queue = lsGet('noura_broadcast_queue', []);
+      const sb = getSupabase();
+      const uidVal = user?.id;
+      if (!sb) return;
+      const { data: broadcasts, error } = await sb.from('broadcasts').select('*').order('created_at', { ascending: false }).limit(50);
+      if (error || !broadcasts?.length) return;
       const seen = new Set(lsGet('noura_broadcasts_seen_user', []));
-      const matches = queue.filter((b) => !seen.has(b.id) && (
-        b.audience.type === 'everyone' || b.audience.type === 'users' ||
-        (b.audience.type === 'country' && user?.country === b.audience.value) ||
-        (b.audience.type === 'cuisine' && (prefs?.favFoods || []).includes(b.audience.value))
+      const matches = broadcasts.filter((b) => !seen.has(b.id) && (
+        b.audience_type === 'everyone' || b.audience_type === 'users' ||
+        (b.audience_type === 'country' && user?.country === b.audience_value) ||
+        (b.audience_type === 'cuisine' && (prefs?.favFoods || []).includes(b.audience_value))
       ));
-      if (!matches.length) return;
-      const inbox = lsGet('noura_notifications', []);
-      matches.forEach((b) => inbox.unshift({ id: uid(), type: 'announcement', icon: '📢', color: '#E8943A22', title: b.title, msg: b.message, time: 'Just now', unread: true }));
-      lsSet('noura_notifications', inbox);
-      lsSet('noura_broadcasts_seen_user', [...seen, ...matches.map((b) => b.id)]);
+      if (!matches.length) { lsSet('noura_broadcasts_seen_user', [...seen, ...broadcasts.map((b) => b.id)]); return; }
+      if (uidVal) {
+        await sb.from('notifications').insert(matches.map((b) => ({
+          user_id: uidVal, type: 'announcement', icon: '📢', color: '#E8943A22', title: b.title, message: b.message, unread: true,
+        })));
+      }
+      lsSet('noura_broadcasts_seen_user', [...seen, ...broadcasts.map((b) => b.id)]);
     },
-    /** Same idea, for the vendor portal. */
+    /** Same idea, for the vendor portal — vendors get real notification
+     *  rows too, keyed by their own auth uid (same notifications table). */
     async pullBroadcastsForVendor() {
-      const queue = lsGet('noura_broadcast_queue', []);
+      const sb = getSupabase();
+      if (!sb) return;
+      const { data: sess } = await sb.auth.getSession();
+      const vendorUid = sess?.session?.user?.id;
+      const { data: broadcasts, error } = await sb.from('broadcasts').select('*').order('created_at', { ascending: false }).limit(50);
+      if (error || !broadcasts?.length) return;
       const seen = new Set(lsGet('noura_broadcasts_seen_vendor', []));
-      const matches = queue.filter((b) => !seen.has(b.id) && (b.audience.type === 'everyone' || b.audience.type === 'vendors'));
-      if (!matches.length) return;
-      const inbox = lsGet('noura_vendor_notifications', []);
-      matches.forEach((b) => inbox.unshift({ id: uid(), title: b.title, msg: b.message, time: 'Just now', unread: true }));
-      lsSet('noura_vendor_notifications', inbox);
-      lsSet('noura_broadcasts_seen_vendor', [...seen, ...matches.map((b) => b.id)]);
+      const matches = broadcasts.filter((b) => !seen.has(b.id) && (b.audience_type === 'everyone' || b.audience_type === 'vendors'));
+      if (matches.length && vendorUid) {
+        await sb.from('notifications').insert(matches.map((b) => ({
+          user_id: vendorUid, type: 'announcement', icon: '📢', color: '#E8943A22', title: b.title, message: b.message, unread: true,
+        })));
+      }
+      lsSet('noura_broadcasts_seen_vendor', [...seen, ...broadcasts.map((b) => b.id)]);
     },
 
     /** Platform-wide analytics need a backend to aggregate across
@@ -2324,7 +2547,7 @@ Be concise (max 4-6 lines unless a full recipe is requested), warm, and practica
         } else {
           // Fallback: direct call, only used if no Supabase project is linked yet.
           const url = `https://generativelanguage.googleapis.com/v1beta/models/${ENV.GEMINI_MODEL || 'gemini-flash-latest'}:generateContent?key=${ENV.GEMINI_API_KEY}`;
-          const body = { system_instruction: { parts: [{ text: GEMINI_SYSTEM + localContext }] }, contents: this._history.slice(-20), generationConfig: { temperature: 0.85, maxOutputTokens: 400 } };
+          const body = { system_instruction: { parts: [{ text: GEMINI_SYSTEM + localContext }] }, contents: this._history.slice(-20), generationConfig: { temperature: 0.85, maxOutputTokens: 1400 } };
           const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: AbortSignal.timeout(12000) });
           if (!res.ok) throw new Error('HTTP ' + res.status);
           const data = await res.json();
@@ -2381,6 +2604,11 @@ Be concise (max 4-6 lines unless a full recipe is requested), warm, and practica
   /* ════════════════════════════════════════════════════════════
    *  PUBLIC EXPORT
    * ════════════════════════════════════════════════════════════ */
+  const publicStoreService={
+    url(v=vendorService.getVendor()){const base=(window.NOURA_ENV?.PUBLIC_APP_URL||location.origin).replace(/\/$/,''); return v?.slug?`${base}/store/${encodeURIComponent(v.slug)}`:`${base}/store`;},
+    async refresh(){const v=vendorService.getVendor();if(!v)return null;try{await vendorMenuService._ensureRestaurant();}catch(_){}return vendorService.getVendor();}
+  };
+
   window.Services = {
     env: ENV,
     auth: authService,
@@ -2396,6 +2624,7 @@ Be concise (max 4-6 lines unless a full recipe is requested), warm, and practica
     vendorMenu: vendorMenuService,
     vendorOrders: vendorOrderService,
     vendorPromos: vendorPromoService,
+    publicStore: publicStoreService,
     vendorReviews: vendorReviewService,
     vendorAnalytics: vendorAnalyticsService,
     admin: adminService,
@@ -2521,17 +2750,36 @@ function initApp(vendor) {
   checkBroadcasts();
   renderDashboard();
 }
+async function renderVendorNotifBadge() {
+  const { notifications } = await S.notifications.list();
+  const dot = el('v-notif-dot');
+  if (dot) dot.style.display = notifications.some(n => n.unread) ? 'block' : 'none';
+}
+async function openVendorNotifs() {
+  const { notifications } = await S.notifications.list();
+  const list = el('v-notifs-list');
+  if (list) {
+    list.innerHTML = notifications.length
+      ? notifications.map(n => `<div style="padding:12px;background:${n.unread?'var(--acs)':'var(--sfu)'};border:1px solid ${n.unread?'#E8943A30':'var(--bd)'};border-radius:10px"><div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:2px">${n.title}</div><div style="font-size:12px;color:var(--t2)">${n.msg||''}</div><div style="font-size:11px;color:var(--t3);margin-top:4px">${n.time}</div></div>`).join('')
+      : `<div style="text-align:center;padding:30px 10px;color:var(--t3);font-size:13px">No notifications yet</div>`;
+  }
+  await S.notifications.markAllRead();
+  renderVendorNotifBadge();
+  openVMod('mod-vendor-notifs');
+}
+
 async function checkBroadcasts() {
-  const before = S.utils.lsGet('noura_vendor_notifications', []).length;
-  await S.notifications.pullBroadcastsForVendor();
-  const after = S.utils.lsGet('noura_vendor_notifications', []);
+  const before = (await S.notifications.list()).notifications.length;
+  await (typeof S.notifications?.pullBroadcastsForVendor === 'function' ? S.notifications.pullBroadcastsForVendor() : Promise.resolve([]));
+  const { notifications: after } = await S.notifications.list();
   if (after.length > before) vToast('📢 ' + after[0].title);
+  renderVendorNotifBadge();
 }
 
 function viewMyPage() {
   const v = S.vendor.getVendor();
   if (!v?.slug) { vToast('Finish onboarding first to get your page'); return; }
-  window.open('store.html?v=' + v.slug, '_blank');
+  window.open(S.vendor.url(v), '_blank');
 }
 function copyMyPageLink() {
   const link = el('my-page-link')?.textContent;
@@ -2560,10 +2808,16 @@ const OB_STEPS = [
       <div style="background:var(--sfu);border:1px solid var(--bd);border-radius:12px;height:140px;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:14px">📍 Map integration coming soon</div>` },
   { title: '3️⃣ Branding', sub: 'Make your profile stand out', html: `
       <div style="display:flex;gap:16px;margin-bottom:20px">
-        <div style="flex:1;background:var(--sfu);border:1px solid var(--bd);border-radius:12px;height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;color:var(--t2);font-size:13px" onclick="vToast('Photo upload needs a connected backend — coming soon!')"><div style="font-size:32px">🖼️</div>Cover Photo</div>
-        <div style="width:120px;background:var(--sfu);border:1px solid var(--bd);border-radius:12px;height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;color:var(--t2);font-size:13px" onclick="vToast('Logo upload needs a connected backend — coming soon!')"><div style="font-size:32px">🪪</div>Logo</div>
+        <label id="ob-cover-box" style="flex:1;background:var(--sfu);border:1px solid var(--bd);border-radius:12px;height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;color:var(--t2);font-size:13px;overflow:hidden;background-size:cover;background-position:center">
+          <div class="ob-photo-ph"><div style="font-size:32px">🖼️</div>Cover Photo</div>
+          <input type="file" accept="image/*" style="display:none" onchange="uploadOnboardingPhoto(this,'cover')">
+        </label>
+        <label id="ob-logo-box" style="width:120px;background:var(--sfu);border:1px solid var(--bd);border-radius:12px;height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;color:var(--t2);font-size:13px;overflow:hidden;background-size:cover;background-position:center">
+          <div class="ob-photo-ph"><div style="font-size:32px">🪪</div>Logo</div>
+          <input type="file" accept="image/*" style="display:none" onchange="uploadOnboardingPhoto(this,'logo')">
+        </label>
       </div>
-      <div class="field"><label>Business Emoji (for now)</label><input type="text" id="ob-emoji" placeholder="🍗" maxlength="4" value="🍽️"></div>
+      <div class="field"><label>Business Emoji (shown until you upload a logo)</label><input type="text" id="ob-emoji" placeholder="🍗" maxlength="4" value="🍽️"></div>
       <div class="field"><label>Price Range</label><select id="ob-price"><option>Budget (₦500–₦2,000)</option><option>Mid-range (₦2,000–₦5,000)</option><option>Premium (₦5,000+)</option></select></div>` },
   { title: '4️⃣ Business Hours', sub: 'When are you open?', html: `<div id="ob-hours-grid" style="display:flex;flex-direction:column;gap:8px"></div>` },
   { title: '5️⃣ Social & Contact', sub: 'Help customers reach you', html: `
@@ -2582,6 +2836,17 @@ const OB_STEPS = [
         </div>
       </div>` }
 ];
+
+async function uploadOnboardingPhoto(input, kind) {
+  const file = input.files?.[0]; if (!file) return;
+  const box = el(kind === 'cover' ? 'ob-cover-box' : 'ob-logo-box');
+  if (box) box.style.opacity = '0.5';
+  const res = await S.media.uploadVendorPhoto(file, kind);
+  if (box) box.style.opacity = '1';
+  if (!res.ok) { vToast(res.reason === 'no_backend' ? 'Photo upload needs a connected backend' : 'Upload failed — try again'); return; }
+  if (box) { box.style.backgroundImage = `url('${res.url}')`; const ph = box.querySelector('.ob-photo-ph'); if (ph) ph.style.display = 'none'; }
+  vToast((kind === 'cover' ? 'Cover photo' : 'Logo') + ' uploaded ✅');
+}
 
 function startOnboarding() { obStep = 0; renderObStep(); }
 function renderObStep() {
@@ -2852,6 +3117,7 @@ function loadSettings() {
   Object.entries(ids).forEach(([id,key]) => { const e2=el(id); if(e2 && v[key]) e2.value=v[key]; });
   buildHoursGrid('hours-grid');
 }
+async function uploadSettingsPhoto(input,kind){const file=input.files?.[0];if(!file)return;const res=await S.media.uploadVendorPhoto(file,kind);if(!res.ok){vToast('Upload failed: '+(res.reason||'unknown error'));return;}vToast((kind==='logo'?'Logo':'Cover')+' saved ✅');await S.publicStore.refresh();}
 async function saveVendorSettings() {
   const patch = {
     businessName: el('s-bname')?.value.trim(), desc: el('s-desc')?.value.trim() || '',
@@ -2906,10 +3172,18 @@ document.addEventListener('DOMContentLoaded', () => {
     el(dotIds[di])?.classList.remove('a'); di = (di+1) % 3; el(dotIds[di])?.classList.add('a');
   }, 300);
 
-  setTimeout(() => {
+  setTimeout(async () => {
     clearInterval(dotTimer);
-    const vendor = S.vendor.getVendor();
+
+    // Supabase is authoritative. Restore the real vendor before falling
+    // back to the cached UI state.
+    let vendor = null;
+    try { vendor = await S.vendor.restoreSession(); } catch (_) {}
+
+    if (!vendor) vendor = S.vendor.getVendor();
+
     if (vendor?.setupDone) { initApp(vendor); return; }
+    if (vendor && !vendor.setupDone) { vgt('vs-onboarding'); startOnboarding(); return; }
     if (location.hash === '#register') { vgt('vs-register'); return; }
     vgt('vs-welcome');
   }, 1600);
@@ -2925,10 +3199,19 @@ function vToast(msg) {
 
 // ── PWA INSTALL (separate from the consumer app's) ─────
 let deferredVendorInstallPrompt = null;
+const V_INSTALL_DISMISS_KEY = 'noura_vendor_install_dismissed_at';
+const V_INSTALL_DISMISS_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000;
+
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredVendorInstallPrompt = e;
   const row = el('v-ssec-install'); if (row) row.style.display = 'block';
+
+  const dismissedAt = Number(localStorage.getItem(V_INSTALL_DISMISS_KEY) || 0);
+  const recentlyDismissed = dismissedAt && (Date.now() - dismissedAt) < V_INSTALL_DISMISS_COOLDOWN_MS;
+  if (!recentlyDismissed) {
+    setTimeout(() => { if (deferredVendorInstallPrompt) el('v-install-banner')?.classList.add('on'); }, 1800);
+  }
 });
 async function installVendorApp() {
   if (!deferredVendorInstallPrompt) { vToast('Already installed, or your browser doesn\'t support installing yet'); return; }
@@ -2936,11 +3219,20 @@ async function installVendorApp() {
   const { outcome } = await deferredVendorInstallPrompt.userChoice;
   if (outcome === 'accepted') vToast('Installed! 🎉');
   deferredVendorInstallPrompt = null;
+  el('v-install-banner')?.classList.remove('on');
   const row = el('v-ssec-install'); if (row) row.style.display = 'none';
 }
-window.addEventListener('appinstalled', () => { deferredVendorInstallPrompt = null; vToast('Noura for Business installed! 🎉'); });
+function dismissVendorInstallBanner() {
+  el('v-install-banner')?.classList.remove('on');
+  localStorage.setItem(V_INSTALL_DISMISS_KEY, String(Date.now()));
+}
+window.addEventListener('appinstalled', () => {
+  deferredVendorInstallPrompt = null;
+  el('v-install-banner')?.classList.remove('on');
+  vToast('Noura for Business installed! 🎉');
+});
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => { navigator.serviceWorker.register('sw-vendor.js').catch(() => {}); });
+  window.addEventListener('load', () => { navigator.serviceWorker.register('/sw-vendor.js',{scope:'/vendor'} ).catch(() => {}); });
 }
 
 </script>
