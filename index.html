@@ -7,8 +7,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Noura">
-<title>Noura — Discover Nigerian & African Food Near You | AI Food Companion</title>
-<meta name="description" content="Noura is your food companion for campus life — discover food, find local vendors, plan meals, and make smarter food choices. Still open to everyone.">
+<title>Noura — Campus Food Companion | Discover, Plan & Eat Smarter</title>
+<meta name="description" content="Noura helps students discover food, campus vendors, recipes and smarter ways to plan meals — while keeping the full original Noura food discovery experience.">
 <meta name="keywords" content="Noura, Nigerian food app, African recipes, find local restaurants Nigeria, jollof rice recipe, food discovery app, Noura AI, Nigerian vendors near me, Ghanaian recipes, Kenyan recipes">
 <meta name="author" content="Fluxiq Labs">
 <meta name="robots" content="index, follow">
@@ -16,14 +16,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://noura.fluxiqlabs.com/">
 <meta property="og:title" content="Noura — Discover Great Local Food Near You">
-<meta property="og:description" content="Discover campus food, local vendors, recipes, meal ideas, and Noura AI — your food companion for campus life.">
+<meta property="og:description" content="Your food companion for school and campus life. Discover vendors, recipes, meal ideas and smarter food choices.">
 <meta property="og:image" content="https://noura.fluxiqlabs.com/og-image.jpg">
 <meta property="og:site_name" content="Noura">
 <meta property="og:locale" content="en_NG">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:url" content="https://noura.fluxiqlabs.com/">
 <meta name="twitter:title" content="Noura — Discover Great Local Food Near You">
-<meta name="twitter:description" content="Discover campus food, local vendors, recipes, meal ideas, and Noura AI.">
+<meta name="twitter:description" content="Food discovery, recipes, vendors and meal planning for school and campus life.">
 <meta name="twitter:image" content="https://noura.fluxiqlabs.com/og-image.jpg">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -36,7 +36,7 @@
   "@context": "https://schema.org",
   "@type": "MobileApplication",
   "name": "Noura",
-  "description": "Discover campus food, local vendors, recipes, meal ideas, and smarter ways to eat.",
+  "description": "Discover campus food, local vendors, recipes and smarter ways to eat.",
   "applicationCategory": "FoodApplication",
   "operatingSystem": "Web, iOS, Android",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "NGN" },
@@ -522,6 +522,29 @@ body.light{--bg:#F5F2EC;--sf:#FFFFFF;--sfu:#EDE9E2;--bd:#DDD8CF;--t1:#1A1612;--t
 
 </style>
 
+
+<style id="noura-campus-upgrade">
+/* NOURA CAMPUS EDITION — additive layer only */
+.campus-hero{margin:0 20px 18px;padding:18px;border:1px solid #E8943A45;border-radius:24px;background:radial-gradient(circle at 88% 10%,rgba(245,158,11,.18),transparent 35%),linear-gradient(145deg,#1b130d,#100d0b 62%,#15100c);position:relative;overflow:hidden;box-shadow:0 16px 40px rgba(0,0,0,.22)}
+.campus-hero:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-80px;bottom:-100px;background:rgba(245,158,11,.12);filter:blur(18px)}
+.campus-kicker{font-size:10px;font-weight:800;letter-spacing:1.4px;color:var(--ac);text-transform:uppercase;margin-bottom:6px}
+.campus-title{font-family:'Sora',sans-serif;font-size:21px;line-height:1.15;font-weight:800;color:var(--t1);max-width:72%;margin-bottom:7px}
+.campus-copy{font-size:12px;line-height:1.55;color:var(--t2);max-width:74%;margin-bottom:14px}
+.campus-actions{display:flex;gap:8px;flex-wrap:wrap}
+.campus-btn{border:1px solid #E8943A55;background:var(--acs);color:var(--t1);border-radius:999px;padding:8px 12px;font-size:11px;font-weight:700;cursor:pointer}
+.campus-btn.primary{background:var(--ac);color:var(--bg);border-color:var(--ac)}
+.campus-mascot{position:absolute;right:4px;bottom:-12px;width:118px;height:178px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 12px 20px rgba(0,0,0,.5));animation:campusBuddyFloat 4.2s ease-in-out infinite;pointer-events:none}
+@keyframes campusBuddyFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-5px) rotate(.7deg)}}
+.campus-strip{display:flex;gap:8px;overflow-x:auto;padding:0 20px 4px;scrollbar-width:none}.campus-strip::-webkit-scrollbar{display:none}
+.campus-chip{flex:0 0 auto;border:1px solid var(--bd);background:var(--sf);border-radius:999px;padding:8px 11px;color:var(--t2);font-size:11px;font-weight:600;cursor:pointer}.campus-chip.active{background:var(--acs);color:var(--ac);border-color:#E8943A55}
+.campus-profile-card{margin:0 20px 16px;padding:16px;border:1px solid var(--bd);border-radius:20px;background:linear-gradient(145deg,var(--sf),#16100d)}
+.campus-profile-head{display:flex;align-items:center;gap:12px}.campus-avatar{width:46px;height:46px;border-radius:15px;display:flex;align-items:center;justify-content:center;background:var(--acs);font-size:22px;border:1px solid #E8943A45}.campus-profile-title{font-family:'Sora',sans-serif;font-size:15px;font-weight:800;color:var(--t1)}.campus-profile-sub{font-size:11px;color:var(--t2);margin-top:3px}.campus-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}.campus-stat{background:var(--sfu);border:1px solid var(--bd);border-radius:14px;padding:10px;text-align:center}.campus-stat b{display:block;color:var(--ac);font-size:15px}.campus-stat span{font-size:9px;color:var(--t3);display:block;margin-top:3px}
+.campus-profile-menu{margin:0 20px 24px;border:1px solid var(--bd);border-radius:22px;overflow:hidden;background:var(--sf)}
+.campus-menu-item{display:flex;align-items:center;gap:12px;padding:14px 15px;border-bottom:1px solid var(--bd);cursor:pointer}.campus-menu-item:last-child{border-bottom:0}.campus-menu-icon{width:36px;height:36px;border-radius:11px;background:var(--acs);display:flex;align-items:center;justify-content:center;font-size:18px}.campus-menu-label{flex:1;font-size:13px;font-weight:700;color:var(--t1)}.campus-menu-sub{font-size:10px;color:var(--t3);margin-top:2px}.campus-chevron{color:var(--t3)}
+.campus-welcome{position:fixed;inset:0;z-index:100;background:rgba(7,6,5,.78);backdrop-filter:blur(14px);display:none;align-items:flex-end;justify-content:center;padding:14px}.campus-welcome.on{display:flex}.campus-welcome-card{width:min(520px,100%);background:linear-gradient(160deg,#20150d,#100d0b 70%);border:1px solid #E8943A50;border-radius:28px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.55);position:relative;overflow:hidden}.cw-mascot{position:absolute;right:-6px;top:18px;width:130px;height:190px;object-fit:contain;object-position:center bottom;animation:campusBuddyFloat 4s ease-in-out infinite}.cw-kicker{font-size:10px;color:var(--ac);font-weight:800;letter-spacing:1.4px;text-transform:uppercase}.cw-title{font-family:'Sora',sans-serif;font-size:25px;font-weight:800;line-height:1.08;color:#fff;max-width:68%;margin:8px 0}.cw-copy{font-size:12px;line-height:1.65;color:var(--t2);max-width:68%;margin-bottom:18px}.cw-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0 18px}.cw-option{padding:11px;border-radius:15px;border:1px solid var(--bd);background:var(--sfu);color:var(--t1);font-size:11px;font-weight:700;cursor:pointer;text-align:left}.cw-option.sel{border-color:var(--ac);background:var(--acs);color:var(--ac)}
+@media(max-width:430px){.campus-mascot{width:96px;height:155px;right:-2px}.campus-copy{max-width:78%}.cw-mascot{width:105px;height:165px}.cw-title,.cw-copy{max-width:72%}}
+</style>
+
 </head>
 <body>
 <body>
@@ -685,6 +708,25 @@ body.light{--bg:#F5F2EC;--sf:#FFFFFF;--sfu:#EDE9E2;--bd:#DDD8CF;--t1:#1A1612;--t
   </div>
 
   <div class="scroll">
+
+  <div class="campus-hero" id="campus-home-hero">
+    <div class="campus-kicker">Noura · Campus Edition</div>
+    <div class="campus-title">Food life on campus, made easier.</div>
+    <div class="campus-copy" id="campus-hero-copy">Find something to eat, discover nearby student vendors, plan meals, or let Noura pick for you.</div>
+    <div class="campus-actions">
+      <button class="campus-btn primary" onclick="openCampusWelcome(true)">Set my campus</button>
+      <button class="campus-btn" onclick="openMod('mod-wsie');startWSIE()">What should I eat?</button>
+    </div>
+    <img class="campus-mascot" src="mascot-cutout.png" alt="Noura mascot">
+  </div>
+    <!-- Campus quick filters -->
+    <div class="campus-strip" id="campus-quick-strip">
+      <div class="campus-chip active" onclick="campusQuick(this,'all')">🔥 Student picks</div>
+      <div class="campus-chip" onclick="campusQuick(this,'cheap')">💰 Budget-friendly</div>
+      <div class="campus-chip" onclick="campusQuick(this,'quick')">⚡ Quick bites</div>
+      <div class="campus-chip" onclick="campusQuick(this,'cook')">🍳 Cook at home</div>
+    </div>
+    <div style="height:16px"></div>
     <!-- AI Banner -->
     <div class="hbn" onclick="gt('ai-chat')">
       <div>
@@ -744,7 +786,7 @@ body.light{--bg:#F5F2EC;--sf:#FFFFFF;--sfu:#EDE9E2;--bd:#DDD8CF;--t1:#1A1612;--t
 <!-- DISCOVER -->
 <div class="screen" id="scr-discover">
   <div style="padding:56px 20px 0;flex-shrink:0">
-    <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:var(--t1);margin-bottom:14px">Discover Recipes</div>
+    <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:var(--t1);margin-bottom:4px">Discover</div><div style="font-size:12px;color:var(--t2);margin-bottom:14px">Recipes on one side. Campus food on the other.</div>
     <!-- Search bar -->
     <div class="srch-wrap" style="margin-bottom:14px">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -769,6 +811,11 @@ body.light{--bg:#F5F2EC;--sf:#FFFFFF;--sfu:#EDE9E2;--bd:#DDD8CF;--t1:#1A1612;--t
   <div class="cat-scroll" id="cat-scroll"></div>
   <!-- Local cuisine group chips — hidden on global tab -->
   <div class="cat-scroll" id="local-cat-scroll" style="display:none"></div>
+  <!-- Campus vendor shortcut — recipe discovery remains fully functional below -->
+  <div style="padding:0 20px 12px;display:flex;gap:8px">
+    <button class="campus-btn primary" style="flex:1" onclick="gt('restaurants')">🏪 Find campus vendors</button>
+    <button class="campus-btn" style="flex:1" onclick="openMod('mod-wsie');startWSIE()">🤷🏾 Pick for me</button>
+  </div>
   <!-- Recipe grid -->
   <div class="iscroll" style="padding-bottom:88px">
     <div class="rec-grid" id="rec-grid" style="padding-bottom:20px"></div>
@@ -805,65 +852,50 @@ body.light{--bg:#F5F2EC;--sf:#FFFFFF;--sfu:#EDE9E2;--bd:#DDD8CF;--t1:#1A1612;--t
 <!-- PROFILE -->
 <div class="screen" id="scr-profile">
   <div class="ptb">
-    <div class="ppt">Profile</div>
+    <div class="ppt">My Noura</div>
     <div style="display:flex;gap:8px">
       <div class="ibt" onclick="gt('notifications')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
-      <div class="ibt" onclick="gt('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+      <div class="ibt" onclick="gt('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51 2 2 0 0 1-4 0A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 0 4 0v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09A1.65 1.65 0 0 0 19.4 15z"/></svg></div>
     </div>
   </div>
   <div class="scroll">
-    <!-- Avatar + core identity -->
-    <div class="pas">
-      <div class="avw">
-        <div class="avc" id="pavc">
-          <img id="pavatar-img" src="" alt="" style="display:none;width:88px;height:88px;object-fit:cover;border-radius:50%">
-          <span id="pinit">?</span>
+    <div class="campus-profile-card">
+      <div class="campus-profile-head">
+        <div class="campus-avatar" id="campus-profile-avatar">👋🏾</div>
+        <div style="min-width:0;flex:1">
+          <div class="campus-profile-title" id="pnm">Your Name</div>
+          <div class="campus-profile-sub"><span id="pun">@username</span> · <span id="pem">you@example.com</span></div>
+          <div class="campus-profile-sub" id="campus-profile-school">🎓 Add your school/campus</div>
         </div>
         <div class="aeb" onclick="gt('edit-profile')">✏️</div>
       </div>
-      <div class="pnm" id="pnm">Your Name</div>
-      <div class="pun" id="pun" style="color:var(--ac);font-size:13px;font-weight:500;margin-bottom:4px">@username</div>
-      <div class="pbi" id="pbi" style="display:none;font-size:14px;color:var(--t2);text-align:center;line-height:1.5;margin-bottom:6px;padding:0 20px"></div>
-      <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px">
-        <span id="p-country-flag" style="font-size:16px;display:none"></span>
-        <div class="pem" id="pem" style="font-size:13px;color:var(--t3)">you@example.com</div>
+      <div class="campus-stats">
+        <div class="campus-stat"><b id="stat-meals">0</b><span>meals opened</span></div>
+        <div class="campus-stat"><b id="svct">0</b><span>recipes saved</span></div>
+        <div class="campus-stat"><b id="stat-streak">—</b><span>day streak</span></div>
       </div>
     </div>
 
-    <!-- Stats -->
-    <div class="str">
-      <div class="stc"><div class="stv" id="stat-meals">0</div><div class="stl">Meals<br>Opened</div></div>
-      <div class="stc"><div class="stv" id="svct">0</div><div class="stl">Recipes<br>Saved</div></div>
-      <div class="stc"><div class="stv" id="stat-streak">—</div><div class="stl">Day<br>Streak 🔥</div></div>
+    <div class="campus-hero" style="margin-bottom:16px" id="profile-campus-hero">
+      <div class="campus-kicker">Your food life</div>
+      <div class="campus-title" style="font-size:18px">What kind of student are you today? 😭</div>
+      <div class="campus-copy" style="max-width:72%">Cook, buy, order, plan — Noura adapts to how your day actually goes.</div>
+      <div class="campus-actions">
+        <button class="campus-btn" onclick="gt('prefs')">🎯 Set food vibe</button>
+        <button class="campus-btn" onclick="gt('mealplan')">🗓️ Plan my day</button>
+      </div>
+      <img class="campus-mascot" src="mascot-cutout.png" alt="Noura mascot">
     </div>
 
-    <!-- Day 9 fields: Diet, Cuisines, Allergies shown as read-only tags -->
-    <div id="profile-tags-section" style="padding:0 20px 20px;display:none">
-      <div id="profile-diet-row" style="display:none;margin-bottom:12px">
-        <div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Diet</div>
-        <div id="profile-diet-val" style="display:inline-block;background:var(--acs);color:var(--ac);font-size:12px;font-weight:600;padding:4px 12px;border-radius:var(--rfl)"></div>
-      </div>
-      <div id="profile-cuisines-row" style="display:none;margin-bottom:12px">
-        <div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Favourite Cuisines</div>
-        <div id="profile-cuisines-val" style="display:flex;flex-wrap:wrap;gap:6px"></div>
-      </div>
-      <div id="profile-allergies-row" style="display:none">
-        <div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Allergies</div>
-        <div id="profile-allergies-val" style="display:flex;flex-wrap:wrap;gap:6px"></div>
-      </div>
+    <div class="campus-profile-menu">
+      <div class="campus-menu-item" onclick="gt('edit-profile')"><div class="campus-menu-icon">✏️</div><div><div class="campus-menu-label">Edit my profile</div><div class="campus-menu-sub">Name, username, school & food identity</div></div><div class="campus-chevron">›</div></div>
+      <div class="campus-menu-item" onclick="gt('prefs')"><div class="campus-menu-icon">🎯</div><div><div class="campus-menu-label">Food preferences</div><div class="campus-menu-sub">Budget, meals, favourites & goals</div></div><div class="campus-chevron">›</div></div>
+      <div class="campus-menu-item" onclick="gt('saved')"><div class="campus-menu-icon">🔖</div><div><div class="campus-menu-label">Saved recipes</div><div class="campus-menu-sub">Keep your go-to meals close</div></div><div class="campus-chevron">›</div></div>
+      <div class="campus-menu-item" onclick="gt('challenges')"><div class="campus-menu-icon">🏆</div><div><div class="campus-menu-label">Campus challenges</div><div class="campus-menu-sub">Small food goals. Real progress.</div></div><div class="campus-chevron">›</div></div>
+      <div class="campus-menu-item" onclick="gt('notifications')"><div class="campus-menu-icon">🔔</div><div><div class="campus-menu-label">Notifications</div><div class="campus-menu-sub">Vendor updates, deals & Noura nudges</div></div><div class="campus-chevron">›</div></div>
+      <div class="campus-menu-item" onclick="gt('settings')"><div class="campus-menu-icon">⚙️</div><div><div class="campus-menu-label">Settings</div><div class="campus-menu-sub">Privacy, appearance & account</div></div><div class="campus-chevron">›</div></div>
+      <div class="campus-menu-item" onclick="doLogout()"><div class="campus-menu-icon">🚪</div><div><div class="campus-menu-label" style="color:var(--er)">Log out</div></div></div>
     </div>
-
-    <!-- Menu -->
-    <div class="pmu">
-      <div class="mi" onclick="gt('edit-profile')"><div class="mic">✏️</div><div class="mil">Edit Profile</div><div class="mchv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg></div></div>
-      <div class="mi" onclick="gt('prefs')"><div class="mic">🎯</div><div class="mil">Food Preferences</div><div class="mchv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg></div></div>
-      <div class="mi" onclick="gt('saved')"><div class="mic">🔖</div><div class="mil">Saved Recipes</div><div class="mchv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg></div></div>
-      <div class="mi" onclick="gt('challenges')"><div class="mic">🏆</div><div class="mil">Challenges</div><div class="mchv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg></div></div>
-      <div class="mi" onclick="gt('notifications')"><div class="mic">🔔</div><div class="mil">Notifications</div><div class="mchv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg></div></div>
-      <div class="mi" onclick="gt('settings')"><div class="mic">⚙️</div><div class="mil">Settings</div><div class="mchv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg></div></div>
-      <div class="mi" onclick="doLogout()"><div class="mic dg">🚪</div><div class="mil dg">Log Out</div></div>
-    </div>
-    
   </div>
 </div>
 
@@ -1831,8 +1863,9 @@ window.NOURA_ENV = {
         const { data, error } = await sb.auth.signInWithPassword({ email, password });
         if (error) return { ok: false, user: null, reason: error.message || 'auth_error' };
         AuthStore.setTokens(data.session.access_token, data.session.refresh_token);
+        userProfileService._cacheUser({ ...userProfileService._blankUser(), id:data.user.id, name:data.user.user_metadata?.name||'', username:data.user.user_metadata?.username||'', email:data.user.email||email });
         const { user } = await userProfileService.loadProfile();
-        return { ok: true, user };
+        return { ok: true, user: user || { ...userProfileService._blankUser(), email, id:data.user?.id||'' } };
       }
       const res = await apiRequest('/auth/login', { method: 'POST', body: { email, password } });
       if (res.ok) {
@@ -1867,6 +1900,7 @@ window.NOURA_ENV = {
         // Belt-and-suspenders: the DB trigger creates the row, but upsert here
         // in case the trigger hasn't landed yet by the time we read it back.
         await sb.from('profiles').upsert({ id: data.user.id, email, name, username: '@' + username.replace(/^@/, '') });
+        userProfileService._cacheUser({ ...userProfileService._blankUser(), id:data.user.id, name, username:'@'+username.replace(/^@/,''), email });
         const { user } = await userProfileService.loadProfile();
         return { ok: true, user };
       }
@@ -1960,10 +1994,28 @@ window.NOURA_ENV = {
         const { data: sess } = await sb.auth.getSession();
         const uid = sess?.session?.user?.id;
         if (!uid) return { ok: false, user: null };
+        const authUser = sess?.session?.user || {};
+        const cached = this._getCachedUser() || {};
         const { data, error } = await sb.from('profiles').select('*').eq('id', uid).single();
-        if (error) return { ok: false, user: this._getCachedUser() };
+        if (error || !data) {
+          // RLS-safe fallback: the signed-in Supabase auth user still contains
+          // the identity captured during signup. Keep the UI useful even when
+          // profile SELECT policies are temporarily incomplete.
+          const meta = authUser.user_metadata || {};
+          const fallback = {
+            ...this._blankUser(), id: uid,
+            name: cached.name || meta.name || meta.full_name || '',
+            username: cached.username || meta.username || '',
+            email: authUser.email || cached.email || '',
+            bio: cached.bio || '', country: cached.country || '',
+            cuisines: cached.cuisines || [], diet: cached.diet || '', allergies: cached.allergies || [],
+            avatarUrl: cached.avatarUrl || authUser.user_metadata?.avatar_url || ''
+          };
+          this._cacheUser(fallback);
+          return { ok: false, user: fallback, reason: error?.message || 'profile_unavailable' };
+        }
         const user = {
-          id: data.id, name: data.name || '', username: data.username || '', email: data.email || '',
+          id: data.id, name: data.name || authUser.user_metadata?.name || '', username: data.username || authUser.user_metadata?.username || '', email: data.email || authUser.email || '',
           bio: data.bio || '', country: data.country || '', cuisines: data.cuisines || [],
           diet: data.diet || '', allergies: data.allergies || [], avatarUrl: data.avatar_url || '',
         };
@@ -3594,6 +3646,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (S.auth.isLoggedIn()) {
     q('scr-splash')?.classList.remove('active');
     gt('home', true);
+    setTimeout(()=>openCampusWelcome(false), 650);
     return;
   }
 
@@ -3674,7 +3727,8 @@ async function doLogin(){
   btn.textContent='Log In'; btn.disabled=false;
   if(!res.ok){ toast(res.reason==='network'?'📡 No connection — try again':'Login failed. Check your details.'); return; }
   recordLogin(); gt('home');
-  toast('Welcome back, '+(res.user.name||'there').split(' ')[0]+'! 👋');
+  setTimeout(()=>openCampusWelcome(false), 450);
+  toast('Welcome back, '+(res.user?.name||'there').split(' ')[0]+'! 👋');
 }
 
 function selectRegRole(role) {
@@ -3707,6 +3761,7 @@ async function doRegister(){
   if(!res.ok){ toast(res.reason==='network'?'📡 No connection — try again':'Could not create account.'); return; }
   if(res.reason==='confirm_email'){ toast('Check your email to confirm your account, then log in 📧'); gt('login'); return; }
   recordLogin(); gt('home');
+  setTimeout(()=>openCampusWelcome(false), 450);
   toast('Welcome to Noura, '+n.split(' ')[0]+'! 🎉');
 }
 
@@ -3719,6 +3774,42 @@ async function doForgot(){
 }
 async function doLogout(){ await S.auth.logout(); gt('login'); toast('Logged out'); }
 async function delAcct(){ if(confirm('Delete account? Cannot be undone.')){ await S.profile.deleteAccount(); gt('login'); toast('Account deleted'); } }
+
+// ══════════════════════════════════════════════════
+//  CAMPUS EDITION HELPERS — local, additive, no DB migration required
+// ══════════════════════════════════════════════════
+function getCampusProfile(){
+  return S.utils.lsGet('noura_campus_profile', {school:'', mode:'', budget:'', completed:false});
+}
+function saveCampusProfile(p){ S.utils.lsSet('noura_campus_profile', {...getCampusProfile(), ...p}); }
+function openCampusWelcome(force=false){
+  const w=q('campus-welcome'); if(!w) return;
+  const p=getCampusProfile();
+  if(force || !p.completed) { q('campus-school-input').value=p.school||''; document.querySelectorAll('.cw-option').forEach(b=>b.classList.toggle('sel',b.dataset.mode===p.mode)); w.classList.add('on'); }
+}
+function closeCampusWelcome(){ q('campus-welcome')?.classList.remove('on'); }
+function pickCampusMode(btn){ document.querySelectorAll('.cw-option').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); }
+function saveCampusWelcome(){
+  const mode=document.querySelector('.cw-option.sel')?.dataset.mode||getCampusProfile().mode||'mix';
+  const school=q('campus-school-input')?.value.trim()||'';
+  saveCampusProfile({mode,school,completed:true,updatedAt:Date.now()});
+  closeCampusWelcome(); renderCampusUI(); toast('Your campus vibe is ready 🧡');
+}
+function renderCampusUI(){
+  const p=getCampusProfile();
+  const label=p.school ? '🎓 '+p.school : '🎓 Add your school/campus';
+  if(q('campus-profile-school')) q('campus-profile-school').textContent=label;
+  const copy=p.school ? `Welcome to Noura for ${p.school}. Find student favourites, nearby vendors and meals that fit your day.` : 'Find something to eat, discover nearby student vendors, plan meals, or let Noura pick for you.';
+  if(q('campus-hero-copy')) q('campus-hero-copy').textContent=copy;
+  if(q('profile-campus-hero')) q('profile-campus-hero').querySelector('.campus-copy').textContent=p.mode==='cook'?'Recipes, ingredients and simple meal plans for busy school days.':p.mode==='buy'?'Find nearby food, student vendors and quick meals without the guesswork.':p.mode==='budget'?'Stretch your food money with budget-aware meals and smarter picks.':'Cook, buy, order, plan — Noura adapts to how your school day actually goes.';
+}
+function campusQuick(btn, mode){
+  document.querySelectorAll('#campus-quick-strip .campus-chip').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
+  const p=getCampusProfile();
+  if(mode==='cook') gt('ai-recipe');
+  else if(mode==='all') gt('discover');
+  else { gt('discover'); toast(mode==='cheap'?'Showing budget-friendly ideas 💰':mode==='quick'?'Quick food ideas ⚡':'Student picks 🔥'); }
+}
 
 // ══════════════════════════════════════════════════
 //  RENDER USER
@@ -3772,6 +3863,7 @@ async function renderUser(){
   const streak = calcStreak();
   const se=q('stat-streak'); if(se) se.textContent=streak>0?streak+' 🔥':'—';
   const me=q('stat-meals');  if(me) me.textContent=S.utils.lsGet('nMealsOpened',0);
+  renderCampusUI();
 }
 
 async function renderPrefs(){
@@ -4391,60 +4483,12 @@ if ('serviceWorker' in navigator) {
 if (S.auth.isLoggedIn()) recordLogin();
 
 // ── Cross-file navigation ────────────────────────────
-function openVendorPortal(){ window.open('vendor.html','_blank'); }
-function openAdminPanel(){   window.open('admin.html','_blank');  }
-function openLanding(){      window.open('landing.html','_blank');}
+function openVendorPortal(){ window.open('noura-vendor.html','_blank'); }
+function openAdminPanel(){   window.open('noura-admin.html','_blank');  }
+function openLanding(){      window.open('noura-landing.html','_blank');}
 
 </script>
 
-<!-- NOURA CAMPUS WELCOME — additive layer; existing app remains intact. -->
-<style id="noura-campus-welcome-style">
-  .n-welcome{position:fixed;inset:0;background:rgba(3,3,2,.86);backdrop-filter:blur(16px);z-index:10050;display:none;align-items:center;justify-content:center;padding:18px}
-  .n-welcome.on{display:flex;animation:nwFade .28s ease}
-  .n-welcome-card{width:min(520px,100%);border:1px solid rgba(245,158,11,.22);background:linear-gradient(145deg,#17120f,#0b0908);border-radius:30px;padding:24px;box-shadow:0 30px 100px rgba(0,0,0,.55);overflow:hidden;position:relative}
-  .n-welcome-glow{position:absolute;width:220px;height:220px;right:-90px;top:-100px;background:rgba(245,158,11,.13);filter:blur(40px);border-radius:50%}
-  .n-welcome-mascot{height:180px;display:flex;justify-content:center;align-items:flex-end;position:relative;z-index:1}
-  .n-welcome-mascot img{height:180px;max-width:100%;object-fit:contain;filter:drop-shadow(0 18px 28px rgba(0,0,0,.4));animation:nwMascot 3.8s ease-in-out infinite}
-  .n-welcome-kicker{color:#f59e0b;font-size:10px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;text-align:center;margin-top:6px}
-  .n-welcome h2{font-family:'Sora',sans-serif;color:#fff;text-align:center;font-size:27px;line-height:1.1;margin:7px 0 8px}
-  .n-welcome p{color:#a3a3a3;text-align:center;font-size:13px;line-height:1.55;margin:0 auto 18px;max-width:420px}
-  .n-welcome-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-  .n-wbtn{border:1px solid #302720;background:#191410;color:#eee;border-radius:16px;padding:13px 12px;text-align:left;cursor:pointer;transition:.2s}
-  .n-wbtn:hover{border-color:#f59e0b;transform:translateY(-1px)}
-  .n-wbtn strong{display:block;font-size:12px}.n-wbtn span{display:block;color:#8f8882;font-size:10px;margin-top:3px}
-  .n-wbtn.primary{grid-column:1/-1;background:#f59e0b;color:#17100a;border-color:#f59e0b;text-align:center;font-weight:900}
-  .n-welcome-note{text-align:center;color:#6f6862;font-size:9px;margin-top:12px}
-  @keyframes nwFade{from{opacity:0}to{opacity:1}} @keyframes nwMascot{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-7px) rotate(-1deg)}}
-  @media(max-width:430px){.n-welcome-card{padding:20px;border-radius:26px}.n-welcome-mascot{height:145px}.n-welcome-mascot img{height:145px}.n-welcome h2{font-size:23px}}
-</style>
-<div class="n-welcome" id="n-campus-welcome" role="dialog" aria-modal="true" aria-label="Welcome to Noura">
-  <div class="n-welcome-card">
-    <div class="n-welcome-glow"></div>
-    <div class="n-welcome-mascot"><img src="mascot-cutout.png" alt="Noura mascot"></div>
-    <div class="n-welcome-kicker">NOURA · CAMPUS EDITION</div>
-    <h2>Welcome to your food life.</h2>
-    <p>Find what to eat, discover nearby vendors, plan meals and make smarter food choices — built around how students actually eat.</p>
-    <div class="n-welcome-actions">
-      <button class="n-wbtn" onclick="NouraWelcome.student()"><strong>🎓 I'm a student</strong><span>Personalize Noura for campus life</span></button>
-      <button class="n-wbtn" onclick="NouraWelcome.vendor()"><strong>🏪 I'm a food vendor</strong><span>Grow your business with Noura</span></button>
-      <button class="n-wbtn primary" onclick="NouraWelcome.explore()">Let's explore Noura →</button>
-    </div>
-    <div class="n-welcome-note">Your existing Noura experience is still here. Campus mode simply makes it smarter.</div>
-  </div>
-</div>
-<script id="noura-campus-welcome-script">
-(function(){
-  const KEY='noura_campus_welcome_seen_v1';
-  const close=()=>{const el=document.getElementById('n-campus-welcome'); if(el)el.classList.remove('on'); localStorage.setItem(KEY,'1');};
-  window.NouraWelcome={
-    student(){close();setTimeout(()=>window.NouraCampus?.open(),180);},
-    vendor(){close();window.open('vendor.html','_blank');},
-    explore(){close();}
-  };
-  const boot=()=>{if(localStorage.getItem(KEY))return; const el=document.getElementById('n-campus-welcome'); if(el)setTimeout(()=>el.classList.add('on'),1100);};
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
-})();
-</script>
 <!-- NOURA CAMPUS EDITION — isolated enhancement layer. Existing app logic remains untouched. -->
 <style id="noura-campus-layer">
   .n-campus-strip{margin:0 20px 18px;padding:14px 15px;border:1px solid rgba(245,158,11,.22);border-radius:18px;background:linear-gradient(135deg,rgba(245,158,11,.10),rgba(255,255,255,.025));display:flex;align-items:center;gap:12px;box-shadow:0 12px 30px rgba(0,0,0,.12)}
@@ -4553,6 +4597,30 @@ function openLanding(){      window.open('landing.html','_blank');}
   }
 })();
 </script>
+
+
+<!-- CAMPUS WELCOME -->
+<div class="campus-welcome" id="campus-welcome" role="dialog" aria-modal="true">
+  <div class="campus-welcome-card">
+    <img class="cw-mascot" src="mascot-cutout.png" alt="Noura mascot">
+    <div class="cw-kicker">NOURA · CAMPUS EDITION</div>
+    <div class="cw-title">Welcome to your food sidekick. 🧡</div>
+    <div class="cw-copy">Tell Noura what kind of campus life you have. You can change this anytime.</div>
+    <div style="font-size:11px;color:var(--t2);font-weight:700;margin-bottom:8px">I’m mostly…</div>
+    <div class="cw-options">
+      <button class="cw-option" data-mode="cook" onclick="pickCampusMode(this)">🍳 I cook</button>
+      <button class="cw-option" data-mode="buy" onclick="pickCampusMode(this)">🛵 I buy food</button>
+      <button class="cw-option" data-mode="mix" onclick="pickCampusMode(this)">🔄 A bit of both</button>
+      <button class="cw-option" data-mode="budget" onclick="pickCampusMode(this)">💰 I’m budget-first</button>
+    </div>
+    <div style="font-size:11px;color:var(--t2);font-weight:700;margin-bottom:7px">School / campus (optional)</div>
+    <input id="campus-school-input" class="inp" placeholder="e.g. OAU, FUTA, my school…" autocomplete="organization">
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="campus-btn" style="flex:1" onclick="closeCampusWelcome()">Skip for now</button>
+      <button class="campus-btn primary" style="flex:1" onclick="saveCampusWelcome()">Let’s go 🚀</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

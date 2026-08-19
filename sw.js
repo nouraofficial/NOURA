@@ -1,4 +1,4 @@
-const CACHE = 'noura-campus-v1';
+const CACHE = 'noura-campus-v2';
 const APP_SHELL = [
   '/',
   '/index.html',
