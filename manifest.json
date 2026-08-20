@@ -5,7 +5,7 @@
   "display": "standalone",
   "background_color": "#0D0B09",
   "theme_color": "#0D0B09",
-  "description": "Discover food, recipes and local vendors around you.",
+  "description": "Noura 1.10 \u2014 food discovery and meal planning for campus life",
   "icons": [
     {
       "src": "/icon-192.png",
@@ -17,5 +17,6 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "version": "1.10.0"
 }

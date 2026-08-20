@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Noura">
-<title>Noura — Discover Nigerian & African Food Near You | AI Food Companion</title>
+<title>Noura 1.10 — Food Companion for Campus Life</title>
 <meta name="description" content="Noura helps you discover great local food — search Nigerian, Ghanaian & Kenyan recipes, find nearby vendors, chat with Noura AI, and save your favourites. Free for everyone.">
 <meta name="keywords" content="Noura, Nigerian food app, African recipes, find local restaurants Nigeria, jollof rice recipe, food discovery app, Noura AI, Nigerian vendors near me, Ghanaian recipes, Kenyan recipes">
 <meta name="author" content="Fluxiq Labs">
@@ -37,7 +37,7 @@
   "@context": "https://schema.org",
   "@type": "MobileApplication",
   "name": "Noura",
-  "description": "Discover great local food, recipes, and vendors across Nigeria and Africa.",
+  "description": "Noura 1.10 — discover campus food, local vendors, recipes and smarter meal choices.",
   "applicationCategory": "FoodApplication",
   "operatingSystem": "Web, iOS, Android",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "NGN" },
@@ -516,6 +516,55 @@ body.light{--bg:#F5F2EC;--sf:#FFFFFF;--sfu:#EDE9E2;--bd:#DDD8CF;--t1:#1A1612;--t
 .ss-item:active{background:var(--sfu)}
 .ss-icon{width:44px;height:44px;border-radius:var(--rmd);background:var(--sfu);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 
+
+/* ============================================================
+   NOURA 1.10 — CAMPUS EXPERIENCE LAYER
+   Additive styles only. Existing components remain untouched.
+   ============================================================ */
+.campus-hero{margin:0 20px 18px;padding:18px;border:1px solid #E8943A2A;border-radius:24px;background:radial-gradient(circle at 90% 10%,#E8943A22,transparent 45%),linear-gradient(135deg,#17110B,#0F0C08);position:relative;overflow:hidden}
+.campus-hero:after{content:'';position:absolute;width:130px;height:130px;right:-45px;bottom:-60px;border-radius:50%;background:#E8943A18;filter:blur(4px)}
+.campus-kicker{font-size:10px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;color:var(--ac);margin-bottom:7px}
+.campus-title{font-family:'Sora',sans-serif;font-size:21px;line-height:1.18;font-weight:800;color:var(--t1);max-width:290px}
+.campus-sub{font-size:12px;color:var(--t2);line-height:1.55;margin-top:7px;max-width:320px}
+.campus-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px;position:relative;z-index:2}
+.campus-action{border:1px solid var(--bd);background:#ffffff08;border-radius:14px;padding:11px 6px;text-align:center;color:var(--t1);font-size:10px;font-weight:700;cursor:pointer;transition:transform .2s,background .2s,border-color .2s}
+.campus-action:active{transform:scale(.96)}
+.campus-action b{display:block;font-size:20px;margin-bottom:5px}
+.campus-section{padding:0 20px 18px}
+.campus-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.campus-section-title{font-family:'Sora',sans-serif;font-size:15px;font-weight:800;color:var(--t1)}
+.campus-see{font-size:11px;color:var(--ac);font-weight:700;cursor:pointer}
+.campus-vendors{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:3px}
+.campus-vendors::-webkit-scrollbar{display:none}
+.cv-card{min-width:205px;max-width:205px;background:var(--sf);border:1px solid var(--bd);border-radius:17px;overflow:hidden;cursor:pointer;flex-shrink:0}
+.cv-cover{height:94px;background:linear-gradient(135deg,#241B12,#14100C);background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:35px}
+.cv-body{padding:11px}
+.cv-name{font-size:13px;font-weight:800;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cv-meta{font-size:10px;color:var(--t3);margin-top:5px;display:flex;gap:7px;align-items:center}
+.cv-open{color:var(--ok);font-weight:700}
+.cv-distance{color:var(--ac);font-weight:700}
+.cv-food{font-size:11px;color:var(--t2);margin-top:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.campus-empty{padding:18px;border:1px dashed var(--bd);border-radius:16px;background:var(--sf);color:var(--t3);font-size:12px;line-height:1.6}
+.campus-deal{background:linear-gradient(135deg,#E8943A16,#ffffff04);border:1px solid #E8943A2A;border-radius:18px;padding:14px;display:flex;align-items:center;gap:12px}
+.campus-deal-icon{width:48px;height:48px;border-radius:14px;background:#E8943A18;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.campus-deal-title{font-size:13px;font-weight:800;color:var(--t1)}
+.campus-deal-sub{font-size:11px;color:var(--t2);margin-top:3px}
+.campus-deal-price{margin-left:auto;text-align:right;color:var(--ac);font-weight:800;font-size:13px;white-space:nowrap}
+.campus-budget{background:var(--sf);border:1px solid var(--bd);border-radius:18px;padding:15px}
+.campus-budget-row{display:flex;justify-content:space-between;align-items:end;gap:12px}
+.campus-budget-label{font-size:11px;color:var(--t3)}
+.campus-budget-value{font-family:'Sora',sans-serif;font-size:21px;font-weight:800;color:var(--t1);margin-top:4px}
+.campus-budget-bar{height:7px;background:var(--sfu);border-radius:20px;overflow:hidden;margin-top:12px}
+.campus-budget-fill{height:100%;width:0;background:linear-gradient(90deg,var(--ac),#F6B35E);border-radius:20px;transition:width .6s ease}
+.campus-mode-strip{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 20px 18px}
+.campus-mode-strip::-webkit-scrollbar{display:none}
+.campus-mode{padding:9px 12px;border:1px solid var(--bd);background:var(--sf);border-radius:999px;white-space:nowrap;font-size:11px;font-weight:700;color:var(--t2);cursor:pointer}
+.campus-mode.active{background:var(--acs);border-color:#E8943A55;color:var(--ac)}
+.campus-discover-banner{margin:0 20px 16px;padding:15px;border-radius:18px;background:linear-gradient(135deg,#E8943A16,#14100B);border:1px solid #E8943A2A}
+.campus-discover-banner .small{font-size:10px;color:var(--ac);font-weight:800;text-transform:uppercase;letter-spacing:.9px}
+.campus-discover-banner .big{font-family:'Sora',sans-serif;font-size:17px;font-weight:800;color:var(--t1);margin-top:5px}
+.campus-discover-banner .sub{font-size:11px;color:var(--t2);margin-top:4px}
+@media(min-width:700px){.campus-actions{grid-template-columns:repeat(6,1fr)}.cv-card{min-width:230px;max-width:230px}}
 </style>
 
 </head>
@@ -683,6 +732,39 @@ body.light{--bg:#F5F2EC;--sf:#FFFFFF;--sfu:#EDE9E2;--bd:#DDD8CF;--t1:#1A1612;--t
       <div class="bne">🤖</div>
     </div>
 
+    <!-- NOURA 1.10 — CAMPUS LAYER -->
+    <div class="campus-hero">
+      <div class="campus-kicker" id="campus-kicker">🎓 CAMPUS MODE</div>
+      <div class="campus-title" id="campus-title">What are we eating today?</div>
+      <div class="campus-sub" id="campus-sub">Food decisions made easier — around your campus, your time and your budget.</div>
+      <div class="campus-actions">
+        <div class="campus-action" onclick="campusQuick('buy')"><b>🛵</b>Buy</div>
+        <div class="campus-action" onclick="campusQuick('order')"><b>🏪</b>Order</div>
+        <div class="campus-action" onclick="campusQuick('cook')"><b>🍳</b>Cook</div>
+      </div>
+    </div>
+    <div class="campus-mode-strip" id="campus-mode-strip">
+      <div class="campus-mode active" onclick="campusMode(this,'all')">✨ All</div>
+      <div class="campus-mode" onclick="campusMode(this,'quick')">⚡ Between classes</div>
+      <div class="campus-mode" onclick="campusMode(this,'budget')">💸 Budget</div>
+      <div class="campus-mode" onclick="campusMode(this,'popular')">🔥 Student picks</div>
+    </div>
+    <div class="campus-section">
+      <div class="campus-section-head"><div class="campus-section-title">🔥 Near you</div><div class="campus-see" onclick="gt('restaurants')">See all →</div></div>
+      <div id="campus-vendors" class="campus-vendors"><div class="campus-empty">Finding food around you…</div></div>
+    </div>
+    <div class="campus-section" id="campus-deal-wrap" style="display:none">
+      <div class="campus-section-head"><div class="campus-section-title">💸 Student deals</div></div>
+      <div id="campus-deals"></div>
+    </div>
+    <div class="campus-section">
+      <div class="campus-section-head"><div class="campus-section-title">💰 Your food budget</div><div class="campus-see" onclick="gt('profile')">Set budget →</div></div>
+      <div class="campus-budget">
+        <div class="campus-budget-row"><div><div class="campus-budget-label">This week</div><div class="campus-budget-value" id="campus-budget-value">Set a budget</div></div><div style="font-size:11px;color:var(--t3)" id="campus-budget-note">Noura will keep it simple.</div></div>
+        <div class="campus-budget-bar"><div class="campus-budget-fill" id="campus-budget-fill"></div></div>
+      </div>
+    </div>
+
     <!-- Sponsored ad slot — only shows if admin has a real active campaign -->
     <div id="home-ad-banner"></div>
 
@@ -733,6 +815,11 @@ body.light{--bg:#F5F2EC;--sf:#FFFFFF;--sfu:#EDE9E2;--bd:#DDD8CF;--t1:#1A1612;--t
 <div class="screen" id="scr-discover">
   <div style="padding:56px 20px 0;flex-shrink:0">
     <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:var(--t1);margin-bottom:14px">Discover Recipes</div>
+    <div class="campus-discover-banner">
+      <div class="small">🎓 Campus food radar</div>
+      <div class="big">Find food that fits your day.</div>
+      <div class="sub">Nearby vendors, student-friendly options and real food photos — not just emoji menus.</div>
+    </div>
     <!-- Search bar -->
     <div class="srch-wrap" style="margin-bottom:14px">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -786,6 +873,7 @@ body.light{--bg:#F5F2EC;--sf:#FFFFFF;--sfu:#EDE9E2;--bd:#DDD8CF;--t1:#1A1612;--t
 <div class="screen" id="scr-mealplan">
   <div class="ph" style="padding-bottom:8px">
     <div style="font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:var(--t1)">Today's Plan</div>
+    <div style="font-size:12px;color:var(--t2);margin-top:5px">Plan around classes, cooking time and what you can spend.</div>
   </div>
   <div class="scroll" id="mealplan-scroll"></div>
 </div>
@@ -1592,7 +1680,7 @@ body.light{--bg:#F5F2EC;--sf:#FFFFFF;--sfu:#EDE9E2;--bd:#DDD8CF;--t1:#1A1612;--t
 window.NOURA_ENV = {
   // ── Environment ────────────────────────────────────────────
   ENVIRONMENT: 'development', // 'development' | 'staging' | 'production'
-  APP_VERSION: '1.0.0-month1',
+  APP_VERSION: '1.10.0',
 
   // ── Backend API (Supabase Edge Functions — Month 2) ─────────
   // PUBLIC. Leave BACKEND_READY = false until the real API exists.
@@ -2398,6 +2486,60 @@ window.NOURA_ENV = {
       lsSet('noura_notifications', lsGet('noura_notifications', []).map((n) => ({ ...n, unread: false })));
     },
     async hasUnread() { const { notifications } = await this.list(); return notifications.some((n) => n.unread); },
+  };
+
+  /* ════════════════════════════════════════════════════════════
+   *  NOURA 1.10 — CAMPUS SERVICE
+   *  Additive layer over existing users/vendors/restaurants.
+   * ════════════════════════════════════════════════════════════ */
+  const campusService = {
+    _cacheKey: 'noura_campus',
+    async _uid(){ const sb=getSupabase(); if(!sb)return null; const {data}=await sb.auth.getSession(); return data?.session?.user?.id||null; },
+    async getCampus(){
+      const sb=getSupabase(); const uid=await this._uid();
+      if(sb&&uid){
+        const {data,error}=await sb.from('users').select('campus_id,campus_role,food_mode').eq('id',uid).maybeSingle();
+        if(!error && data?.campus_id){
+          const c=await sb.from('campuses').select('*').eq('id',data.campus_id).maybeSingle();
+          if(c.data){ const out={...c.data,role:data.campus_role,foodMode:data.food_mode}; lsSet(this._cacheKey,out); return out; }
+        }
+      }
+      const cached=lsGet(this._cacheKey,null); if(cached)return cached;
+      const sb2=getSupabase(); if(sb2){ const {data}=await sb2.from('campuses').select('*').eq('is_active',true).order('created_at').limit(1); if(data?.[0]){lsSet(this._cacheKey,data[0]);return data[0];} }
+      return null;
+    },
+    async listVendors(campusId){
+      const sb=getSupabase();
+      if(sb){
+        let q=sb.from('vendors').select('id,business_name,slug,category,status,latitude,longitude,logo_url,cover_image_url,student_favourite,location_address').eq('status','approved').limit(30);
+        if(campusId)q=q.eq('campus_id',campusId);
+        const {data,error}=await q;
+        if(!error && data) return data.map(v=>({...v,name:v.business_name,image:v.cover_image_url||v.logo_url||'',open:true}));
+      }
+      try { const r=await S.restaurants.list(); return (r.restaurants||[]).map(x=>({...x,name:x.name,image:x.coverUrl||x.logoUrl||'',latitude:x.latitude,longitude:x.longitude})); } catch(_){return []}
+    },
+    async deals(campusId){
+      const sb=getSupabase(); if(!sb||!campusId)return [];
+      const {data,error}=await sb.from('campus_deals').select('*,vendors(business_name),menu_items(name)').eq('campus_id',campusId).eq('is_active',true).order('created_at',{ascending:false}).limit(6);
+      return error?[]:(data||[]);
+    },
+    async preferences(){
+      const sb=getSupabase(); const uid=await this._uid(); if(sb&&uid){
+        const {data}=await sb.from('user_preferences').select('weekly_food_budget,daily_food_budget,preferred_mode,campus_id').eq('user_id',uid).maybeSingle();
+        if(data)return data;
+      }
+      return lsGet('noura_campus_prefs',{});
+    },
+    async setContext({campusId,role,foodMode}){
+      lsSet(this._cacheKey,{...(lsGet(this._cacheKey,{})||{}),id:campusId});
+      const sb=getSupabase(); const uid=await this._uid(); if(sb&&uid){
+        const patch={campus_id:campusId,campus_role:role||'student',food_mode:foodMode||'mixed'};
+        const {error}=await sb.from('users').update(patch).eq('id',uid);
+        if(!error) await sb.from('user_preferences').upsert({user_id:uid,campus_id:campusId,preferred_mode:foodMode||'mixed'},{onConflict:'user_id'});
+        return {ok:!error,reason:error?.message};
+      }
+      return {ok:true};
+    }
   };
 
   /* ════════════════════════════════════════════════════════════
@@ -3525,6 +3667,7 @@ REAL NOURA RESTAURANTS are authoritative. Never invent a restaurant, price, rati
     favourites: favouritesService,
     settings: settingsService,
     ai: aiService,
+    campus: campusService,
     vendor: vendorService,
     vendorMenu: vendorMenuService,
     vendorOrders: vendorOrderService,
@@ -3600,7 +3743,7 @@ function gt(screen, fromPopstate) {
     renderUser();
   } else { nav.classList.remove('on'); }
   if (!fromPopstate && !NO_HISTORY_SCREENS.includes(screen)) history.pushState({screen},'');
-  if (screen==='home')          loadHome();
+  if (screen==='home')          { loadHome(); loadCampusHome(); }
   if (screen==='discover')      loadDiscover();
   if (screen==='mealplan')      loadMealPlan();
   if (screen==='saved')         renderSaved('all');
@@ -4203,6 +4346,49 @@ function buildRecipeModal({id,source,name,img,area,category,youtube,sourceUrl,ta
     <div style="height:24px"></div>
     <button class="btn bp" data-src="${source}" data-rid="${sid}" data-nm="${safe(name)}" data-th="${img||''}" data-cat="${category||''}" data-area="${area||''}" onclick="toggleSaveFromBtn(this);closeMod('mod-recipe')">${saved?'❤️ Saved':'🤍 Save Recipe'}</button>
   </div>`;
+}
+
+// ══════════════════════════════════════════════════
+//  NOURA 1.10 — CAMPUS HOME
+// ══════════════════════════════════════════════════
+let campusHomeReady=false, campusModeValue='all';
+function campusQuick(mode){
+  const labels={buy:'🛵 Find something to buy',order:'🏪 Find a vendor to order from',cook:'🍳 Find something to cook'};
+  const title=q('campus-title'); if(title) title.textContent=labels[mode]||'What are we eating today?';
+  if(mode==='cook') gt('discover'); else gt('restaurants');
+}
+function campusMode(el,mode){ campusModeValue=mode; document.querySelectorAll('.campus-mode').forEach(x=>x.classList.remove('active')); el?.classList.add('active'); renderCampusVendors(); }
+function distanceKm(lat1,lon1,lat2,lon2){
+  if([lat1,lon1,lat2,lon2].some(v=>typeof v!=='number'||!Number.isFinite(v)))return null;
+  const R=6371,toRad=v=>v*Math.PI/180,dLat=toRad(lat2-lat1),dLon=toRad(lon2-lon1);
+  const a=Math.sin(dLat/2)**2+Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+async function renderCampusVendors(){
+  const el=q('campus-vendors'); if(!el)return;
+  const campus=await S.campus.getCampus();
+  if(q('campus-kicker')) q('campus-kicker').textContent=campus?.short_name?`🎓 ${campus.short_name} CAMPUS`:'🎓 CAMPUS MODE';
+  const vendors=await S.campus.listVendors(campus?.id);
+  let userPos=null;
+  try{ if(navigator.geolocation){userPos=await new Promise(resolve=>navigator.geolocation.getCurrentPosition(p=>resolve({lat:p.coords.latitude,lng:p.coords.longitude}),()=>resolve(null),{enableHighAccuracy:false,timeout:3500,maximumAge:300000})); } }catch(_){ }
+  let list=vendors.map(v=>({...v,dist:userPos?distanceKm(userPos.lat,userPos.lng,Number(v.latitude),Number(v.longitude)):null}));
+  if(campusModeValue==='popular')list.sort((a,b)=>Number(b.student_favourite)-Number(a.student_favourite));
+  else if(campusModeValue==='quick')list=list.filter(v=>v.open!==false);
+  else list.sort((a,b)=>(a.dist??999)-(b.dist??999));
+  list=list.slice(0,8);
+  if(!list.length){el.innerHTML=`<div class="campus-empty">No campus vendors are published here yet. Vendors can join Noura and pin their location to appear in this radar.</div>`;return;}
+  el.innerHTML=list.map(v=>`<div class="cv-card" onclick="openRestaurant('${v.id}')"><div class="cv-cover" style="${v.image?`background-image:url('${String(v.image).replace(/'/g,"%27")}')`:''}">${v.image?'':'🍛'}</div><div class="cv-body"><div class="cv-name">${safe(v.name||v.business_name||'Food vendor')}</div><div class="cv-meta"><span class="cv-open">● ${v.open===false?'Closed':'Open'}</span>${v.dist!=null?`<span>•</span><span class="cv-distance">${v.dist<1?Math.round(v.dist*1000)+' m':v.dist.toFixed(1)+' km'}</span>`:''}</div><div class="cv-food">${safe(v.category||'Campus food')} ${v.student_favourite?'• 🔥 Student pick':''}</div></div></div>`).join('');
+}
+async function loadCampusHome(){
+  if(campusHomeReady)return; campusHomeReady=true;
+  renderCampusVendors();
+  const campus=await S.campus.getCampus();
+  const deals=await S.campus.deals(campus?.id);
+  const wrap=q('campus-deal-wrap'), box=q('campus-deals');
+  if(deals.length&&wrap&&box){wrap.style.display='block';box.innerHTML=deals.slice(0,3).map(d=>`<div class="campus-deal" style="margin-bottom:8px"><div class="campus-deal-icon">🔥</div><div><div class="campus-deal-title">${safe(d.title)}</div><div class="campus-deal-sub">${safe(d.vendors?.business_name||'Campus vendor')}</div></div><div class="campus-deal-price">${d.deal_price!=null?'₦'+Number(d.deal_price).toLocaleString():''}</div></div>`).join('');}
+  const prefs=await S.campus.preferences(); const budget=Number(prefs?.weekly_food_budget||0);
+  if(q('campus-budget-value'))q('campus-budget-value').textContent=budget?'₦'+budget.toLocaleString()+' / week':'Set a weekly budget';
+  if(q('campus-budget-note'))q('campus-budget-note').textContent=budget?'Student mode is ready.':'Tap Profile to personalise Noura.';
 }
 
 // ══════════════════════════════════════════════════

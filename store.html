@@ -737,7 +737,7 @@ window.NOURA_ENV = {
       emoji: row.emoji || '🍽️', rating: row.rating, reviews: row.review_count ?? (row.reviews?.length || 0),
       verified: row.verified, open: row.open, priceRange: row.price_range,
       tags: row.tags || [], phone: row.phone, whatsapp: row.whatsapp, website: row.website, hours: row.hours,
-      logoUrl: row.logo_url, coverUrl: row.cover_url,
+      logoUrl: row.logo_url, coverUrl: row.cover_url, campusId: row.campus_id || '', latitude: row.latitude, longitude: row.longitude,
       menu: (row.menu_items || []).map((m) => ({ id: m.id, name: m.name, price: m.price, cat: m.category, desc: m.description, emoji: m.emoji || '🍽️', imageUrl: m.image_url || '', time: m.prep_time, available: m.available })),
       reviews_data: (row.reviews || []).map((r) => ({ id: r.id, author: r.author, stars: r.stars, text: r.text, date: r.created_at ? new Date(r.created_at).toLocaleDateString() : '', reply: r.reply, replied: r.replied })),
     };
@@ -2199,6 +2199,7 @@ function renderStore(r) {
     ${r.rating ? `<span>⭐ ${r.rating} ${r.reviews ? `(${r.reviews})` : ''}</span>` : '<span>No ratings yet</span>'}
     <span class="pill ${r.open ? 'open' : 'closed'}">${r.open ? '● Open now' : '● Closed'}</span>
     ${r.cuisine ? `<span>${r.cuisine}</span>` : ''}
+    ${r.campusId ? '<span class="pill verified">🎓 Campus</span>' : ''}
   `;
 
   const actions = [];

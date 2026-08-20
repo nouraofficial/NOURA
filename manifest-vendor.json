@@ -16,5 +16,7 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "version": "1.10.0",
+  "description": "Noura for Business \u2014 campus food vendor portal"
 }
