@@ -738,7 +738,7 @@ window.NOURA_ENV = {
       verified: row.verified, open: row.open, priceRange: row.price_range,
       tags: row.tags || [], phone: row.phone, whatsapp: row.whatsapp, website: row.website, hours: row.hours,
       logoUrl: row.logo_url, coverUrl: row.cover_url,
-      menu: (row.menu_items || []).map((m) => ({ id: m.id, name: m.name, price: m.price, cat: m.category, desc: m.description, emoji: m.emoji || '🍽️', time: m.prep_time, available: m.available })),
+      menu: (row.menu_items || []).map((m) => ({ id: m.id, name: m.name, price: m.price, cat: m.category, desc: m.description, emoji: m.emoji || '🍽️', imageUrl: m.image_url || '', time: m.prep_time, available: m.available })),
       reviews_data: (row.reviews || []).map((r) => ({ id: r.id, author: r.author, stars: r.stars, text: r.text, date: r.created_at ? new Date(r.created_at).toLocaleDateString() : '', reply: r.reply, replied: r.replied })),
     };
   }
@@ -1259,7 +1259,7 @@ window.NOURA_ENV = {
       if (sb && v?.restaurantId) {
         const { data, error } = await sb.from('menu_items').select('*').eq('restaurant_id', v.restaurantId).order('created_at');
         if (!error) {
-          const menu = (data || []).map((m) => ({ id: m.id, name: m.name, price: m.price, cat: m.category, desc: m.description, emoji: m.emoji, time: m.prep_time, available: m.available }));
+          const menu = (data || []).map((m) => ({ id: m.id, name: m.name, price: m.price, cat: m.category, desc: m.description, emoji: m.emoji, imageUrl: m.image_url || '', time: m.prep_time, available: m.available }));
           lsSet(this._key(), menu); return menu;
         }
       }
@@ -2274,7 +2274,7 @@ function renderMenu(query) {
     <div class="menu-cat">${cat}</div>
     ${items.map(m => `
       <div class="menu-item ${m.available === false ? 'unavailable' : ''}">
-        <div class="menu-item-emoji">${m.emoji || '🍽️'}</div>
+        ${m.imageUrl ? `<img src="${m.imageUrl}" style="width:72px;height:72px;border-radius:14px;object-fit:cover;flex-shrink:0" loading="lazy" alt="${m.name}">` : `<div class="menu-item-emoji">${m.emoji || '🍽️'}</div>`}
         <div style="flex:1;min-width:0">
           <div class="menu-item-name">${m.name}${m.available === false ? ' (Sold Out)' : ''}</div>
           ${m.desc ? `<div class="menu-item-desc">${m.desc}</div>` : ''}

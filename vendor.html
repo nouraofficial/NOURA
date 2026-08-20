@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <meta name="theme-color" content="#0A0805">
-<title>Vendor Portal | Noura</title>
+<title>Noura Vendor Portal — Grow Your Food Business Online</title>
 <meta name="description" content="List your restaurant on Noura for free. Manage your digital menu, track orders, reply to reviews, and get discovered by local food lovers across Nigeria.">
 <meta name="keywords" content="Noura vendor, list restaurant Nigeria, food business online, digital menu Nigeria, restaurant management app, sell food online Nigeria">
 <meta name="author" content="Fluxiq Labs">
@@ -12,13 +12,13 @@
 <link rel="canonical" href="https://nourafood.vercel.app/vendor">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nourafood.vercel.app/vendor">
-<meta property="og:title" content="Vendor Portal | Noura">
+<meta property="og:title" content="Noura Vendor Portal — Grow Your Food Business Online">
 <meta property="og:description" content="Free digital storefront for local food vendors — menu, orders, reviews, and analytics in one place.">
 <meta property="og:image" content="https://noura.fluxiqlabs.com/og-vendor.jpg">
 <meta property="og:site_name" content="Noura">
 <meta property="og:locale" content="en_NG">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Vendor Portal | Noura">
+<meta name="twitter:title" content="Noura Vendor Portal — Grow Your Food Business Online">
 <meta name="twitter:description" content="List your restaurant for free and get discovered by local food lovers.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="manifest" href="/manifest-vendor.json">
@@ -2900,7 +2900,7 @@ async function renderDashboard() {
 
   const v = S.vendor.getVendor();
   const linkEl = el('my-page-link');
-  if (linkEl && v?.slug) linkEl.textContent = location.origin + location.pathname.replace('vendor.html','store.html') + '?v=' + v.slug;
+  if (linkEl && v?.slug) linkEl.textContent = location.origin + '/store/' + encodeURIComponent(v.slug);
 
   const orders = await S.vendorOrders.list();
   const dashOrders = el('dash-orders');
@@ -3114,6 +3114,7 @@ async function deletePromo(idx) { if (!confirm('Delete this promotion?')) return
 function loadSettings() {
   const v = S.vendor.getVendor() || {};
   const ids = {'s-bname':'businessName','s-desc':'desc','s-phone':'phone','s-wa':'whatsapp','s-web':'website','s-addr':'address'};
+  if(el('s-lat'))el('s-lat').value=v.latitude||''; if(el('s-lng'))el('s-lng').value=v.longitude||'';
   Object.entries(ids).forEach(([id,key]) => { const e2=el(id); if(e2 && v[key]) e2.value=v[key]; });
   buildHoursGrid('hours-grid');
 }
@@ -3122,13 +3123,13 @@ async function saveVendorSettings() {
   const patch = {
     businessName: el('s-bname')?.value.trim(), desc: el('s-desc')?.value.trim() || '',
     phone: el('s-phone')?.value.trim() || '', whatsapp: el('s-wa')?.value.trim() || '',
-    website: el('s-web')?.value.trim() || '', address: el('s-addr')?.value.trim() || '',
+    website: el('s-web')?.value.trim() || '', address: el('s-addr')?.value.trim() || '', latitude:Number(el('s-lat')?.value)||null, longitude:Number(el('s-lng')?.value)||null,
   };
   patch.initial = (patch.businessName || 'V').charAt(0).toUpperCase();
   const res = await S.vendor.updateProfile(patch);
   if (el('v-bname'))  el('v-bname').textContent  = res.vendor.businessName;
   if (el('v-avatar')) el('v-avatar').textContent = res.vendor.initial;
-  vToast('Settings saved ✅ — live on your Noura listing');
+  vToast('Settings saved ✅ — live on your Noura listing'); setTimeout(()=>{const vv=S.vendor.getVendor(); if(vv?.latitude&&vv?.longitude)initVendorOnboardingMap('settings-vendor-map',vv.latitude,vv.longitude);},80);
 }
 
 // ── CHARTS ───────────────────────────────────────────

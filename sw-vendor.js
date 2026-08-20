@@ -1,30 +1,5 @@
-// ══════════════════════════════════════════════════════
-//  NOURA FOR BUSINESS — SERVICE WORKER
-//  Separate from the consumer app's sw.js — own cache name,
-//  own app shell, so installing one doesn't affect the other.
-// ══════════════════════════════════════════════════════
-const CACHE_NAME = 'noura-vendor-shell-v1';
-const APP_SHELL = ['vendor.html', 'config.js', 'services.js'];
-
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)).catch(() => {})
-  );
-  self.skipWaiting();
-});
-
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((names) =>
-      Promise.all(names.filter((n) => n !== CACHE_NAME).map((n) => caches.delete(n)))
-    )
-  );
-  self.clients.claim();
-});
-
-self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
-  event.respondWith(
-    fetch(event.request).catch(() => caches.match(event.request))
-  );
-});
+const CACHE="noura-vendor-1-10";
+const CORE=["/vendor","/vendor.html","/manifest-vendor.json","/icon-192.png","/icon-512.png"];
+self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()))});
+self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
+self.addEventListener("fetch",e=>{if(e.request.method!=="GET")return;e.respondWith(caches.match(e.request).then(cached=>cached||fetch(e.request).catch(()=>cached)))})

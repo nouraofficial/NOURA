@@ -2,7 +2,15 @@
   "rewrites": [
     {
       "source": "/store/:slug",
-      "destination": "/store.html"
+      "destination": "/store.html?v=:slug"
+    },
+    {
+      "source": "/vendor",
+      "destination": "/vendor.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
     }
   ]
 }
