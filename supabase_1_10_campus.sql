@@ -498,3 +498,316 @@ group by p.id;
 grant select on public.community_post_stats to anon, authenticated;
 
 commit;
+
+-- ============================================================
+-- NOURA 1.10 — CAMPUS SOCIAL GRAPH + MODERATION
+-- Additive migration. Safe to re-run.
+-- ============================================================
+
+begin;
+
+-- 1. Put a school on the user's real profile. The community feed
+-- uses this field to personalize by campus without creating a
+-- second student/account table.
+alter table if exists public.profiles
+  add column if not exists campus_id uuid references public.campuses(id) on delete set null;
+
+create index if not exists profiles_campus_idx on public.profiles(campus_id);
+
+-- 2. Public-safe community identity. Private profile data remains
+-- protected in public.profiles; only these fields are exposed.
+create table if not exists public.community_profiles (
+  user_id uuid primary key,
+  display_name text not null default 'Noura user',
+  username text not null default '@user',
+  avatar_url text,
+  bio text,
+  campus_id uuid references public.campuses(id) on delete set null,
+  is_public boolean not null default true,
+  is_official boolean not null default false,
+  followers_count integer not null default 0,
+  following_count integer not null default 0,
+  recipes_count integer not null default 0,
+  challenges_completed integer not null default 0,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.community_profiles enable row level security;
+drop policy if exists community_profiles_public_read on public.community_profiles;
+create policy community_profiles_public_read on public.community_profiles
+for select to anon, authenticated using (is_public = true);
+
+create or replace function public.sync_community_profile()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  insert into public.community_profiles (
+    user_id, display_name, username, avatar_url, bio, campus_id, updated_at
+  ) values (
+    new.id,
+    coalesce(nullif(new.name,''),'Noura user'),
+    coalesce(nullif(new.username,''),'@user'),
+    new.avatar_url,
+    new.bio,
+    new.campus_id,
+    now()
+  )
+  on conflict (user_id) do update set
+    display_name = excluded.display_name,
+    username = excluded.username,
+    avatar_url = excluded.avatar_url,
+    bio = excluded.bio,
+    campus_id = excluded.campus_id,
+    updated_at = now();
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_sync_community_profile on public.profiles;
+create trigger trg_sync_community_profile
+after insert or update of name, username, avatar_url, bio, campus_id
+on public.profiles
+for each row execute function public.sync_community_profile();
+
+insert into public.community_profiles (user_id, display_name, username, avatar_url, bio, campus_id)
+select id, coalesce(nullif(name,''),'Noura user'), coalesce(nullif(username,''),'@user'), avatar_url, bio, campus_id
+from public.profiles
+on conflict (user_id) do update set
+  display_name = excluded.display_name,
+  username = excluded.username,
+  avatar_url = excluded.avatar_url,
+  bio = excluded.bio,
+  campus_id = excluded.campus_id,
+  updated_at = now();
+
+-- 3. Make posts campus-aware and moderation-aware.
+alter table if exists public.community_posts
+  add column if not exists campus_id uuid references public.campuses(id) on delete set null;
+alter table if exists public.community_posts
+  add column if not exists status text not null default 'published';
+alter table if exists public.community_posts
+  add column if not exists is_official boolean not null default false;
+alter table if exists public.community_posts
+  add column if not exists author_is_official boolean not null default false;
+alter table if exists public.community_posts
+  add column if not exists hidden_reason text;
+
+create index if not exists community_posts_campus_created_idx
+  on public.community_posts(campus_id, created_at desc);
+create index if not exists community_posts_status_idx
+  on public.community_posts(status, created_at desc);
+
+-- Replace the old public policy so hidden/deleted posts never appear.
+drop policy if exists community_posts_public_read on public.community_posts;
+create policy community_posts_public_read on public.community_posts
+for select to anon, authenticated
+using (status = 'published');
+
+-- 4. Reports and moderation state.
+create table if not exists public.community_reports (
+  id uuid primary key default gen_random_uuid(),
+  reporter_id uuid not null,
+  post_id uuid references public.community_posts(id) on delete cascade,
+  reported_user_id uuid,
+  reason text not null,
+  details text,
+  status text not null default 'open' check (status in ('open','reviewing','resolved','dismissed')),
+  moderator_note text,
+  resolved_by text,
+  resolved_at timestamptz,
+  created_at timestamptz not null default now(),
+  check (post_id is not null or reported_user_id is not null)
+);
+
+create index if not exists community_reports_status_idx on public.community_reports(status, created_at desc);
+create index if not exists community_reports_post_idx on public.community_reports(post_id);
+create index if not exists community_reports_user_idx on public.community_reports(reported_user_id);
+
+alter table public.community_reports enable row level security;
+drop policy if exists community_reports_owner_insert on public.community_reports;
+create policy community_reports_owner_insert on public.community_reports
+for insert to authenticated with check (reporter_id = auth.uid());
+drop policy if exists community_reports_owner_read on public.community_reports;
+create policy community_reports_owner_read on public.community_reports
+for select to authenticated using (reporter_id = auth.uid());
+
+create table if not exists public.community_user_status (
+  user_id uuid primary key,
+  status text not null default 'active' check (status in ('active','limited','suspended','banned')),
+  reason text,
+  expires_at timestamptz,
+  updated_by text,
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.community_moderation_actions (
+  id uuid primary key default gen_random_uuid(),
+  admin_id text,
+  action text not null,
+  target_type text not null,
+  target_id text not null,
+  reason text,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists community_mod_actions_created_idx
+  on public.community_moderation_actions(created_at desc);
+
+-- 5. Official Noura identity. This does not require a fake auth user.
+create table if not exists public.noura_official_account (
+  id uuid primary key default gen_random_uuid(),
+  username text not null unique default '@noura',
+  display_name text not null default 'Noura',
+  avatar_url text,
+  bio text default 'Official Noura campus account.',
+  is_active boolean not null default true,
+  created_at timestamptz not null default now()
+);
+insert into public.noura_official_account(username, display_name, bio)
+values('@noura','Noura','Official Noura campus account. Food, campus updates, challenges and community news.')
+on conflict (username) do nothing;
+insert into public.community_profiles (user_id, display_name, username, bio, is_public, is_official)
+select id, display_name, username, bio, true, true
+from public.noura_official_account
+on conflict (user_id) do update set
+  display_name=excluded.display_name,
+  username=excluded.username,
+  bio=excluded.bio,
+  is_public=true,
+  is_official=true,
+  updated_at=now();
+
+-- 6. Keep community counters cheap enough for large feeds.
+create or replace function public.refresh_community_profile_counts()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare uid uuid;
+begin
+  if tg_op = 'DELETE' then
+    uid := old.follower_id;
+  else
+    uid := new.follower_id;
+  end if;
+  if uid is not null then
+    update public.community_profiles set following_count = (select count(*) from public.community_follows where follower_id=uid), updated_at=now() where user_id=uid;
+  end if;
+  if tg_op = 'DELETE' then
+    uid := old.following_id;
+  else
+    uid := new.following_id;
+  end if;
+  if uid is not null then
+    update public.community_profiles set followers_count = (select count(*) from public.community_follows where following_id=uid), updated_at=now() where user_id=uid;
+  end if;
+  if tg_op = 'DELETE' then return old; else return new; end if;
+end;
+$$;
+
+drop trigger if exists trg_refresh_community_profile_counts on public.community_follows;
+create trigger trg_refresh_community_profile_counts
+after insert or delete on public.community_follows
+for each row execute function public.refresh_community_profile_counts();
+
+update public.community_profiles cp
+set followers_count=(select count(*) from public.community_follows f where f.following_id=cp.user_id),
+    following_count=(select count(*) from public.community_follows f where f.follower_id=cp.user_id),
+    recipes_count=(select count(*) from public.community_posts p where p.author_id=cp.user_id and p.post_type='recipe' and p.status='published'),
+    updated_at=now();
+
+-- Users can create normal published posts only. The service role / admin
+-- function may create official or moderated records.
+create or replace function public.guard_community_post_fields()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if auth.uid() is not null then
+    new.author_id := auth.uid();
+    new.author_is_official := false;
+    new.is_official := false;
+    new.status := 'published';
+    if new.campus_id is null then
+      select campus_id into new.campus_id from public.profiles where id=auth.uid();
+    end if;
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_guard_community_post_fields on public.community_posts;
+create trigger trg_guard_community_post_fields
+before insert or update on public.community_posts
+for each row execute function public.guard_community_post_fields();
+
+-- Recipe count is derived from published recipe posts.
+create or replace function public.refresh_community_recipe_count()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare uid uuid;
+begin
+  if tg_op = 'DELETE' then uid := old.author_id; else uid := new.author_id; end if;
+  if uid is not null then
+    update public.community_profiles
+    set recipes_count = (
+      select count(*) from public.community_posts
+      where author_id=uid and post_type='recipe' and status='published'
+    ), updated_at=now()
+    where user_id=uid;
+  end if;
+  if tg_op = 'DELETE' then return old; else return new; end if;
+end;
+$$;
+
+drop trigger if exists trg_refresh_community_recipe_count on public.community_posts;
+create trigger trg_refresh_community_recipe_count
+after insert or update or delete on public.community_posts
+for each row execute function public.refresh_community_recipe_count();
+
+-- 7. Public-safe aggregate stats remain available.
+create or replace view public.community_post_stats as
+select p.id as post_id,
+       count(distinct l.user_id)::integer as likes_count,
+       count(distinct c.id)::integer as comments_count
+from public.community_posts p
+left join public.community_post_likes l on l.post_id=p.id
+left join public.community_post_comments c on c.post_id=p.id
+group by p.id;
+grant select on public.community_post_stats to anon, authenticated;
+
+-- 8. Seed the first campus registry. Admin can add more later.
+insert into public.campuses (name, short_name, slug, city, state, country)
+values
+('Obafemi Awolowo University','OAU','oau','Ile-Ife','Osun','Nigeria'),
+('University of Lagos','UNILAG','unilag','Lagos','Lagos','Nigeria'),
+('University of Ibadan','UI','ui','Ibadan','Oyo','Nigeria'),
+('University of Nigeria, Nsukka','UNN','unn','Nsukka','Enugu','Nigeria'),
+('Ahmadu Bello University','ABU','abu','Zaria','Kaduna','Nigeria'),
+('University of Benin','UNIBEN','uniben','Benin City','Edo','Nigeria'),
+('Federal University of Technology, Akure','FUTA','futa','Akure','Ondo','Nigeria'),
+('Federal University of Technology, Minna','FUTMINNA','futminna','Minna','Niger','Nigeria'),
+('University of Ilorin','UNILORIN','unilorin','Ilorin','Kwara','Nigeria'),
+('Lagos State University','LASU','lasu','Lagos','Lagos','Nigeria'),
+('Bayero University Kano','BUK','buk','Kano','Kano','Nigeria'),
+('University of Abuja','UNIABUJA','uniabuja','Abuja','FCT','Nigeria'),
+('Nnamdi Azikiwe University','UNIZIK','unizik','Awka','Anambra','Nigeria'),
+('University of Port Harcourt','UNIPORT','uniport','Port Harcourt','Rivers','Nigeria'),
+('Covenant University','CU','covenant','Ota','Ogun','Nigeria'),
+('Babcock University','BU','babcock','Ilishan-Remo','Ogun','Nigeria'),
+('Redeemer’s University','RUN','run','Ede','Osun','Nigeria'),
+('Afe Babalola University','ABUAD','abuad','Ado-Ekiti','Ekiti','Nigeria'),
+('Federal University of Agriculture, Abeokuta','FUNAAB','funaab','Abeokuta','Ogun','Nigeria'),
+('Federal University Oye-Ekiti','FUOYE','fuoye','Oye-Ekiti','Ekiti','Nigeria')
+on conflict (slug) do nothing;
+
+commit;
