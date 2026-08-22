@@ -312,3 +312,189 @@ alter table if exists public.user_preferences add column if not exists daily_foo
 alter table if exists public.user_preferences add column if not exists weekly_food_budget numeric(12,2);
 alter table if exists public.user_preferences add column if not exists preferred_mode text check (preferred_mode in ('cook','buy','order','mixed'));
 alter table if exists public.user_preferences add column if not exists cooking_frequency text check (cooking_frequency in ('never','rarely','sometimes','often','always'));
+
+-- ============================================================
+-- NOURA 1.10 — CAMPUS COMMUNITY LAYER
+-- Additive. Safe to re-run.
+-- ============================================================
+
+-- Community photo storage. Public read; authenticated users may only
+-- write/delete files inside their own auth uid folder.
+insert into storage.buckets (id, name, public)
+values ('community-media','community-media',true)
+on conflict (id) do update set public = true;
+
+drop policy if exists community_media_public_read on storage.objects;
+create policy community_media_public_read
+on storage.objects for select to anon, authenticated
+using (bucket_id = 'community-media');
+
+drop policy if exists community_media_owner_insert on storage.objects;
+create policy community_media_owner_insert
+on storage.objects for insert to authenticated
+with check (bucket_id = 'community-media' and (storage.foldername(name))[1] = auth.uid()::text);
+
+drop policy if exists community_media_owner_update on storage.objects;
+create policy community_media_owner_update
+on storage.objects for update to authenticated
+using (bucket_id = 'community-media' and (storage.foldername(name))[1] = auth.uid()::text)
+with check (bucket_id = 'community-media' and (storage.foldername(name))[1] = auth.uid()::text);
+
+drop policy if exists community_media_owner_delete on storage.objects;
+create policy community_media_owner_delete
+on storage.objects for delete to authenticated
+using (bucket_id = 'community-media' and (storage.foldername(name))[1] = auth.uid()::text);
+
+create table if not exists public.community_posts (
+  id uuid primary key default gen_random_uuid(),
+  author_id uuid not null,
+  author_name text not null default 'Noura user',
+  author_username text not null default '@user',
+  author_avatar_url text,
+  post_type text not null default 'post' check (post_type in ('post','recipe','vendor','challenge')),
+  body text,
+  image_url text,
+  recipe_source text,
+  recipe_id text,
+  recipe_title text,
+  recipe_image_url text,
+  recipe_area text,
+  recipe_category text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  constraint community_posts_has_content check (
+    nullif(trim(coalesce(body,'')),'') is not null
+    or nullif(trim(coalesce(image_url,'')),'') is not null
+    or nullif(trim(coalesce(recipe_title,'')),'') is not null
+  )
+);
+
+create table if not exists public.community_post_likes (
+  post_id uuid not null references public.community_posts(id) on delete cascade,
+  user_id uuid not null,
+  created_at timestamptz not null default now(),
+  primary key (post_id,user_id)
+);
+
+create table if not exists public.community_post_comments (
+  id uuid primary key default gen_random_uuid(),
+  post_id uuid not null references public.community_posts(id) on delete cascade,
+  user_id uuid not null,
+  author_name text not null default 'Noura user',
+  author_username text not null default '@user',
+  body text not null check (char_length(trim(body)) between 1 and 1000),
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.community_follows (
+  follower_id uuid not null,
+  following_id uuid not null,
+  created_at timestamptz not null default now(),
+  primary key (follower_id,following_id),
+  check (follower_id <> following_id)
+);
+
+create table if not exists public.community_challenge_participants (
+  challenge_id text not null,
+  user_id uuid not null,
+  joined_at timestamptz not null default now(),
+  primary key (challenge_id,user_id)
+);
+
+create index if not exists community_posts_created_idx on public.community_posts(created_at desc);
+create index if not exists community_posts_author_idx on public.community_posts(author_id,created_at desc);
+create index if not exists community_posts_recipe_idx on public.community_posts(post_type,recipe_source,recipe_id);
+create index if not exists community_comments_post_idx on public.community_post_comments(post_id,created_at);
+create index if not exists community_follows_following_idx on public.community_follows(following_id);
+create index if not exists community_challenge_idx on public.community_challenge_participants(challenge_id,joined_at);
+
+alter table public.community_posts enable row level security;
+alter table public.community_post_likes enable row level security;
+alter table public.community_post_comments enable row level security;
+alter table public.community_follows enable row level security;
+alter table public.community_challenge_participants enable row level security;
+
+drop policy if exists community_posts_public_read on public.community_posts;
+create policy community_posts_public_read on public.community_posts
+for select to anon, authenticated using (true);
+
+drop policy if exists community_posts_owner_insert on public.community_posts;
+create policy community_posts_owner_insert on public.community_posts
+for insert to authenticated
+with check (author_id = auth.uid());
+
+drop policy if exists community_posts_owner_update on public.community_posts;
+create policy community_posts_owner_update on public.community_posts
+for update to authenticated
+using (author_id = auth.uid()) with check (author_id = auth.uid());
+
+drop policy if exists community_posts_owner_delete on public.community_posts;
+create policy community_posts_owner_delete on public.community_posts
+for delete to authenticated using (author_id = auth.uid());
+
+drop policy if exists community_likes_owner_select on public.community_post_likes;
+create policy community_likes_owner_select on public.community_post_likes
+for select to authenticated using (user_id = auth.uid());
+
+drop policy if exists community_likes_owner_insert on public.community_post_likes;
+create policy community_likes_owner_insert on public.community_post_likes
+for insert to authenticated with check (user_id = auth.uid());
+
+drop policy if exists community_likes_owner_delete on public.community_post_likes;
+create policy community_likes_owner_delete on public.community_post_likes
+for delete to authenticated using (user_id = auth.uid());
+
+drop policy if exists community_comments_public_read on public.community_post_comments;
+create policy community_comments_public_read on public.community_post_comments
+for select to anon, authenticated using (true);
+
+drop policy if exists community_comments_owner_insert on public.community_post_comments;
+create policy community_comments_owner_insert on public.community_post_comments
+for insert to authenticated with check (user_id = auth.uid());
+
+drop policy if exists community_comments_owner_update on public.community_post_comments;
+create policy community_comments_owner_update on public.community_post_comments
+for update to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+
+drop policy if exists community_comments_owner_delete on public.community_post_comments;
+create policy community_comments_owner_delete on public.community_post_comments
+for delete to authenticated using (user_id = auth.uid());
+
+drop policy if exists community_follows_owner_select on public.community_follows;
+create policy community_follows_owner_select on public.community_follows
+for select to authenticated using (follower_id = auth.uid());
+
+drop policy if exists community_follows_owner_insert on public.community_follows;
+create policy community_follows_owner_insert on public.community_follows
+for insert to authenticated with check (follower_id = auth.uid());
+
+drop policy if exists community_follows_owner_delete on public.community_follows;
+create policy community_follows_owner_delete on public.community_follows
+for delete to authenticated using (follower_id = auth.uid());
+
+drop policy if exists community_challenges_public_read on public.community_challenge_participants;
+create policy community_challenges_public_read on public.community_challenge_participants
+for select to anon, authenticated using (true);
+
+drop policy if exists community_challenges_owner_insert on public.community_challenge_participants;
+create policy community_challenges_owner_insert on public.community_challenge_participants
+for insert to authenticated with check (user_id = auth.uid());
+
+drop policy if exists community_challenges_owner_delete on public.community_challenge_participants;
+create policy community_challenges_owner_delete on public.community_challenge_participants
+for delete to authenticated using (user_id = auth.uid());
+
+-- Helpful public-safe counts. These do not expose private post authors or user data.
+create or replace view public.community_post_stats as
+select
+  p.id as post_id,
+  count(distinct l.user_id)::integer as likes_count,
+  count(distinct c.id)::integer as comments_count
+from public.community_posts p
+left join public.community_post_likes l on l.post_id = p.id
+left join public.community_post_comments c on c.post_id = p.id
+group by p.id;
+
+grant select on public.community_post_stats to anon, authenticated;
+
+commit;

@@ -1,11 +1,11 @@
 {
-  "name": "Noura \u2014 Food Companion",
+  "name": "Noura — Food Companion",
   "short_name": "Noura",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0D0B09",
   "theme_color": "#0D0B09",
-  "description": "Noura 1.10 \u2014 food discovery and meal planning for campus life",
+  "description": "Noura 1.10 — campus food discovery, recipes, community and meal planning.",
   "icons": [
     {
       "src": "/icon-192.png",
@@ -18,5 +18,5 @@
       "type": "image/png"
     }
   ],
-  "version": "1.10.0"
+  "version": "1.10.0-campus-community"
 }
