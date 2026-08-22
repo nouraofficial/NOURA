@@ -163,6 +163,8 @@ tr:hover td{background:var(--sfu)}
   .chart-grid{grid-template-columns:1fr}
   .table-wrap{overflow-x:auto}
 }
+/* NOURA SUPPORT ADMIN */
+.support-admin-grid{display:grid;grid-template-columns:320px 1fr;gap:16px}.support-admin-list{max-height:650px;overflow:auto}.support-admin-ticket{padding:13px;border-bottom:1px solid var(--bd);cursor:pointer}.support-admin-ticket:hover{background:var(--sfu)}.support-admin-ticket.active{background:#E8943A12;border-left:3px solid var(--ac)}.support-admin-ticket b{display:block;color:var(--t1);font-size:12px}.support-admin-ticket span{font-size:10px;color:var(--t3)}.support-thread{display:flex;flex-direction:column;gap:10px;max-height:470px;overflow:auto;padding:4px}.support-msg{padding:11px 13px;border-radius:14px;border:1px solid var(--bd);background:var(--sfu)}.support-msg.admin{background:#E8943A12}.support-msg .who{font-size:9px;font-weight:800;color:var(--ac);margin-bottom:4px}.support-msg .body{font-size:12px;color:var(--t1);line-height:1.55;white-space:pre-wrap}.support-reply-box{display:flex;gap:8px;margin-top:12px}.support-reply-box textarea{flex:1;min-height:90px;background:var(--sfu);border:1px solid var(--bd);border-radius:12px;padding:11px;color:var(--t1);font:inherit;font-size:12px;resize:vertical}
 </style>
 </head>
 <body>
@@ -231,7 +233,7 @@ tr:hover td{background:var(--sfu)}
 
       <div class="nav-section">Moderation</div>
       <div class="nav-item" onclick="aShowPage('pg-reports',this,'Reports')"><span class="ni">🚨</span>Reports <span class="badge" id="reports-badge" style="display:none">0</span></div>
-      <div class="nav-item" onclick="aShowPage('pg-community',this,'Community')"><span class="ni">👥</span>Community <span class="badge" id="community-reports-badge" style="display:none">0</span></div>
+      <div class="nav-item" onclick="aShowPage('pg-community',this,'Community')"><span class="ni">👥</span>Community <span class="badge" id="community-reports-badge" style="display:none">0</span></div><div class="nav-item" onclick="aShowPage('pg-support',this,'Help & Support')"><span class="ni">🆘</span>Help & Support <span class="badge" id="support-badge" style="display:none">0</span></div>
       <div class="nav-item" onclick="aShowPage('pg-reviews',this,'Reviews')"><span class="ni">⭐</span>Reviews</div>
 
       <div class="nav-section">Platform</div>
@@ -253,7 +255,7 @@ tr:hover td{background:var(--sfu)}
       <div class="admin-av">A</div>
       <div>
         <div style="font-size:12px;font-weight:600;color:var(--t1)">Admin</div>
-        <div style="font-size:10px;color:var(--t2)">admin@noura.app</div>
+        <div style="font-size:10px;color:var(--t2)">Ogunbiyijesutomisin@gmail.com</div>
       </div>
     </div>
   </div>
@@ -426,7 +428,18 @@ tr:hover td{background:var(--sfu)}
         </div>
       </div>
 
-      <!-- NOTIFICATIONS -->
+      
+<!-- SUPPORT -->
+<div id="pg-support" style="display:none">
+  <div class="page-head"><div><h2>Help & Support</h2><p>Handle questions, bugs, reports and user feedback from one inbox.</p></div><button class="abtn view" onclick="loadSupportAdmin()">Refresh</button></div>
+  <div class="stats" style="margin-bottom:16px"><div class="stat"><div class="icon">🆘</div><div class="val" id="support-open-count">0</div><div class="lbl">Open Requests</div></div><div class="stat"><div class="icon">💬</div><div class="val" id="support-all-count">0</div><div class="lbl">Total Tickets</div></div></div>
+  <div class="support-admin-grid">
+    <div class="card"><div class="card-header"><div class="card-title">Inbox</div></div><div id="support-admin-list" class="support-admin-list"></div></div>
+    <div class="card"><div class="card-header"><div class="card-title" id="support-admin-title">Select a request</div><span id="support-admin-status" class="badge orange">—</span></div><div id="support-admin-meta" style="font-size:11px;color:var(--t3);margin-bottom:12px"></div><div id="support-admin-thread" class="support-thread"><div style="padding:50px 20px;text-align:center;color:var(--t3);font-size:12px">Choose a support request from the inbox.</div></div><div id="support-admin-reply" style="display:none" class="support-reply-box"><textarea id="support-admin-reply-text" placeholder="Reply as Noura Admin…"></textarea><button class="abtn approve" style="align-self:flex-end" onclick="replyAdminSupport()">Send Reply</button></div></div>
+  </div>
+</div>
+
+<!-- NOTIFICATIONS -->
       <div id="pg-notifications" style="display:none">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
           <div class="card">
@@ -741,6 +754,7 @@ window.NOURA_ENV = {
   // it does not stop someone who inspects the page source. Real
   // protection is a) not linking admin.html publicly, and b)
   // eventually moving to real per-account Supabase admin roles.
+  ADMIN_EMAIL: 'Ogunbiyijesutomisin@gmail.com',
   ADMIN_PASSWORD: 'Kkl2Y1PICOJJEhgX',
 
   // ── Google OAuth ─────────────────────────────────────────────
@@ -1410,6 +1424,14 @@ window.NOURA_ENV = {
    *  NOTIFICATION SERVICE  — no seed/demo notifications. An empty
    *  inbox is a real, valid state until the backend sends one.
    * ════════════════════════════════════════════════════════════ */
+
+  const supportAdminService = {
+    async list(){const sb=getSupabase();if(!sb)return [];const {data,error}=await sb.from('support_tickets').select('*').order('created_at',{ascending:false}).limit(500);return error?[]:(data||[]);},
+    async get(id){const sb=getSupabase();if(!sb)return null;const {data:t}=await sb.from('support_tickets').select('*').eq('id',id).maybeSingle();if(!t)return null;const {data:m}=await sb.from('support_messages').select('*').eq('ticket_id',id).order('created_at',{ascending:true});return {...t,messages:m||[]};},
+    async reply(id,body){const sb=getSupabase();const {data:s}=await sb.auth.getSession();const uid=s?.session?.user?.id;if(!sb||!uid)return {ok:false,reason:'auth'};const {error}=await sb.from('support_messages').insert({ticket_id:id,sender_id:uid,sender_role:'admin',body});if(error)return {ok:false,reason:error.message};await sb.from('support_tickets').update({status:'waiting_user',updated_at:new Date().toISOString()}).eq('id',id);return {ok:true};},
+    async setStatus(id,status){const sb=getSupabase();if(!sb)return {ok:false};const {error}=await sb.from('support_tickets').update({status,updated_at:new Date().toISOString()}).eq('id',id);return {ok:!error,reason:error?.message};}
+  };
+
   const notificationService = {
     async _uid() {
       const sb = getSupabase(); if (!sb) return null;
@@ -2560,6 +2582,7 @@ Be concise (max 4-6 lines unless a full recipe is requested), warm, and practica
     recipes: recipeService,
     mealPlan: mealPlanService,
     notifications: notificationService,
+    supportAdmin: supportAdminService,
     favourites: favouritesService,
     settings: settingsService,
     ai: aiService,
@@ -2603,6 +2626,7 @@ async function doAdminLogin() {
   const email = el('al-email')?.value;
   const pass  = el('al-pass')?.value;
   if (!email || !pass) { aToast('Enter email and password'); return; }
+  if (email.trim().toLowerCase() !== String(S.env.ADMIN_EMAIL||'').toLowerCase()) { aToast('This account is not the Noura Admin account.'); return; }
   if (pass !== S.env.ADMIN_PASSWORD) { aToast('Incorrect admin password'); return; }
   const res = await S.admin.login(email, pass);
   el('as-login').style.display = 'none';
@@ -2659,6 +2683,7 @@ function aShowPage(pageId, navEl, title, fromPop) {
   if (pageId === 'pg-reviews')       loadAllReviews();
   if (pageId === 'pg-ai')            renderAIMonitoring();
   if (pageId === 'pg-notifications') renderSentNotifs();
+  if (pageId === 'pg-support') loadSupportAdmin();
   if (pageId === 'pg-analytics')     renderAnalyticsCharts();
   if (pageId === 'pg-roles')         renderRoles();
   if (pageId === 'pg-audit')         renderAuditLog();
@@ -2953,6 +2978,25 @@ async function removeReview(restaurantId, reviewId) {
   S.auditLog.log('Review removed', 'Restaurant '+restaurantId+', review '+reviewId);
   aToast('Review removed');
 }
+
+
+// ── Help & Support ─────────────────────────────────────
+let supportAdminTickets=[], supportAdminSelected=null;
+async function loadSupportAdmin(){
+  supportAdminTickets=await S.supportAdmin.list();
+  const open=supportAdminTickets.filter(t=>!['resolved','closed'].includes(t.status)).length;
+  el('support-open-count').textContent=open;el('support-all-count').textContent=supportAdminTickets.length;
+  const b=el('support-badge');if(b){b.textContent=open;b.style.display=open?'':'none';}
+  const list=el('support-admin-list');if(!list)return;
+  list.innerHTML=supportAdminTickets.length?supportAdminTickets.map(t=>`<div class="support-admin-ticket ${supportAdminSelected===t.id?'active':''}" onclick="selectSupportAdmin('${t.id}')"><b>${safeA(t.subject||'Support request')}</b><span>${safeA(t.category||'other')} · ${safeA(t.status||'open')} · ${t.created_at?new Date(t.created_at).toLocaleString():''}</span></div>`).join(''):'<div style="padding:40px 20px;text-align:center;color:var(--t3);font-size:12px">No support requests yet.</div>';
+}
+async function selectSupportAdmin(id){
+  supportAdminSelected=id;loadSupportAdmin();const t=await S.supportAdmin.get(id);if(!t)return;
+  el('support-admin-title').textContent=t.subject||'Support request';el('support-admin-status').textContent=t.status||'open';el('support-admin-meta').textContent=`${t.category||'other'} · User ${String(t.user_id).slice(0,8)} · ${t.created_at?new Date(t.created_at).toLocaleString():''}`;
+  el('support-admin-thread').innerHTML=(t.messages||[]).map(m=>`<div class="support-msg ${m.sender_role==='admin'?'admin':''}"><div class="who">${m.sender_role==='admin'?'NOURA ADMIN':'USER'} · ${m.created_at?new Date(m.created_at).toLocaleString():''}</div><div class="body">${safeA(m.body)}</div></div>`).join('')||'<div style="padding:30px;text-align:center;color:var(--t3)">No messages.</div>';
+  el('support-admin-reply').style.display='flex';
+}
+async function replyAdminSupport(){const msg=(el('support-admin-reply-text')?.value||'').trim();if(!supportAdminSelected||!msg)return aToast('Write a reply first.');const r=await S.supportAdmin.reply(supportAdminSelected,msg);if(!r.ok)return aToast(r.reason||'Reply failed.');el('support-admin-reply-text').value='';aToast('Reply sent to user 🧡');selectSupportAdmin(supportAdminSelected);}
 
 // ── Notifications ─────────────────────────────────────
 async function renderSentNotifs() {

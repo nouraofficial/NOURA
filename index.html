@@ -587,6 +587,16 @@ body.light{--bg:#F5F2EC;--sf:#FFFFFF;--sfu:#EDE9E2;--bd:#DDD8CF;--t1:#1A1612;--t
 .community-profile-modal{padding:0 0 32px}.community-profile-cover{height:100px;background:radial-gradient(circle at 80% 20%,#E8943A35,transparent 45%),linear-gradient(145deg,#21160f,#0e0c0a);position:relative}.community-profile-avatar{width:82px;height:82px;border-radius:50%;background:var(--acs);border:3px solid var(--sf);position:absolute;left:20px;bottom:-38px;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--ac);font-size:28px;font-weight:800}.community-profile-avatar img{width:100%;height:100%;object-fit:cover}.community-profile-main{padding:48px 20px 0}.community-profile-name{font-family:'Sora',sans-serif;font-size:21px;font-weight:800;color:var(--t1)}.community-profile-handle{font-size:12px;color:var(--ac);margin-top:2px}.community-profile-bio{font-size:13px;color:var(--t2);line-height:1.6;margin-top:10px}.community-profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}.community-profile-stat{background:var(--sfu);border:1px solid var(--bd);border-radius:14px;padding:11px;text-align:center}.community-profile-stat b{display:block;color:var(--t1);font-family:'Sora',sans-serif;font-size:16px}.community-profile-stat span{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px}.community-profile-campus{font-size:11px;color:var(--t2);margin:8px 0 14px}.community-context{margin:0 20px 12px;padding:11px 13px;border-radius:15px;background:var(--sfu);border:1px solid var(--bd);display:flex;align-items:center;gap:10px}.community-context .ctx-text{flex:1;min-width:0}.community-context .ctx-title{font-size:11px;color:var(--t1);font-weight:800}.community-context .ctx-sub{font-size:10px;color:var(--t3);margin-top:2px}
 
 
+
+/* NOURA SUPPORT + NOTIFICATION CENTER */
+.support-hero{margin:0 20px 16px;padding:20px;border:1px solid #E8943A28;border-radius:20px;background:radial-gradient(circle at 90% 0,#E8943A22,transparent 42%),linear-gradient(145deg,#1b120d,#0f0d0b);position:relative;overflow:hidden}
+.support-hero h2{margin:0 0 6px;font-family:'Sora',sans-serif;font-size:20px;color:var(--t1)}
+.support-hero p{margin:0;color:var(--t2);font-size:12px;line-height:1.55;max-width:330px}
+.support-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 20px 18px}
+.support-card{padding:14px;border:1px solid var(--bd);background:var(--sfu);border-radius:16px;cursor:pointer}
+.support-card b{display:block;color:var(--t1);font-size:12px;margin-top:7px}.support-card span{display:block;color:var(--t3);font-size:10px;line-height:1.4;margin-top:3px}.support-emoji{font-size:22px}
+.ticket-card{margin:0 20px 10px;padding:14px;border:1px solid var(--bd);background:var(--sfu);border-radius:16px}.ticket-card b{color:var(--t1);font-size:12px}.ticket-card p{color:var(--t2);font-size:11px;line-height:1.5;margin:7px 0}.ticket-status{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:4px 8px;border-radius:999px;background:#E8943A18;color:var(--ac)}
+.support-field{width:100%;box-sizing:border-box;background:var(--sfu);border:1px solid var(--bd);border-radius:12px;padding:12px;color:var(--t1);font:inherit;font-size:12px;outline:none;margin-bottom:10px}.support-textarea{min-height:120px;resize:vertical}.support-compose{padding:0 20px 30px}
 </style>
 
 </head>
@@ -727,7 +737,7 @@ body.light{--bg:#F5F2EC;--sf:#FFFFFF;--sfu:#EDE9E2;--bd:#DDD8CF;--t1:#1A1612;--t
       <div class="hun" id="hun">there</div>
     </div>
     <div style="display:flex;gap:8px;align-items:center">
-      <div class="nbt" onclick="gt('notifications')">
+      <div class="nbt" onclick="gt('notifications')" style="position:relative"><span data-noura-notification-count style="display:none;position:absolute;top:-3px;right:-3px;min-width:15px;height:15px;padding:0 3px;border-radius:99px;background:#E8943A;color:#111;font-size:8px;font-weight:900;align-items:center;justify-content:center"></span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         <div class="ndt" id="ndot"></div>
       </div>
@@ -1159,7 +1169,7 @@ body.light{--bg:#F5F2EC;--sf:#FFFFFF;--sfu:#EDE9E2;--bd:#DDD8CF;--t1:#1A1612;--t
   <div class="ph">
     <div class="pbk" onclick="gb()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg></div>
     <div class="pt">Notifications</div>
-    <button class="pa" onclick="markAllRead()">Mark all read</button>
+    <button class="pa" onclick="enableNouraNotifications(this)">Enable alerts</button>
   </div>
   <div class="nfl">
     <div class="cch a" onclick="fltNotif(this,'all')">All</div>
@@ -1169,6 +1179,42 @@ body.light{--bg:#F5F2EC;--sf:#FFFFFF;--sfu:#EDE9E2;--bd:#DDD8CF;--t1:#1A1612;--t
     <div class="cch" onclick="fltNotif(this,'social')">👥 Social</div>
   </div>
   <div class="iscroll"><div id="nlist"></div></div>
+</div>
+
+
+<!-- HELP & SUPPORT -->
+<div class="screen" id="scr-support">
+  <div class="ph"><div class="pbk" onclick="gb()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg></div><div class="pt">Help & Support</div></div>
+  <div class="iscroll" style="padding-bottom:90px">
+    <div class="support-hero">
+      <h2>We're here for you. 🧡</h2>
+      <p>Something broken? Have a question, idea, report, or just something you want Noura to know? Talk to the Noura team.</p>
+    </div>
+    <div class="support-grid">
+      <div class="support-card" onclick="openSupportComposer('bug')"><div class="support-emoji">🐛</div><b>Something is broken</b><span>Report a bug or technical issue.</span></div>
+      <div class="support-card" onclick="openSupportComposer('account')"><div class="support-emoji">👤</div><b>Account problem</b><span>Profile, sign-in or account help.</span></div>
+      <div class="support-card" onclick="openSupportComposer('community')"><div class="support-emoji">🚨</div><b>Report something</b><span>Report a post, comment, recipe or user.</span></div>
+      <div class="support-card" onclick="openSupportComposer('idea')"><div class="support-emoji">💡</div><b>Suggest an idea</b><span>Tell us what would make Noura better.</span></div>
+      <div class="support-card" onclick="openSupportComposer('vendor')"><div class="support-emoji">🏪</div><b>Vendor issue</b><span>Something about a Noura vendor.</span></div>
+      <div class="support-card" onclick="openSupportComposer('other')"><div class="support-emoji">💬</div><b>Just talk to us</b><span>Anything else. We're listening.</span></div>
+    </div>
+    <div style="padding:0 20px 10px;font-family:'Sora',sans-serif;font-size:13px;font-weight:800;color:var(--t1)">Your requests</div>
+    <div id="support-ticket-list"></div>
+    <div id="support-empty" style="padding:25px 20px;text-align:center;color:var(--t3);font-size:12px">No support requests yet.</div>
+  </div>
+</div>
+
+<!-- SUPPORT COMPOSER -->
+<div class="screen" id="scr-support-compose">
+  <div class="ph"><div class="pbk" onclick="gb()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg></div><div class="pt">Contact Noura</div></div>
+  <div class="iscroll"><div class="support-compose">
+    <div style="font-family:'Sora',sans-serif;font-size:19px;font-weight:800;color:var(--t1);margin-bottom:6px">Tell us what happened.</div>
+    <div style="font-size:11px;color:var(--t3);line-height:1.5;margin-bottom:18px">A real support request will be sent to the Noura Admin team. You can come back here to see replies.</div>
+    <select id="support-category" class="support-field"><option value="bug">🐛 Bug / technical issue</option><option value="account">👤 Account problem</option><option value="community">🚨 Community report</option><option value="idea">💡 Suggestion</option><option value="vendor">🏪 Vendor issue</option><option value="order">🛍️ Order / payment</option><option value="other">💬 Other</option></select>
+    <input id="support-subject" class="support-field" placeholder="Subject" maxlength="120">
+    <textarea id="support-message" class="support-field support-textarea" placeholder="Tell Noura what you need help with…" maxlength="3000"></textarea>
+    <button class="btn bp" onclick="submitSupportTicket()">Send to Noura 🧡</button>
+  </div></div>
 </div>
 
 <!-- SETTINGS -->
@@ -1192,7 +1238,7 @@ body.light{--bg:#F5F2EC;--sf:#FFFFFF;--sfu:#EDE9E2;--bd:#DDD8CF;--t1:#1A1612;--t
     </div>
     <div class="ssec"><div class="sstl">Notifications</div>
       <div class="scard">
-        <div class="srw"><div class="sic">🔔</div><div class="slb">Push Notifications</div><button class="tog on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="srw" onclick="enableNouraNotifications(this)"><div class="sic">🔔</div><div class="slb">App Notifications</div><button class="tog on" id="tog-push" onclick="event.stopPropagation();enableNouraNotifications(this.closest('.srw'))"></button></div>
         <div class="srw"><div class="sic">⏰</div><div class="slb">Meal Reminders</div><button class="tog on" onclick="this.classList.toggle('on')"></button></div>
         <div class="srw"><div class="sic">🏷️</div><div class="slb">Promotions</div><button class="tog" onclick="this.classList.toggle('on')"></button></div>
       </div>
@@ -1217,7 +1263,7 @@ body.light{--bg:#F5F2EC;--sf:#FFFFFF;--sfu:#EDE9E2;--bd:#DDD8CF;--t1:#1A1612;--t
         <div class="srw" onclick="gt('terms')"><div class="sic">📄</div><div class="slb">Terms of Service</div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="srw" onclick="gt('foundation')"><div class="sic">🌍</div><div class="slb">The Noura Foundation</div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="srw" onclick="openVendorPortal()"><div class="sic">🏪</div><div class="slb">Vendor Portal</div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
-        <div class="srw" onclick="toast('Help centre coming soon 💬')"><div class="sic">💬</div><div class="slb">Help & Support</div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+        <div class="srw" onclick="gt('support');loadSupportTickets()"><div class="sic">💬</div><div class="slb">Help & Support</div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
       </div>
     </div>
     <div class="ssec"><div class="scard">
@@ -2524,15 +2570,40 @@ window.NOURA_ENV = {
    *  NOTIFICATION SERVICE  — no seed/demo notifications. An empty
    *  inbox is a real, valid state until the backend sends one.
    * ════════════════════════════════════════════════════════════ */
-  const STATIC_NOTIFICATIONS = [
-    { id:'static-food', type:'food', icon:'🍽️', color:'var(--acs)', title:'New food inspiration', msg:'Discover something delicious today.', time:'Today', unread:true },
-    { id:'static-ai', type:'ai', icon:'✨', color:'var(--acs)', title:'Noura AI', msg:'Ask Noura what you can cook with the ingredients you already have.', time:'Today', unread:true },
-    { id:'static-challenge', type:'social', icon:'🏆', color:'var(--acs)', title:'Challenge reminder', msg:"Complete this week's food challenge and keep your streak alive.", time:'This week', unread:true },
-    { id:'static-welcome', type:'food', icon:'💜', color:'var(--acs)', title:'Welcome to Noura', msg:'Discover local restaurants, recipes and food inspiration.', time:'Welcome', unread:true },
-  ];
+  const STATIC_NOTIFICATIONS = [];
   const getStaticNotifications = () => {
     const saved = lsGet('noura_static_notification_state', {});
     return STATIC_NOTIFICATIONS.map(n => ({ ...n, unread: saved[n.id] === undefined ? n.unread : saved[n.id] }));
+  };
+
+
+  /* ════════════════════════════════════════════════════════════
+   * NOURA SUPPORT SERVICE
+   * User tickets + threaded admin replies.
+   * ════════════════════════════════════════════════════════════ */
+  const supportService = {
+    async _uid(){ const sb=getSupabase(); if(!sb)return null; const {data}=await sb.auth.getSession(); return data?.session?.user?.id||null; },
+    async listTickets(){
+      const sb=getSupabase(), uid=await this._uid(); if(!sb||!uid)return [];
+      const {data,error}=await sb.from('support_tickets').select('*').eq('user_id',uid).order('created_at',{ascending:false});
+      return error?[]:(data||[]);
+    },
+    async getTicket(id){
+      const sb=getSupabase(), uid=await this._uid(); if(!sb||!uid)return null;
+      const {data:t}=await sb.from('support_tickets').select('*').eq('id',id).eq('user_id',uid).maybeSingle(); if(!t)return null;
+      const {data:m}=await sb.from('support_messages').select('*').eq('ticket_id',id).order('created_at',{ascending:true}); return {...t,messages:m||[]};
+    },
+    async createTicket({category,subject,message}){
+      const sb=getSupabase(), uid=await this._uid(); if(!sb||!uid)return {ok:false,reason:'auth'};
+      const {data:t,error}=await sb.from('support_tickets').insert({user_id:uid,category,subject:subject||'Noura Support Request',status:'open'}).select('*').single();
+      if(error)return {ok:false,reason:error.message};
+      const {error:me}=await sb.from('support_messages').insert({ticket_id:t.id,sender_id:uid,sender_role:'user',body:message});
+      return {ok:!me,ticket:t,reason:me?.message};
+    },
+    async reply(id,message){
+      const sb=getSupabase(), uid=await this._uid(); if(!sb||!uid)return {ok:false,reason:'auth'};
+      const {error}=await sb.from('support_messages').insert({ticket_id:id,sender_id:uid,sender_role:'user',body:message}); return {ok:!error,reason:error?.message};
+    }
   };
 
   const notificationService = {
@@ -3827,6 +3898,7 @@ REAL NOURA RESTAURANTS are authoritative. Never invent a restaurant, price, rati
     recipes: recipeService,
     mealPlan: mealPlanService,
     notifications: notificationService,
+    support: supportService,
     favourites: favouritesService,
     settings: settingsService,
     ai: aiService,
@@ -5145,5 +5217,6 @@ function openLanding(){      window.open('/landing','_blank'); }
   <button class="ib-install" onclick="installNouraApp()">Install</button>
   <button class="ib-close" onclick="dismissInstallBanner()" aria-label="Not now">×</button>
 </div>
+<div class="mov" id="mod-generic"><div class="ms" style="max-height:82vh"><div class="mh"><div class="mt">Support</div><button class="mc" onclick="closeMod('mod-generic')">×</button></div><div id="mod-generic-body"></div></div></div>
 </body>
 </html>
